@@ -17,6 +17,7 @@
 
 #import "AppDelegate.h"
 #import <Parse/Parse.h>
+#import <RongIMKit/RongIMKit.h>
 
 
 @interface AppDelegate ()
@@ -29,6 +30,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Enable storing and querying data from Local Datastore. Remove this line if you don't want to
     // use Local Datastore features or want to use cachePolicy.
+    
     [Parse enableLocalDatastore];
     
     // ****************************************************************************
@@ -85,6 +87,12 @@
                                                          UIRemoteNotificationTypeAlert |
                                                          UIRemoteNotificationTypeSound)];
     }
+    
+    
+    // Register Rong-Cloud
+//    NSString *_deviceTokenCache = [[NSUserDefaults standardUserDefaults]objectForKey:kDeviceToken];
+//    
+//    [[RCIM sharedKit] initWithAppKey:RONGCLOUD_IM_APPKEY deviceToken:_deviceTokenCache];
     
     return YES;
 }
