@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface SOPlaygroundFeedCell : UITableViewCell
-
+-(void)configureWithData:(NSDictionary*)data;
 @end

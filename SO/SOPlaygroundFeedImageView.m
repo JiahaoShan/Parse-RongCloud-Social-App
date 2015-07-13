@@ -7,10 +7,11 @@
 //
 
 #import "SOPlaygroundFeedImageView.h"
+#import "UIImageView+AFNetworking.h"
+#import "SOPlaygroundFeedImageViewCell.h"
 
 @interface SOPlaygroundFeedImageView()<UICollectionViewDataSource,UICollectionViewDelegate>
 @property (nonatomic) UICollectionView* collectionView;
-@property (nonatomic) UIButton* singelImageButton;
 @property (nonatomic) BOOL visible;
 @property (nonatomic) NSArray* images;
 @end
@@ -19,7 +20,7 @@
 
 -(void)awakeFromNib{
     [super awakeFromNib];
-    [self setVisible:NO];
+   // [self setVisible:NO];
 }
 
 -(void)setImages:(NSArray*)urls{
@@ -28,25 +29,31 @@
         return;
     }
     [self setVisible:true];
-    CGRect frame = self.frame;
-    frame.size.height = [self heightFromImageCount:urls.count];
-    self.frame = frame;
+    //CGRect frame = self.frame;
+    //frame.size.height = [self heightFromImageCount:urls.count];
+    //self.frame = frame;
+    self.frame = self.superview.bounds;
     
-    if(urls.count==1){
-        self.collectionView.delegate = nil;
-        self.collectionView.dataSource = nil;
-        self.collectionView = nil;
-        if(!self.singelImageButton){
-            self.singelImageButton = [[UIButton alloc] initWithFrame:self.bounds];
-        }
-    }else{
-        self.singelImageButton = nil;
-        self.collectionView = [[UICollectionView alloc] init];
+    if (!self.collectionView) {
+        UICollectionViewFlowLayout* fl = [[UICollectionViewFlowLayout alloc] init];
+        [fl setItemSize:CGSizeMake(kPlaygroundMultipleImageSize, kPlaygroundMultipleImageSize)];
+        [fl setScrollDirection:UICollectionViewScrollDirectionVertical];
+        [fl setMinimumInteritemSpacing:1];
+        [fl setEstimatedItemSize:CGSizeMake(kPlaygroundMultipleImageSize, kPlaygroundMultipleImageSize)];
+        [fl setMinimumLineSpacing:0];
+        fl.sectionInset = UIEdgeInsetsMake(0, 24, 0, 24);
+        self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:fl];
+        [self.collectionView registerClass:[SOPlaygroundFeedImageViewCell class] forCellWithReuseIdentifier:@"cell"];
         self.collectionView.dataSource = self;
         self.collectionView.delegate = self;
+        self.collectionView.backgroundColor = [UIColor clearColor];
+        [self addSubview:self.collectionView];
     }
     
-    self.images = urls;
+    _images = urls;
+    //dispatch_async(dispatch_get_main_queue(), ^ {
+        [self.collectionView reloadData];
+    //});
 }
 
 //different from setHidden
@@ -62,7 +69,6 @@
         self.hidden = false;
     }else{
         self.collectionView = nil;
-        self.singelImageButton = nil;
         CGRect frame = self.frame;
         frame.size.height = 0;
         self.frame = frame;
@@ -90,6 +96,14 @@
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     return self.images.count;
+}
+
+-(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    SOPlaygroundFeedImageViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
+    [cell setBackgroundColor:[UIColor yellowColor]];
+    UIImageView* iv = [cell imageView];
+    [iv setImageWithURL:[NSURL URLWithString:self.images[indexPath.row]] placeholderImage:[UIImage imageNamed:@"placeholderImage"]];
+    return cell;
 }
 
 @end

@@ -7,7 +7,14 @@
 //
 
 #import "SOPlaygroundFeedCell.h"
+#import "SOPlaygroundFeedImageView.h"
+
+@interface SOPlaygroundFeedCell()
+@property (weak, nonatomic) IBOutlet SOPlaygroundFeedImageView *feedImageView;
+@end
 
 @implementation SOPlaygroundFeedCell
-
+-(void)configureWithData:(NSDictionary*)data{
+    [(SOPlaygroundFeedImageView*)self.feedImageView setImages:[data objectForKey:@"images"]];
+}
 @end
