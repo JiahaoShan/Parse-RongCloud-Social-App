@@ -32,7 +32,7 @@
 
 NSString * const RONGCLOUD_IM_APPKEY = @"c9kqb3rdkhnhj";
 NSString * const DEFAULTS_RONG_DEVICE_TOKEN_KEY = @"rongDeviceToken";
-@interface AppDelegate () <RCIMConnectionStatusDelegate>
+@interface AppDelegate () <RCIMConnectionStatusDelegate, RCIMUserInfoDataSource>
 
 @end
 
@@ -101,14 +101,18 @@ NSString * const DEFAULTS_RONG_DEVICE_TOKEN_KEY = @"rongDeviceToken";
     }
     
     // Register Rong-Cloud
-    if (![[NSUserDefaults standardUserDefaults]objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY]) {
-        [self getRongTokenForUser];
-    }
-    else {
-        NSString * token = [[NSUserDefaults standardUserDefaults]objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
-        [[RCIM sharedRCIM] initWithAppKey:RONGCLOUD_IM_APPKEY deviceToken:token];
-    }
+//    if (![[NSUserDefaults standardUserDefaults]objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY]) {
+//        [self getRongTokenForUser];
+//    }
+//    else {
+//        NSString * token = [[NSUserDefaults standardUserDefaults]objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
+//        [[RCIM sharedRCIM] initWithAppKey:RONGCLOUD_IM_APPKEY deviceToken:token];
+//    }
 //    NSString *_deviceTokenCache = [[NSUserDefaults standardUserDefaults]objectForKey:kDeviceToken];
+    [self getRongTokenForUser];
+    NSString * token = [[NSUserDefaults standardUserDefaults]objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
+    [[RCIM sharedRCIM] initWithAppKey:RONGCLOUD_IM_APPKEY deviceToken:token];
+    [self rongCloudInit];
     
     return YES;
 }
@@ -200,7 +204,7 @@ NSString * const DEFAULTS_RONG_DEVICE_TOKEN_KEY = @"rongDeviceToken";
 
 - (void) getRongTokenForUser {
     [PFCloud callFunctionInBackground:@"getToken"
-                       withParameters:@{@"userId": @"xxxx", @"name" : @"Shawn", @"portraitUri" : @"http://abc.com/myportrait.jpg"}
+                       withParameters:@{@"userId": @"xxxx", @"name" : @"Shawn", @"portraitUri" : @"https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=1756054607,4047938258&fm=96&s=94D712D20AA1875519EB37BE0300C008"}
                                 block:^(NSString *result, NSError *error) {
                                     if (!error) {
                                         NSDictionary* json = [NSJSONSerialization
@@ -214,14 +218,37 @@ NSString * const DEFAULTS_RONG_DEVICE_TOKEN_KEY = @"rongDeviceToken";
                                 }];
 }
 
+
+/**
+ *此方法中要提供给融云用户的信息，建议缓存到本地，然后改方法每次从您的缓存返回
+ */
+- (void)getUserInfoWithUserId:(NSString *)userId completion:(void(^)(RCUserInfo* userInfo))completion
+{
+    //此处为了演示写了一个用户信息
+    if ([@"xxxx" isEqual:userId]) {
+        RCUserInfo *user = [[RCUserInfo alloc]init];
+        user.userId = @"xxxx";
+        user.name = @"Shawn";
+        user.portraitUri = @"https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=1756054607,4047938258&fm=96&s=94D712D20AA1875519EB37BE0300C008";
+        
+        return completion(user);
+    }
+}
+
+
 -(void) rongCloudInit {
     NSString * token = [[NSUserDefaults standardUserDefaults]objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
     
     [[RCIM sharedRCIM] connectWithToken:token success:^(NSString *userId) {
         // Connect 成功
+        
+        [[RCIM sharedRCIM] setUserInfoDataSource:self];
+        NSLog(@"Login successfully with userId: %@.", userId);
+        
     }
                                  error:^(RCConnectErrorCode status) {
                                      // Connect 失败
+                                     NSLog(@"登录失败%d",(int)status);
                                  }
                         tokenIncorrect:^() {
                             // Token 失效的状态处理
@@ -231,6 +258,8 @@ NSString * const DEFAULTS_RONG_DEVICE_TOKEN_KEY = @"rongDeviceToken";
     
     
 }
+
+
 
 //
 //- (void) rongInit {
