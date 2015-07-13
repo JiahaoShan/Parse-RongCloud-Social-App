@@ -19,8 +19,20 @@
 #import <Parse/Parse.h>
 #import <RongIMKit/RongIMKit.h>
 
+#define iPhone6                                                                \
+([UIScreen instancesRespondToSelector:@selector(currentMode)]                \
+? CGSizeEqualToSize(CGSizeMake(750, 1334),                              \
+[[UIScreen mainScreen] currentMode].size)           \
+: NO)
+#define iPhone6Plus                                                            \
+([UIScreen instancesRespondToSelector:@selector(currentMode)]                \
+? CGSizeEqualToSize(CGSizeMake(1242, 2208),                             \
+[[UIScreen mainScreen] currentMode].size)           \
+: NO)
 
-@interface AppDelegate ()
+NSString * const RONGCLOUD_IM_APPKEY = @"c9kqb3rdkhnhj";
+NSString * const DEFAULTS_RONG_DEVICE_TOKEN_KEY = @"rongDeviceToken";
+@interface AppDelegate () <RCIMConnectionStatusDelegate>
 
 @end
 
@@ -88,11 +100,15 @@
                                                          UIRemoteNotificationTypeSound)];
     }
     
-    
     // Register Rong-Cloud
+    if (![[NSUserDefaults standardUserDefaults]objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY]) {
+        [self getRongTokenForUser];
+    }
+    else {
+        NSString * token = [[NSUserDefaults standardUserDefaults]objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
+        [[RCIM sharedRCIM] initWithAppKey:RONGCLOUD_IM_APPKEY deviceToken:token];
+    }
 //    NSString *_deviceTokenCache = [[NSUserDefaults standardUserDefaults]objectForKey:kDeviceToken];
-//    
-//    [[RCIM sharedKit] initWithAppKey:RONGCLOUD_IM_APPKEY deviceToken:_deviceTokenCache];
     
     return YES;
 }
@@ -136,6 +152,15 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
+                                                                         @(ConversationType_PRIVATE),
+                                                                         @(ConversationType_DISCUSSION),
+                                                                         @(ConversationType_PUBLICSERVICE),
+                                                                         @(ConversationType_PUBLICSERVICE),
+                                                                         @(ConversationType_GROUP)
+                                                                         ]];
+    application.applicationIconBadgeNumber = unreadMsgCount;
+
 }
 
 ///////////////////////////////////////////////////////////
@@ -172,5 +197,279 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+- (void) getRongTokenForUser {
+    [PFCloud callFunctionInBackground:@"getToken"
+                       withParameters:@{@"userId": @"xxxx", @"name" : @"Shawn", @"portraitUri" : @"http://abc.com/myportrait.jpg"}
+                                block:^(NSString *result, NSError *error) {
+                                    if (!error) {
+                                        NSDictionary* json = [NSJSONSerialization
+                                                              JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                                              options:kNilOptions
+                                                              error:&error];
+                                         NSString* token = [json objectForKey:@"token"];
+                                        [[NSUserDefaults standardUserDefaults] setObject:token forKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
+                                        [[RCIM sharedRCIM] initWithAppKey:RONGCLOUD_IM_APPKEY deviceToken:token];
+                                    }
+                                }];
+}
+
+-(void) rongCloudInit {
+    NSString * token = [[NSUserDefaults standardUserDefaults]objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
+    
+    [[RCIM sharedRCIM] connectWithToken:token success:^(NSString *userId) {
+        // Connect 成功
+    }
+                                 error:^(RCConnectErrorCode status) {
+                                     // Connect 失败
+                                 }
+                        tokenIncorrect:^() {
+                            // Token 失效的状态处理
+                        }];
+                                        //设置当前的用户信息
+    
+    
+    
+}
+
+//
+//- (void) rongInit {
+//    //设置会话列表头像和会话界面头像
+//    
+//    [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
+//    if (iPhone6Plus) {
+//        [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(56, 56);
+//    } else {
+//        NSLog(@"iPhone6 %d", iPhone6);
+//        [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(46, 46);
+//    }
+//    
+//    //设置用户信息源和群组信息源
+//    [RCIM sharedRCIM].userInfoDataSource = RCDDataSource;
+//    [RCIM sharedRCIM].groupInfoDataSource = RCDDataSource;
+//    
+//    //    [RCIM sharedRCIM].globalMessagePortraitSize = CGSizeMake(46, 46);
+//    
+//    //登录
+//    NSString *token =[[NSUserDefaults standardUserDefaults] objectForKey:@"userToken"];
+//    NSString *userId=[DEFAULTS objectForKey:@"userId"];
+//    NSString *userName = [DEFAULTS objectForKey:@"userName"];
+//    NSString *password = [DEFAULTS objectForKey:@"userPwd"];
+//    
+//    if (token.length && userId.length && password.length && !debugMode) {
+//        [[RCIM sharedRCIM] connectWithToken:token
+//                                    success:^(NSString *userId) {
+//                                        RCUserInfo *_currentUserInfo =
+//                                        [[RCUserInfo alloc] initWithUserId:userId
+//                                                                      name:userName
+//                                                                  portrait:nil];
+//                                        [RCIMClient sharedRCIMClient].currentUserInfo = _currentUserInfo;
+//                                        [AFHttpTool loginWithEmail:userName
+//                                                          password:password
+//                                                               env:1
+//                                                           success:^(id response) {
+//                                                               if ([response[@"code"] intValue] == 200) {
+//                                                                   [RCDHTTPTOOL getUserInfoByUserID:userId
+//                                                                                         completion:^(RCUserInfo *user) {
+//                                                                                             [[RCIM sharedRCIM]
+//                                                                                              refreshUserInfoCache:user
+//                                                                                              withUserId:userId];
+//                                                                                         }];
+//                                                               }
+//                                                           }
+//                                                           failure:^(NSError *err){
+//                                                           }];
+//                                        //设置当前的用户信息
+//                                        
+//                                        //同步群组
+//                                        [RCDDataSource syncGroups];
+//                                        dispatch_async(dispatch_get_main_queue(), ^{
+//                                            UIStoryboard *storyboard =
+//                                            [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//                                            UINavigationController *rootNavi = [storyboard
+//                                                                                instantiateViewControllerWithIdentifier:@"rootNavi"];
+//                                            self.window.rootViewController = rootNavi;
+//                                        });
+//                                    }
+//                                      error:^(RCConnectErrorCode status) {
+//                                          RCUserInfo *_currentUserInfo =[[RCUserInfo alloc] initWithUserId:userId
+//                                                                                                      name:userName
+//                                                                                                  portrait:nil];
+//                                          [RCIMClient sharedRCIMClient].currentUserInfo = _currentUserInfo;
+//                                          [RCDDataSource syncGroups];
+//                                          NSLog(@"connect error %ld", (long)status);
+//                                          dispatch_async(dispatch_get_main_queue(), ^{
+//                                              UIStoryboard *storyboard =
+//                                              [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//                                              UINavigationController *rootNavi = [storyboard
+//                                                                                  instantiateViewControllerWithIdentifier:@"rootNavi"];
+//                                              self.window.rootViewController = rootNavi;
+//                                          });
+//                                      }
+//                             tokenIncorrect:^{
+//                                 RCDLoginViewController *loginVC =
+//                                 [[RCDLoginViewController alloc] init];
+//                                 UINavigationController *_navi = [[UINavigationController alloc]
+//                                                                  initWithRootViewController:loginVC];
+//                                 self.window.rootViewController = _navi;
+//                                 UIAlertView *alertView =
+//                                 [[UIAlertView alloc] initWithTitle:nil
+//                                                            message:@"Token已过期，请重新登录"
+//                                                           delegate:nil
+//                                                  cancelButtonTitle:@"确定"
+//                                                  otherButtonTitles:nil, nil];
+//                                 ;
+//                                 [alertView show];
+//                             }];
+//        
+//    } else {
+//        RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
+//        // [loginVC defaultLogin];
+//        // RCDLoginViewController* loginVC = [storyboard
+//        // instantiateViewControllerWithIdentifier:@"loginVC"];
+//        UINavigationController *_navi =
+//        [[UINavigationController alloc] initWithRootViewController:loginVC];
+//        self.window.rootViewController = _navi;
+//    }
+//    
+//    if ([application
+//         respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+//        //注册推送, iOS 8
+//        UIUserNotificationSettings *settings = [UIUserNotificationSettings
+//                                                settingsForTypes:(UIUserNotificationTypeBadge |
+//                                                                  UIUserNotificationTypeSound |
+//                                                                  UIUserNotificationTypeAlert)
+//                                                categories:nil];
+//        [application registerUserNotificationSettings:settings];
+//    } else {
+//        UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge |
+//        UIRemoteNotificationTypeAlert |
+//        UIRemoteNotificationTypeSound;
+//        [application registerForRemoteNotificationTypes:myTypes];
+//    }
+//    
+//    //统一导航条样式
+//    UIFont *font = [UIFont systemFontOfSize:19.f];
+//    NSDictionary *textAttributes = @{
+//                                     NSFontAttributeName : font,
+//                                     NSForegroundColorAttributeName : [UIColor whiteColor]
+//                                     };
+//    [[UINavigationBar appearance] setTitleTextAttributes:textAttributes];
+//    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+//    [[UINavigationBar appearance]
+//     setBarTintColor:[UIColor colorWithHexString:@"0195ff" alpha:1.0f]];
+//    
+//    [[NSNotificationCenter defaultCenter]
+//     addObserver:self
+//     selector:@selector(didReceiveMessageNotification:)
+//     name:RCKitDispatchMessageNotification
+//     object:nil];
+//    
+//    //    NSArray *groups = [self getAllGroupInfo];
+//    //    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:groups];
+//    //    NSArray *loadedContents = [NSKeyedUnarchiver
+//    //                               unarchiveObjectWithData:data];
+//    //    NSLog(@"loadedContents size is %d", loadedContents.count);
+//}
+//
+//// Codes from Sample
+//- (void)application:(UIApplication *)application
+//didReceiveLocalNotification:(UILocalNotification *)notification {
+//    //震动
+//    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+//    AudioServicesPlaySystemSound(1007);
+//}
+//
+//- (void)didReceiveMessageNotification:(NSNotification *)notification {
+//    [UIApplication sharedApplication].applicationIconBadgeNumber =
+//    [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
+//}
+//
+//#pragma mark - RCWKAppInfoProvider
+//- (NSString *)getAppName {
+//    return @"融云";
+//}
+//
+//- (NSString *)getAppGroups {
+//    return @"group.com.RCloud.UIComponent.WKShare";
+//}
+//
+//- (NSArray *)getAllUserInfo {
+//    return [RCDDataSource getAllUserInfo:^{
+//        [[RCWKNotifier sharedWKNotifier] notifyWatchKitUserInfoChanged];
+//    }];
+//}
+//- (NSArray *)getAllGroupInfo {
+//    return [RCDDataSource getAllGroupInfo:^{
+//        [[RCWKNotifier sharedWKNotifier] notifyWatchKitGroupChanged];
+//    }];
+//}
+//- (NSArray *)getAllFriends {
+//    return [RCDDataSource getAllFriends:^{
+//        [[RCWKNotifier sharedWKNotifier] notifyWatchKitFriendChanged];
+//    }];
+//}
+//- (void)openParentApp {
+//    [[UIApplication sharedApplication]
+//     openURL:[NSURL URLWithString:@"rongcloud://connect"]];
+//}
+//- (BOOL)getNewMessageNotificationSound {
+//    return ![RCIM sharedRCIM].disableMessageAlertSound;
+//}
+//- (void)setNewMessageNotificationSound:(BOOL)on {
+//    [RCIM sharedRCIM].disableMessageAlertSound = !on;
+//}
+//- (void)logout {
+//    [DEFAULTS removeObjectForKey:@"userName"];
+//    [DEFAULTS removeObjectForKey:@"userPwd"];
+//    [DEFAULTS removeObjectForKey:@"userToken"];
+//    [DEFAULTS removeObjectForKey:@"userCookie"];
+//    if (self.window.rootViewController != nil) {
+//        UIStoryboard *storyboard =
+//        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        RCDLoginViewController *loginVC =
+//        [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+//        UINavigationController *navi =
+//        [[UINavigationController alloc] initWithRootViewController:loginVC];
+//        self.window.rootViewController = navi;
+//    }
+//    [[RCIMClient sharedRCIMClient] disconnect:NO];
+//}
+//- (BOOL)getLoginStatus {
+//    NSString *token = [DEFAULTS stringForKey:@"userToken"];
+//    if (token.length) {
+//        return YES;
+//    } else {
+//        return NO;
+//    }
+//}
+//
+//#pragma mark - RCIMConnectionStatusDelegate
+//
+///**
+// *  网络状态变化。
+// *
+// *  @param status 网络状态。
+// */
+//- (void)onRCIMConnectionStatusChanged:(RCConnectionStatus)status {
+//    if (status == ConnectionStatus_KICKED_OFFLINE_BY_OTHER_CLIENT) {
+//        UIAlertView *alert = [[UIAlertView alloc]
+//                              initWithTitle:@"提示"
+//                              message:@"您"
+//                              @"的帐号在别的设备上登录，您被迫下线！"
+//                              delegate:nil
+//                              cancelButtonTitle:@"知道了"
+//                              otherButtonTitles:nil, nil];
+//        [alert show];
+//        RCDLoginViewController *loginVC = [[RCDLoginViewController alloc] init];
+//        // [loginVC defaultLogin];
+//        // RCDLoginViewController* loginVC = [storyboard
+//        // instantiateViewControllerWithIdentifier:@"loginVC"];
+//        UINavigationController *_navi =
+//        [[UINavigationController alloc] initWithRootViewController:loginVC];
+//        self.window.rootViewController = _navi;
+//    }
+//}
+//
 
 @end

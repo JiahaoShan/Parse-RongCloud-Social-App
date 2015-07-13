@@ -20,4 +20,5 @@ typedef enum{
 @property NSURL* imageURL;
 @end
 
+
 #endif
