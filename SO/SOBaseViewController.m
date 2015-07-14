@@ -9,4 +9,10 @@
 #import "SOBaseViewController.h"
 
 @implementation SOBaseViewController
+
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;;
+}
+
 @end

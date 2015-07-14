@@ -39,9 +39,6 @@
 		4CBCF6CD1B525BA300EE2195 /* SOPlaygroundFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6CC1B525BA300EE2195 /* SOPlaygroundFeedCell.m */; };
 		4CBCF6CF1B525BCD00EE2195 /* SOPlaygroundFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CBCF6CE1B525BCD00EE2195 /* SOPlaygroundFeedCell.xib */; };
 		4CBCF6D31B525CD700EE2195 /* SOPlaygroundFeedGenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6D21B525CD700EE2195 /* SOPlaygroundFeedGenderView.m */; };
-		8A22DB271B52F8700032AB1E /* RongCloud.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8A22DB261B52F8700032AB1E /* RongCloud.bundle */; };
-		8A22DB2C1B52F8A60032AB1E /* RongIMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB2A1B52F8A60032AB1E /* RongIMKit.framework */; };
-		8A22DB2D1B52F8A60032AB1E /* RongIMLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB2B1B52F8A60032AB1E /* RongIMLib.framework */; };
 		8A22DB2F1B52F8CA0032AB1E /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB2E1B52F8CA0032AB1E /* AssetsLibrary.framework */; };
 		8A22DB311B52F8DD0032AB1E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB301B52F8DD0032AB1E /* AVFoundation.framework */; };
 		8A22DB331B52F8EC0032AB1E /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB321B52F8EC0032AB1E /* CoreAudio.framework */; };
@@ -82,6 +79,13 @@
 		8A5800901B5230110032EC1C /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A58008F1B5230110032EC1C /* Accounts.framework */; };
 		8A5800921B5230190032EC1C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5800911B5230190032EC1C /* Social.framework */; };
 		8A692F251B53349F00E9DC22 /* SOChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A692F241B53349F00E9DC22 /* SOChatListViewController.m */; };
+		8A8303CE1B54BD5600FB22A5 /* SOLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8303CD1B54BD5600FB22A5 /* SOLoginViewController.m */; };
+		8A8303D11B54BDCA00FB22A5 /* SOSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8303D01B54BDCA00FB22A5 /* SOSignupViewController.m */; };
+		8AF8FA701B549B9D00401474 /* RongIMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AF8FA6E1B549B9D00401474 /* RongIMKit.framework */; };
+		8AF8FA711B549B9D00401474 /* RongIMLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AF8FA6F1B549B9D00401474 /* RongIMLib.framework */; };
+		8AF8FA771B549BEA00401474 /* Emoji.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AF8FA761B549BEA00401474 /* Emoji.plist */; };
+		8AF8FA7B1B549D2600401474 /* RongCloud.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8AF8FA7A1B549D2600401474 /* RongCloud.bundle */; };
+		8AF8FA7E1B54A20300401474 /* SOCommonStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF8FA7D1B54A20300401474 /* SOCommonStrings.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -160,9 +164,6 @@
 		4CBCF6CE1B525BCD00EE2195 /* SOPlaygroundFeedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SOPlaygroundFeedCell.xib; sourceTree = "<group>"; };
 		4CBCF6D11B525CD700EE2195 /* SOPlaygroundFeedGenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPlaygroundFeedGenderView.h; sourceTree = "<group>"; };
 		4CBCF6D21B525CD700EE2195 /* SOPlaygroundFeedGenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedGenderView.m; sourceTree = "<group>"; };
-		8A22DB261B52F8700032AB1E /* RongCloud.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RongCloud.bundle; path = SO/RongCloudSDK/RongCloud.bundle; sourceTree = "<group>"; };
-		8A22DB2A1B52F8A60032AB1E /* RongIMKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongIMKit.framework; path = RongCloudSDK/RongIMKit.framework; sourceTree = "<group>"; };
-		8A22DB2B1B52F8A60032AB1E /* RongIMLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongIMLib.framework; path = RongCloudSDK/RongIMLib.framework; sourceTree = "<group>"; };
 		8A22DB2E1B52F8CA0032AB1E /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		8A22DB301B52F8DD0032AB1E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		8A22DB321B52F8EC0032AB1E /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -209,6 +210,16 @@
 		8A5800911B5230190032EC1C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		8A692F231B53349F00E9DC22 /* SOChatListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOChatListViewController.h; sourceTree = "<group>"; };
 		8A692F241B53349F00E9DC22 /* SOChatListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOChatListViewController.m; sourceTree = "<group>"; };
+		8A8303CC1B54BD5600FB22A5 /* SOLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOLoginViewController.h; sourceTree = "<group>"; };
+		8A8303CD1B54BD5600FB22A5 /* SOLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOLoginViewController.m; sourceTree = "<group>"; };
+		8A8303CF1B54BDCA00FB22A5 /* SOSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOSignupViewController.h; sourceTree = "<group>"; };
+		8A8303D01B54BDCA00FB22A5 /* SOSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOSignupViewController.m; sourceTree = "<group>"; };
+		8AF8FA6E1B549B9D00401474 /* RongIMKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongIMKit.framework; path = RongCloudSDK/RongIMKit.framework; sourceTree = "<group>"; };
+		8AF8FA6F1B549B9D00401474 /* RongIMLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongIMLib.framework; path = RongCloudSDK/RongIMLib.framework; sourceTree = "<group>"; };
+		8AF8FA761B549BEA00401474 /* Emoji.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Emoji.plist; path = SO/RongCloudSDK/Emoji.plist; sourceTree = "<group>"; };
+		8AF8FA7A1B549D2600401474 /* RongCloud.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RongCloud.bundle; path = SO/RongCloudSDK/RongCloud.bundle; sourceTree = "<group>"; };
+		8AF8FA7C1B54A20300401474 /* SOCommonStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCommonStrings.h; sourceTree = "<group>"; };
+		8AF8FA7D1B54A20300401474 /* SOCommonStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCommonStrings.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,18 +250,18 @@
 				8A58007C1B522FAE0032EC1C /* AudioToolbox.framework in Frameworks */,
 				8A22DB2F1B52F8CA0032AB1E /* AssetsLibrary.framework in Frameworks */,
 				8A5800921B5230190032EC1C /* Social.framework in Frameworks */,
+				8AF8FA701B549B9D00401474 /* RongIMKit.framework in Frameworks */,
 				8A5800901B5230110032EC1C /* Accounts.framework in Frameworks */,
 				8A5800881B522FDA0032EC1C /* StoreKit.framework in Frameworks */,
 				8A5800861B522FD50032EC1C /* Security.framework in Frameworks */,
 				8A5800821B522FC70032EC1C /* MobileCoreServices.framework in Frameworks */,
-				8A22DB2D1B52F8A60032AB1E /* RongIMLib.framework in Frameworks */,
 				8A5800781B522F5A0032EC1C /* ParseUI.framework in Frameworks */,
 				8A5800741B522F5A0032EC1C /* Parse.framework in Frameworks */,
 				8A5800751B522F5A0032EC1C /* ParseCrashReporting.framework in Frameworks */,
 				8A5800761B522F5A0032EC1C /* ParseFacebookUtils.framework in Frameworks */,
+				8AF8FA711B549B9D00401474 /* RongIMLib.framework in Frameworks */,
 				8A5800731B522F5A0032EC1C /* Bolts.framework in Frameworks */,
 				8A5800771B522F5A0032EC1C /* ParseFacebookUtilsV4.framework in Frameworks */,
-				8A22DB2C1B52F8A60032AB1E /* RongIMKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,7 +392,8 @@
 		8A22DB281B52F8790032AB1E /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				8A22DB261B52F8700032AB1E /* RongCloud.bundle */,
+				8AF8FA7A1B549D2600401474 /* RongCloud.bundle */,
+				8AF8FA761B549BEA00401474 /* Emoji.plist */,
 			);
 			name = Resource;
 			sourceTree = "<group>";
@@ -389,8 +401,8 @@
 		8A22DB291B52F89A0032AB1E /* RoungCloud */ = {
 			isa = PBXGroup;
 			children = (
-				8A22DB2A1B52F8A60032AB1E /* RongIMKit.framework */,
-				8A22DB2B1B52F8A60032AB1E /* RongIMLib.framework */,
+				8AF8FA6E1B549B9D00401474 /* RongIMKit.framework */,
+				8AF8FA6F1B549B9D00401474 /* RongIMLib.framework */,
 			);
 			name = RoungCloud;
 			sourceTree = "<group>";
@@ -417,6 +429,7 @@
 		8A5800421B522F010032EC1C /* SO */ = {
 			isa = PBXGroup;
 			children = (
+				8A8303CB1B54BD2500FB22A5 /* SOLogin */,
 				8A692F221B53347A00E9DC22 /* SOMessage */,
 				4CA673921B525D7300D5FDFA /* SODefines.h */,
 				4CA673991B52661A00D5FDFA /* SODownloadManager.h */,
@@ -430,6 +443,8 @@
 				8A5800531B522F010032EC1C /* Images.xcassets */,
 				8A5800551B522F010032EC1C /* LaunchScreen.xib */,
 				8A5800431B522F010032EC1C /* Supporting Files */,
+				8AF8FA7C1B54A20300401474 /* SOCommonStrings.h */,
+				8AF8FA7D1B54A20300401474 /* SOCommonStrings.m */,
 			);
 			path = SO;
 			sourceTree = "<group>";
@@ -529,6 +544,17 @@
 			name = SOMessage;
 			sourceTree = "<group>";
 		};
+		8A8303CB1B54BD2500FB22A5 /* SOLogin */ = {
+			isa = PBXGroup;
+			children = (
+				8A8303CC1B54BD5600FB22A5 /* SOLoginViewController.h */,
+				8A8303CD1B54BD5600FB22A5 /* SOLoginViewController.m */,
+				8A8303CF1B54BDCA00FB22A5 /* SOSignupViewController.h */,
+				8A8303D01B54BDCA00FB22A5 /* SOSignupViewController.m */,
+			);
+			name = SOLogin;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -612,8 +638,9 @@
 				4CBCF6CF1B525BCD00EE2195 /* SOPlaygroundFeedCell.xib in Resources */,
 				8A5800521B522F010032EC1C /* Main.storyboard in Resources */,
 				8A5800571B522F010032EC1C /* LaunchScreen.xib in Resources */,
-				8A22DB271B52F8700032AB1E /* RongCloud.bundle in Resources */,
+				8AF8FA771B549BEA00401474 /* Emoji.plist in Resources */,
 				8A5800541B522F010032EC1C /* Images.xcassets in Resources */,
+				8AF8FA7B1B549D2600401474 /* RongCloud.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -641,6 +668,7 @@
 				4CA673B61B54166400D5FDFA /* AFHTTPSessionManager.m in Sources */,
 				4CBCF6B61B52517D00EE2195 /* SONavigationController.m in Sources */,
 				4CA673D31B541D9C00D5FDFA /* UIImageView+AFNetworking.m in Sources */,
+				8A8303CE1B54BD5600FB22A5 /* SOLoginViewController.m in Sources */,
 				4CA673B71B54166400D5FDFA /* AFNetworkReachabilityManager.m in Sources */,
 				4CA673B41B54166400D5FDFA /* AFHTTPRequestOperation.m in Sources */,
 				4CA673BA1B54166400D5FDFA /* AFURLRequestSerialization.m in Sources */,
@@ -648,6 +676,7 @@
 				4CA673BC1B54166400D5FDFA /* AFURLSessionManager.m in Sources */,
 				8A5800491B522F010032EC1C /* AppDelegate.m in Sources */,
 				4CBCF6B01B524F7500EE2195 /* SOUICommons.m in Sources */,
+				8A8303D11B54BDCA00FB22A5 /* SOSignupViewController.m in Sources */,
 				4CA673D01B541D9C00D5FDFA /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				8A5800461B522F010032EC1C /* main.m in Sources */,
 				4CBCF6C61B52592F00EE2195 /* UIView+ActivityIndicator.m in Sources */,
@@ -662,6 +691,7 @@
 				4CBCF6D31B525CD700EE2195 /* SOPlaygroundFeedGenderView.m in Sources */,
 				4CA673B51B54166400D5FDFA /* AFHTTPRequestOperationManager.m in Sources */,
 				4CBCF6CD1B525BA300EE2195 /* SOPlaygroundFeedCell.m in Sources */,
+				8AF8FA7E1B54A20300401474 /* SOCommonStrings.m in Sources */,
 				4CA673BB1B54166400D5FDFA /* AFURLResponseSerialization.m in Sources */,
 				4CA673CF1B541D9C00D5FDFA /* AFNetworkActivityIndicatorManager.m in Sources */,
 			);

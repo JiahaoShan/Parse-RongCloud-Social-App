@@ -8,28 +8,29 @@
 
 #import "SOPlaygroundMainController.h"
 #import "SOPlaygroundFeedCell.h"
+
 #import <Parse/Parse.h>
-@interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate>
+#import <ParseUI/ParseUI.h>
+
+#import "SOLoginViewController.h"
+#import "SOSignupViewController.h"
+
+@interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
 @property (nonatomic) NSArray* feedsData;
 @end
 
 @implementation SOPlaygroundMainController
-- (IBAction)cloudTest:(UIButton *)sender {
-    [PFCloud callFunctionInBackground:@"getToken"
-                       withParameters:@{@"userId": @"xxxx", @"name" : @"Shawn", @"portraitUri" : @"http://abc.com/myportrait.jpg"}
-                                block:^(NSString *result, NSError *error) {
-                                    if (!error) {
-                                        NSDictionary* json = [NSJSONSerialization
-                                                              JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                                                              options:kNilOptions 
-                                                              error:&error];
-
-                                    }
-                                }];
-    
-}
-
 -(void)viewDidLoad{
+    [super viewDidLoad];
+    // Check if login.
+    PFUser *currentUser = [PFUser currentUser];
+    if (currentUser) {
+        NSLog(@"Current user: %@", currentUser.username);
+    } else {
+        [self performSegueWithIdentifier:@"showLogin" sender:self];
+    }
+    
+    // 这些应该用不到 因为用到Parse
     self.feedsData = @[@{
                            @"images":@[
                                    @"http://hashtagzoned.com/wp-content/uploads/2015/01/jennifer_lawrence2-160x160.jpg",
@@ -58,4 +59,57 @@
     return cell;
 }
 
+#pragma mark - Segue
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"showLogin"])
+    {
+        // TODO: Customize it or create our own.
+        
+        SOLoginViewController *logInController = [segue destinationViewController];
+        logInController.hidesBottomBarWhenPushed = YES;
+        logInController.delegate = self;
+        SOSignupViewController *signupController = [[SOSignupViewController alloc] init];
+        signupController.delegate = self;
+        signupController.hidesBottomBarWhenPushed = YES;
+        signupController.fields = (PFSignUpFieldsUsernameAndPassword
+                                   | PFSignUpFieldsSignUpButton
+                                   | PFSignUpFieldsEmail
+                                   | PFSignUpFieldsAdditional
+                                   | PFSignUpFieldsDismissButton);
+        logInController.signUpController = signupController;
+        logInController.fields = (PFLogInFieldsUsernameAndPassword
+                                  | PFLogInFieldsLogInButton
+                                  | PFLogInFieldsSignUpButton
+                                  | PFLogInFieldsPasswordForgotten
+                                  );
+    }
+}
+
+#pragma mark - Parse Login delegate
+
+- (void)logInViewController:(PFLogInViewController *)controller
+               didLogInUser:(PFUser *)user {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+// NOT ALLOW TO CANCEL?!
+- (void)logInViewControllerDidCancelLogIn:(PFLogInViewController *)logInController {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Parse Signup delegate
+
+- (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)signUpViewControllerDidCancelSignUp:(PFSignUpViewController *)signUpController {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (BOOL)signUpViewController:(PFSignUpViewController *)signUpController
+           shouldBeginSignUp:(NSDictionary *)info {
+    NSString *password = info[@"password"];
+    return (password.length >= 8); // prevent sign up if password has to be at least 8 characters long
+}
 @end

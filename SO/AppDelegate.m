@@ -17,7 +17,10 @@
 
 #import "AppDelegate.h"
 #import <Parse/Parse.h>
+#import <Bolts/Bolts.h>
 #import <RongIMKit/RongIMKit.h>
+
+#import "SOCommonStrings.h"
 
 #define iPhone6                                                                \
 ([UIScreen instancesRespondToSelector:@selector(currentMode)]                \
@@ -30,45 +33,34 @@
 [[UIScreen mainScreen] currentMode].size)           \
 : NO)
 
-NSString * const RONGCLOUD_IM_APPKEY = @"c9kqb3rdkhnhj";
-NSString * const DEFAULTS_RONG_DEVICE_TOKEN_KEY = @"rongDeviceToken";
+
 @interface AppDelegate () <RCIMConnectionStatusDelegate, RCIMUserInfoDataSource>
 
 @end
 
 @implementation AppDelegate
 
-
+// Possible open a push from homescreen will use this method.
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Enable storing and querying data from Local Datastore. Remove this line if you don't want to
     // use Local Datastore features or want to use cachePolicy.
     
     [Parse enableLocalDatastore];
-    
-    // ****************************************************************************
-    // Uncomment this line if you want to enable Crash Reporting
-    // [ParseCrashReporting enable];
-    //
+    //[ParseCrashReporting enable];
+
     [Parse setApplicationId:@"uBuTDLkmhCRldizIowfn0RKXztA95UnsFJBtDaXG"
                   clientKey:@"eWLFMmcLaMSgUgYoOyz8UoNdpq24iTTFFmPrlEhB"];
-    //
+    // ****************************************************************************
     // If you are using Facebook, uncomment and add your FacebookAppID to your bundle's plist as
     // described here: https://developers.facebook.com/docs/getting-started/facebook-sdk-for-ios/
     // [PFFacebookUtils initializeFacebook];
     // ****************************************************************************
     
-    [PFUser enableAutomaticUser];
-    
+    //[PFUser enableAutomaticUser];  // No anonymous user allowed
     PFACL *defaultACL = [PFACL ACL];
-    
     // If you would like all objects to be private by default, remove this line.
     [defaultACL setPublicReadAccess:YES];
-    
     [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
-    
-    // Override point for customization after application launch.
-    
-//    self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     
     if (application.applicationState != UIApplicationStateBackground) {
@@ -100,26 +92,45 @@ NSString * const DEFAULTS_RONG_DEVICE_TOKEN_KEY = @"rongDeviceToken";
                                                          UIRemoteNotificationTypeSound)];
     }
     
-    // Register Rong-Cloud
-//    if (![[NSUserDefaults standardUserDefaults]objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY]) {
-//        [self getRongTokenForUser];
-//    }
-//    else {
-//        NSString * token = [[NSUserDefaults standardUserDefaults]objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
-//        [[RCIM sharedRCIM] initWithAppKey:RONGCLOUD_IM_APPKEY deviceToken:token];
-//    }
-//    NSString *_deviceTokenCache = [[NSUserDefaults standardUserDefaults]objectForKey:kDeviceToken];
-    [self getRongTokenForUser];
-    NSString * token = [[NSUserDefaults standardUserDefaults]objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
-    [[RCIM sharedRCIM] initWithAppKey:RONGCLOUD_IM_APPKEY deviceToken:token];
-    [self rongCloudInit];
+    // Notification: the push while app is off
+    //NSDictionary *notificationPayload = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     
+    [self registerNotificationCenter];
+    [self initRongCloudService];
+
+    // [PFUser logOut];
+    
+    if ([PFUser currentUser]) {
+        [self registerRongCloudService];
+    }
+
     return YES;
 }
 
+
+
+- (void) registerNotificationCenter {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(userDidSignUp:)
+                                                 name:SONotificationUserSignUp
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(userDidLogIn:)
+                                                 name:SONotificationUserLogIn
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(userDidLogOut:)
+                                                 name:SONotificationUserLogOut
+                                               object:nil];
+}
+
+
+
+// Call when register finish and success
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     PFInstallation *currentInstallation = [PFInstallation currentInstallation];
     [currentInstallation setDeviceTokenFromData:deviceToken];
+    // currentInstallation.channels = @[@"global"];
     [currentInstallation saveInBackground];
     
     [PFPush subscribeToChannelInBackground:@"" block:^(BOOL succeeded, NSError *error) {
@@ -140,9 +151,19 @@ NSString * const DEFAULTS_RONG_DEVICE_TOKEN_KEY = @"rongDeviceToken";
     }
 }
 
+// Get Push when app is open
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     [PFPush handlePush:userInfo];
     
+    if (application.applicationState == UIApplicationStateInactive) {
+        [PFAnalytics trackAppOpenedWithRemoteNotificationPayload:userInfo];
+    }
+}
+
+//TODO: Difference between these two???
+
+// Get Push when app is open
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     if (application.applicationState == UIApplicationStateInactive) {
         [PFAnalytics trackAppOpenedWithRemoteNotificationPayload:userInfo];
     }
@@ -166,15 +187,6 @@ NSString * const DEFAULTS_RONG_DEVICE_TOKEN_KEY = @"rongDeviceToken";
     application.applicationIconBadgeNumber = unreadMsgCount;
 
 }
-
-///////////////////////////////////////////////////////////
-// Uncomment this method if you want to use Push Notifications with Background App Refresh
-///////////////////////////////////////////////////////////
-//- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-//    if (application.applicationState == UIApplicationStateInactive) {
-//        [PFAnalytics trackAppOpenedWithRemoteNotificationPayload:userInfo];
-//    }
-//}
 
 #pragma mark Facebook SDK Integration
 
@@ -202,64 +214,117 @@ NSString * const DEFAULTS_RONG_DEVICE_TOKEN_KEY = @"rongDeviceToken";
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-- (void) getRongTokenForUser {
+#pragma mark NotificationCenter Handlers
+
+- (void) userDidLogIn: (id) sender {
+    if ([PFUser currentUser]) {
+        [self registerRongCloudService];
+    }
+    else {
+        NSLog(@"Error. User logs in but no current User.");
+    }
+}
+
+- (void) userDidLogOut: (id) sender {
+    
+}
+
+- (void) userDidSignUp: (id) sender {
+    if ([PFUser currentUser]) {
+        [self registerRongCloudService];
+    }
+    else {
+        NSLog(@"Error. User sign up but no current User.");
+    }
+}
+
+
+#pragma mark RongCloud Methods && Delegate
+
+- (void) initRongCloudService {
+    [[RCIM sharedRCIM] initWithAppKey:RONGCLOUD_IM_APPKEY];
+    [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
+    if (iPhone6Plus) {
+        [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(56, 56);
+    } else {
+        NSLog(@"iPhone6 %d", iPhone6);
+        [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(46, 46);
+    }
+}
+
+- (void) registerRongCloudService {
+    //[self getRongCloudTokenForUser];
+}
+
+- (void) getRongCloudTokenForUser {
+    PFUser *currentUser = [PFUser currentUser];
     [PFCloud callFunctionInBackground:@"getToken"
-                       withParameters:@{@"userId": @"xxxx", @"name" : @"Shawn", @"portraitUri" : @"https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=1756054607,4047938258&fm=96&s=94D712D20AA1875519EB37BE0300C008"}
+                       withParameters:@{@"userId": [currentUser objectForKey:UserIdKey], @"name" : [currentUser objectForKey:UserNameKey], @"portraitUri" : [currentUser objectForKey:UserPortraitUriKey]}
                                 block:^(NSString *result, NSError *error) {
                                     if (!error) {
                                         NSDictionary* json = [NSJSONSerialization
                                                               JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                                               options:kNilOptions
                                                               error:&error];
-                                         NSString* token = [json objectForKey:@"token"];
+                                        NSString* token = [json objectForKey:@"token"];
                                         [[NSUserDefaults standardUserDefaults] setObject:token forKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
-                                        [[RCIM sharedRCIM] initWithAppKey:RONGCLOUD_IM_APPKEY deviceToken:token];
+                                        [self connectToRongCloud];
                                     }
                                 }];
 }
 
+- (void) connectToRongCloud {
+    NSString* token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
+    [[RCIM sharedRCIM] connectWithToken:token success:^(NSString *userId) {
+        // Connect 成功
+        [[RCIM sharedRCIM] setUserInfoDataSource:self];
+        NSLog(@"Login successfully with userId: %@.", userId);
+    }
+                                  error:^(RCConnectErrorCode status) {
+                                      // Connect 失败
+                                      NSLog(@"登录失败%d",(int)status);
+                                  }
+                         tokenIncorrect:^() {
+                             // Token 失效的状态处理
+                         }];
+}
 
 /**
  *此方法中要提供给融云用户的信息，建议缓存到本地，然后改方法每次从您的缓存返回
  */
 - (void)getUserInfoWithUserId:(NSString *)userId completion:(void(^)(RCUserInfo* userInfo))completion
 {
-    //此处为了演示写了一个用户信息
-    if ([@"xxxx" isEqual:userId]) {
-        RCUserInfo *user = [[RCUserInfo alloc]init];
-        user.userId = @"xxxx";
-        user.name = @"Shawn";
-        user.portraitUri = @"https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=1756054607,4047938258&fm=96&s=94D712D20AA1875519EB37BE0300C008";
-        
-        return completion(user);
+    RCUserInfo *user = nil;
+    PFQuery *query = [PFQuery queryWithClassName:UserClassName];
+    [query fromLocalDatastore];
+    [query whereKey:UserIdKey equalTo:userId];
+    query.limit = 1;
+    NSArray* targetUser = [query findObjects];
+    if (!targetUser || [targetUser count] != 1) {
+        // Error, Fetch???
+        PFQuery *query = [PFQuery queryWithClassName:UserClassName];
+        query.cachePolicy = kPFCachePolicyNetworkElseCache;
+        // Interested in locations near user.
+        [query whereKey:UserIdKey equalTo:userId];
+        query.limit = 1;
+        NSArray* targetUser = [query findObjects];
+        if (!targetUser || [targetUser count] != 1) {
+            // User does not even exist online, must be an Error, Fetch???
+            NSLog(@"userId not even existed online.");
+        }
+        else {
+            user = [targetUser firstObject];
+        }
     }
+    else {
+        user = [targetUser firstObject];
+    }
+    return completion(user);
 }
 
 
--(void) rongCloudInit {
-    NSString * token = [[NSUserDefaults standardUserDefaults]objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
-    
-    [[RCIM sharedRCIM] connectWithToken:token success:^(NSString *userId) {
-        // Connect 成功
-        
-        [[RCIM sharedRCIM] setUserInfoDataSource:self];
-        NSLog(@"Login successfully with userId: %@.", userId);
-        
-    }
-                                 error:^(RCConnectErrorCode status) {
-                                     // Connect 失败
-                                     NSLog(@"登录失败%d",(int)status);
-                                 }
-                        tokenIncorrect:^() {
-                            // Token 失效的状态处理
-                        }];
-                                        //设置当前的用户信息
-    
-    
-    
-}
-
-
+//PFFile *imageFile = [photo objectForKey:@"file"];
+//NSURL *imageFileUrl = [[NSURL alloc] initWithString:imageFile.url];
 
 //
 //- (void) rongInit {
@@ -500,5 +565,43 @@ NSString * const DEFAULTS_RONG_DEVICE_TOKEN_KEY = @"rongDeviceToken";
 //    }
 //}
 //
+
+//- (void)handlePush:(NSDictionary *)launchOptions {
+//    
+//    // If the app was launched in response to a push notification, we'll handle the payload here
+//    NSDictionary *remoteNotificationPayload = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+//    if (remoteNotificationPayload) {
+//        [[NSNotificationCenter defaultCenter] postNotificationName:PAPAppDelegateApplicationDidReceiveRemoteNotification object:nil userInfo:remoteNotificationPayload];
+//        
+//        if (![PFUser currentUser]) {
+//            return;
+//        }
+//        
+//        // If the push notification payload references a photo, we will attempt to push this view controller into view
+//        NSString *photoObjectId = [remoteNotificationPayload objectForKey:kPAPPushPayloadPhotoObjectIdKey];
+//        if (photoObjectId && photoObjectId.length > 0) {
+//            [self shouldNavigateToPhoto:[PFObject objectWithoutDataWithClassName:kPAPPhotoClassKey objectId:photoObjectId]];
+//            return;
+//        }
+//        
+//        // If the push notification payload references a user, we will attempt to push their profile into view
+//        NSString *fromObjectId = [remoteNotificationPayload objectForKey:kPAPPushPayloadFromUserObjectIdKey];
+//        if (fromObjectId && fromObjectId.length > 0) {
+//            PFQuery *query = [PFUser query];
+//            query.cachePolicy = kPFCachePolicyCacheElseNetwork;
+//            [query getObjectInBackgroundWithId:fromObjectId block:^(PFObject *user, NSError *error) {
+//                if (!error) {
+//                    UINavigationController *homeNavigationController = self.tabBarController.viewControllers[PAPHomeTabBarItemIndex];
+//                    self.tabBarController.selectedViewController = homeNavigationController;
+//                    
+//                    PAPAccountViewController *accountViewController = [[PAPAccountViewController alloc] initWithStyle:UITableViewStylePlain];
+//                    NSLog(@"Presenting account view controller with user: %@", user);
+//                    accountViewController.user = (PFUser *)user;
+//                    [homeNavigationController pushViewController:accountViewController animated:YES];
+//                }
+//            }];
+//        }
+//    }
+//}
 
 @end
