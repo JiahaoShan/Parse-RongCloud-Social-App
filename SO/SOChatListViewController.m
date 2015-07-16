@@ -108,15 +108,15 @@
 }
 
 ////左滑删除
-//-(void)rcConversationListTableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    //可以从数据库删除数据
-//    //RCConversationModel *model = self.conversationListDataSource[indexPath.row];
-//    //[_myDataSource removeObject:model];
-//    //[[RCIMClient sharedRCIMClient] removeConversation:ConversationType_SYSTEM targetId:model.targetId];
-//    [self.conversationListDataSource removeObjectAtIndex:indexPath.row];
-//    [self.conversationListTableView reloadData];
-//}
+-(void)rcConversationListTableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //可以从数据库删除数据
+    //RCConversationModel *model = self.conversationListDataSource[indexPath.row];
+    //[_myDataSource removeObject:model];
+    //[[RCIMClient sharedRCIMClient] removeConversation:ConversationType_SYSTEM targetId:model.targetId];
+    [self.conversationListDataSource removeObjectAtIndex:indexPath.row];
+    [self.conversationListTableView reloadData];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -134,25 +134,13 @@
     [self.navigationController pushViewController:conversationVC animated:YES];
 }
 
-- (IBAction)test:(id)sender {
-    RCConversationViewController *conversationVC = [[RCConversationViewController alloc]init];
-    conversationVC.conversationType =ConversationType_PRIVATE; //会话类型，这里设置为 PRIVATE 即发起单聊会话。
-    conversationVC.targetId = @"id_xxxx"; // 接收者的 targetId，这里为举例。
-    conversationVC.userName = @"name_xxx"; // 接受者的 username，这里为举例。
-    conversationVC.title = @"name_xxx"; // 会话的 title。
-    conversationVC.hidesBottomBarWhenPushed = YES;
-    // 把单聊视图控制器添加到导航栈。
-    [self.navigationController pushViewController:conversationVC animated:YES];
-
-}
-
 -(void)rightBarButtonItemPressed:(id)sender
 {
     // 您需要根据自己的 App 选择场景触发聊天。这里的例子是一个 Button 点击事件。
     RCConversationViewController *conversationVC = [[RCConversationViewController alloc]init];
     conversationVC.conversationType =ConversationType_PRIVATE; //会话类型，这里设置为 PRIVATE 即发起单聊会话。
-    conversationVC.targetId = @"id_xxxx"; // 接收者的 targetId，这里为举例。
-    conversationVC.userName = @"name_xxx"; // 接受者的 username，这里为举例。
+    conversationVC.targetId = @"WMCqSrLKU0"; // 接收者的 targetId，这里为举例。
+    conversationVC.userName = @"GuanqingYan"; // 接受者的 username，这里为举例。
     conversationVC.title = @"name_xxx"; // 会话的 title。
     
     // 把单聊视图控制器添加到导航栈。

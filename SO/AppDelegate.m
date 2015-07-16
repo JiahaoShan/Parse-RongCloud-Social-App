@@ -20,7 +20,13 @@
 #import <Bolts/Bolts.h>
 #import <RongIMKit/RongIMKit.h>
 
+#import <ParseUI/ParseUI.h>
+
+#import "SOLoginViewController.h"
+#import "SOSignupViewController.h"
+
 #import "SOCommonStrings.h"
+#import "SOTabBarController.h"
 
 #define iPhone6                                                                \
 ([UIScreen instancesRespondToSelector:@selector(currentMode)]                \
@@ -34,7 +40,7 @@
 : NO)
 
 
-@interface AppDelegate () <RCIMConnectionStatusDelegate, RCIMUserInfoDataSource>
+@interface AppDelegate () <RCIMConnectionStatusDelegate, RCIMUserInfoDataSource, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
 
 @end
 
@@ -95,15 +101,37 @@
     // Notification: the push while app is off
     //NSDictionary *notificationPayload = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     
+    
+    
+    [PFUser logOut];
     [self registerNotificationCenter];
     [self initRongCloudService];
-
-    // [PFUser logOut];
-    
-    if ([PFUser currentUser]) {
-        [self registerRongCloudService];
+    //登录
+    NSString *token =[[NSUserDefaults standardUserDefaults] objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
+    if (token.length && [PFUser currentUser]) {
+        [self connectToRongCloud];
+    } else {
+        SOLoginViewController *logInController = [[SOLoginViewController alloc] init];
+        logInController.hidesBottomBarWhenPushed = YES;
+        logInController.delegate = self;
+        SOSignupViewController *signupController = [[SOSignupViewController alloc] init];
+        signupController.delegate = self;
+        signupController.hidesBottomBarWhenPushed = YES;
+        signupController.fields = (PFSignUpFieldsUsernameAndPassword
+                                   | PFSignUpFieldsSignUpButton
+                                   | PFSignUpFieldsEmail
+                                   | PFSignUpFieldsAdditional
+                                   | PFSignUpFieldsDismissButton);
+        logInController.signUpController = signupController;
+        logInController.fields = (PFLogInFieldsUsernameAndPassword
+                                  | PFLogInFieldsLogInButton
+                                  | PFLogInFieldsSignUpButton
+                                  | PFLogInFieldsPasswordForgotten
+                                  );
+        UINavigationController *_navi =
+        [[UINavigationController alloc] initWithRootViewController:logInController];
+        self.window.rootViewController = _navi;
     }
-
     return YES;
 }
 
@@ -247,19 +275,20 @@
     if (iPhone6Plus) {
         [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(56, 56);
     } else {
-        NSLog(@"iPhone6 %d", iPhone6);
         [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(46, 46);
     }
+    [[RCIM sharedRCIM] setUserInfoDataSource:self];
 }
 
 - (void) registerRongCloudService {
-    //[self getRongCloudTokenForUser];
+    [self getRongCloudTokenForUser];
 }
 
 - (void) getRongCloudTokenForUser {
     PFUser *currentUser = [PFUser currentUser];
     [PFCloud callFunctionInBackground:@"getToken"
-                       withParameters:@{@"userId": [currentUser objectForKey:UserIdKey], @"name" : [currentUser objectForKey:UserNameKey], @"portraitUri" : [currentUser objectForKey:UserPortraitUriKey]}
+                       withParameters:@{@"userId": currentUser.objectId , @"name" : [currentUser objectForKey:UserNameKey], @"portraitUri" :
+                                        @"http://img.135q.com/2015-06/20/14348061890006.jpg"}
                                 block:^(NSString *result, NSError *error) {
                                     if (!error) {
                                         NSDictionary* json = [NSJSONSerialization
@@ -270,22 +299,40 @@
                                         [[NSUserDefaults standardUserDefaults] setObject:token forKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
                                         [self connectToRongCloud];
                                     }
+                                    else {
+                                        NSLog(@"Error to get token");
+                                    }
                                 }];
 }
 
 - (void) connectToRongCloud {
-    NSString* token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
-    [[RCIM sharedRCIM] connectWithToken:token success:^(NSString *userId) {
-        // Connect 成功
-        [[RCIM sharedRCIM] setUserInfoDataSource:self];
-        NSLog(@"Login successfully with userId: %@.", userId);
-    }
+    PFUser* user = [PFUser currentUser];
+    RCUserInfo *_currentUserInfo =
+    [[RCUserInfo alloc] initWithUserId:user.objectId
+                                  name:[user objectForKey:UserNameKey]
+                              portrait:nil];
+    NSString* token = [[NSUserDefaults standardUserDefaults] objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
+    [RCIMClient sharedRCIMClient].currentUserInfo = _currentUserInfo;
+    [[RCIM sharedRCIM] connectWithToken:token
+                                success:^(NSString *userId) {
+                                    //[[RCIM sharedRCIM] refreshUserInfoCache:user withUserId:userId];
+                                    //设置当前的用户信息
+                                    NSLog(@"Login successfully with userId: %@.", userId);
+                                }
                                   error:^(RCConnectErrorCode status) {
-                                      // Connect 失败
-                                      NSLog(@"登录失败%d",(int)status);
+                                      RCUserInfo *_currentUserInfo =[[RCUserInfo alloc] initWithUserId:user.objectId name:[user objectForKey:UserNameKey] portrait:nil];
+                                      [RCIMClient sharedRCIMClient].currentUserInfo = _currentUserInfo;
+                                      NSLog(@"登录失败connect error %ld", (long)status);
+//                                      dispatch_async(dispatch_get_main_queue(), ^{
+//                                          UIStoryboard *storyboard =
+//                                          [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//                                          SOTabBarController *rootNavi = [storyboard   instantiateViewControllerWithIdentifier:@"SOtabBarController"];                                              self.window.rootViewController = rootNavi;
+//                                      });
                                   }
-                         tokenIncorrect:^() {
-                             // Token 失效的状态处理
+                         tokenIncorrect:^{
+                             NSLog(@"Error. Token expires.");
+                             // TODO:  避免死循环
+                             [self getRongCloudTokenForUser];
                          }];
 }
 
@@ -295,41 +342,79 @@
 - (void)getUserInfoWithUserId:(NSString *)userId completion:(void(^)(RCUserInfo* userInfo))completion
 {
     RCUserInfo *user = nil;
-    PFQuery *query = [PFQuery queryWithClassName:UserClassName];
+    PFQuery *query = [PFUser query];
     [query fromLocalDatastore];
-    [query whereKey:UserIdKey equalTo:userId];
-    query.limit = 1;
-    NSArray* targetUser = [query findObjects];
-    if (!targetUser || [targetUser count] != 1) {
+    PFUser* targetUser = (PFUser *)[query getObjectWithId:userId];
+    if (!targetUser) {
         // Error, Fetch???
-        PFQuery *query = [PFQuery queryWithClassName:UserClassName];
-        query.cachePolicy = kPFCachePolicyNetworkElseCache;
-        // Interested in locations near user.
-        [query whereKey:UserIdKey equalTo:userId];
-        query.limit = 1;
-        NSArray* targetUser = [query findObjects];
-        if (!targetUser || [targetUser count] != 1) {
+        PFQuery *query = [PFUser query];
+//        query.cachePolicy = kPFCachePolicyNetworkElseCache;
+        PFUser* targetUser = (PFUser *)[query getObjectWithId:userId];
+        if (!targetUser) {
             // User does not even exist online, must be an Error, Fetch???
             NSLog(@"userId not even existed online.");
         }
         else {
-            user = [targetUser firstObject];
+            user = [[RCUserInfo alloc] initWithUserId:targetUser.objectId
+                                          name:[targetUser objectForKey:UserNameKey]
+                                      portrait:@"http://img.135q.com/2015-06/20/14348061890006.jpg"];
         }
     }
     else {
-        user = [targetUser firstObject];
+        user = [[RCUserInfo alloc] initWithUserId:targetUser.objectId
+                                             name:[targetUser objectForKey:UserNameKey]
+                                         portrait:@"http://img.135q.com/2015-06/20/14348061890006.jpg"];
     }
     return completion(user);
 }
 
+- (void)onRCIMConnectionStatusChanged:(RCConnectionStatus)status {
+    NSLog([NSString stringWithFormat:@"RongCloud connection status changed. %ld", (long)status]);
+}
 
+#pragma mark - Parse Login delegate
+
+- (void)logInViewController:(PFLogInViewController *)controller
+               didLogInUser:(PFUser *)user {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SONotificationUserLogIn object:nil];
+    [self showTabViewController];
+}
+
+// NOT ALLOW TO CANCEL?!
+- (void)logInViewControllerDidCancelLogIn:(PFLogInViewController *)logInController {
+}
+
+#pragma mark - Parse Signup delegate
+
+- (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SONotificationUserSignUp object:nil];
+    [self showTabViewController];
+}
+
+- (void)signUpViewControllerDidCancelSignUp:(PFSignUpViewController *)signUpController {
+}
+
+- (BOOL)signUpViewController:(PFSignUpViewController *)signUpController
+           shouldBeginSignUp:(NSDictionary *)info {
+    NSString *password = info[@"password"];
+    return (password.length >= 8); // prevent sign up if password has to be at least 8 characters long
+}
+
+- (void) showTabViewController {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard =
+        [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        SOTabBarController *rootNavi = [storyboard instantiateViewControllerWithIdentifier:@"SOtabBarController"];
+        self.window.rootViewController = rootNavi;
+    });
+}
 //PFFile *imageFile = [photo objectForKey:@"file"];
 //NSURL *imageFileUrl = [[NSURL alloc] initWithString:imageFile.url];
 
 //
 //- (void) rongInit {
 //    //设置会话列表头像和会话界面头像
-//    
+//
 //    [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
 //    if (iPhone6Plus) {
 //        [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(56, 56);

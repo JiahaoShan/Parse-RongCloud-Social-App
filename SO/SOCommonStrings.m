@@ -9,7 +9,7 @@
 
 #import "SOCommonStrings.h"
 
-NSString* const UserIdKey = @"email";
+NSString* const UserIdKey = @"objectId";
 NSString* const UserNameKey = @"username";
 NSString* const UserPortraitUriKey = @"portraitThumbnail";
 

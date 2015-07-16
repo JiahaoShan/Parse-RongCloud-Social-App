@@ -81,8 +81,8 @@
 		8A692F251B53349F00E9DC22 /* SOChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A692F241B53349F00E9DC22 /* SOChatListViewController.m */; };
 		8A8303CE1B54BD5600FB22A5 /* SOLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8303CD1B54BD5600FB22A5 /* SOLoginViewController.m */; };
 		8A8303D11B54BDCA00FB22A5 /* SOSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8303D01B54BDCA00FB22A5 /* SOSignupViewController.m */; };
-		8AF8FA701B549B9D00401474 /* RongIMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AF8FA6E1B549B9D00401474 /* RongIMKit.framework */; };
-		8AF8FA711B549B9D00401474 /* RongIMLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AF8FA6F1B549B9D00401474 /* RongIMLib.framework */; };
+		8A8303D41B577B4600FB22A5 /* RongIMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A8303D21B577B4600FB22A5 /* RongIMKit.framework */; };
+		8A8303D51B577B4600FB22A5 /* RongIMLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A8303D31B577B4600FB22A5 /* RongIMLib.framework */; };
 		8AF8FA771B549BEA00401474 /* Emoji.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AF8FA761B549BEA00401474 /* Emoji.plist */; };
 		8AF8FA7B1B549D2600401474 /* RongCloud.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8AF8FA7A1B549D2600401474 /* RongCloud.bundle */; };
 		8AF8FA7E1B54A20300401474 /* SOCommonStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF8FA7D1B54A20300401474 /* SOCommonStrings.m */; };
@@ -214,8 +214,8 @@
 		8A8303CD1B54BD5600FB22A5 /* SOLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOLoginViewController.m; sourceTree = "<group>"; };
 		8A8303CF1B54BDCA00FB22A5 /* SOSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOSignupViewController.h; sourceTree = "<group>"; };
 		8A8303D01B54BDCA00FB22A5 /* SOSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOSignupViewController.m; sourceTree = "<group>"; };
-		8AF8FA6E1B549B9D00401474 /* RongIMKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongIMKit.framework; path = RongCloudSDK/RongIMKit.framework; sourceTree = "<group>"; };
-		8AF8FA6F1B549B9D00401474 /* RongIMLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RongIMLib.framework; path = RongCloudSDK/RongIMLib.framework; sourceTree = "<group>"; };
+		8A8303D21B577B4600FB22A5 /* RongIMKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RongIMKit.framework; sourceTree = "<group>"; };
+		8A8303D31B577B4600FB22A5 /* RongIMLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RongIMLib.framework; sourceTree = "<group>"; };
 		8AF8FA761B549BEA00401474 /* Emoji.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Emoji.plist; path = SO/RongCloudSDK/Emoji.plist; sourceTree = "<group>"; };
 		8AF8FA7A1B549D2600401474 /* RongCloud.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RongCloud.bundle; path = SO/RongCloudSDK/RongCloud.bundle; sourceTree = "<group>"; };
 		8AF8FA7C1B54A20300401474 /* SOCommonStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCommonStrings.h; sourceTree = "<group>"; };
@@ -250,7 +250,6 @@
 				8A58007C1B522FAE0032EC1C /* AudioToolbox.framework in Frameworks */,
 				8A22DB2F1B52F8CA0032AB1E /* AssetsLibrary.framework in Frameworks */,
 				8A5800921B5230190032EC1C /* Social.framework in Frameworks */,
-				8AF8FA701B549B9D00401474 /* RongIMKit.framework in Frameworks */,
 				8A5800901B5230110032EC1C /* Accounts.framework in Frameworks */,
 				8A5800881B522FDA0032EC1C /* StoreKit.framework in Frameworks */,
 				8A5800861B522FD50032EC1C /* Security.framework in Frameworks */,
@@ -259,7 +258,8 @@
 				8A5800741B522F5A0032EC1C /* Parse.framework in Frameworks */,
 				8A5800751B522F5A0032EC1C /* ParseCrashReporting.framework in Frameworks */,
 				8A5800761B522F5A0032EC1C /* ParseFacebookUtils.framework in Frameworks */,
-				8AF8FA711B549B9D00401474 /* RongIMLib.framework in Frameworks */,
+				8A8303D51B577B4600FB22A5 /* RongIMLib.framework in Frameworks */,
+				8A8303D41B577B4600FB22A5 /* RongIMKit.framework in Frameworks */,
 				8A5800731B522F5A0032EC1C /* Bolts.framework in Frameworks */,
 				8A5800771B522F5A0032EC1C /* ParseFacebookUtilsV4.framework in Frameworks */,
 			);
@@ -401,8 +401,8 @@
 		8A22DB291B52F89A0032AB1E /* RoungCloud */ = {
 			isa = PBXGroup;
 			children = (
-				8AF8FA6E1B549B9D00401474 /* RongIMKit.framework */,
-				8AF8FA6F1B549B9D00401474 /* RongIMLib.framework */,
+				8A8303D21B577B4600FB22A5 /* RongIMKit.framework */,
+				8A8303D31B577B4600FB22A5 /* RongIMLib.framework */,
 			);
 			name = RoungCloud;
 			sourceTree = "<group>";
@@ -824,6 +824,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SO/ParseFramework",
 					"$(PROJECT_DIR)/SO/RongCloudSDK",
+					"$(PROJECT_DIR)/SO",
 				);
 				INFOPLIST_FILE = SO/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -841,6 +842,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SO/ParseFramework",
 					"$(PROJECT_DIR)/SO/RongCloudSDK",
+					"$(PROJECT_DIR)/SO",
 				);
 				INFOPLIST_FILE = SO/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
