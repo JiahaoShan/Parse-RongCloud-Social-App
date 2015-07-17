@@ -83,6 +83,9 @@
 		8A8303D11B54BDCA00FB22A5 /* SOSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8303D01B54BDCA00FB22A5 /* SOSignupViewController.m */; };
 		8A8303D41B577B4600FB22A5 /* RongIMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A8303D21B577B4600FB22A5 /* RongIMKit.framework */; };
 		8A8303D51B577B4600FB22A5 /* RongIMLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A8303D31B577B4600FB22A5 /* RongIMLib.framework */; };
+		8A8303D81B58AC0900FB22A5 /* SOConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8303D71B58AC0900FB22A5 /* SOConversationViewController.m */; };
+		8A8303DC1B58B92100FB22A5 /* SOPeopleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8303DB1B58B92100FB22A5 /* SOPeopleTableViewController.m */; };
+		8A8303E81B58D0B200FB22A5 /* portrait_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A8303E71B58D0B200FB22A5 /* portrait_placeholder.png */; };
 		8AF8FA771B549BEA00401474 /* Emoji.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AF8FA761B549BEA00401474 /* Emoji.plist */; };
 		8AF8FA7B1B549D2600401474 /* RongCloud.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8AF8FA7A1B549D2600401474 /* RongCloud.bundle */; };
 		8AF8FA7E1B54A20300401474 /* SOCommonStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF8FA7D1B54A20300401474 /* SOCommonStrings.m */; };
@@ -216,6 +219,11 @@
 		8A8303D01B54BDCA00FB22A5 /* SOSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOSignupViewController.m; sourceTree = "<group>"; };
 		8A8303D21B577B4600FB22A5 /* RongIMKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RongIMKit.framework; sourceTree = "<group>"; };
 		8A8303D31B577B4600FB22A5 /* RongIMLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RongIMLib.framework; sourceTree = "<group>"; };
+		8A8303D61B58AC0900FB22A5 /* SOConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOConversationViewController.h; sourceTree = "<group>"; };
+		8A8303D71B58AC0900FB22A5 /* SOConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOConversationViewController.m; sourceTree = "<group>"; };
+		8A8303DA1B58B92100FB22A5 /* SOPeopleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPeopleTableViewController.h; sourceTree = "<group>"; };
+		8A8303DB1B58B92100FB22A5 /* SOPeopleTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPeopleTableViewController.m; sourceTree = "<group>"; };
+		8A8303E71B58D0B200FB22A5 /* portrait_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = portrait_placeholder.png; path = SO/Resources/portrait_placeholder.png; sourceTree = "<group>"; };
 		8AF8FA761B549BEA00401474 /* Emoji.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Emoji.plist; path = SO/RongCloudSDK/Emoji.plist; sourceTree = "<group>"; };
 		8AF8FA7A1B549D2600401474 /* RongCloud.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RongCloud.bundle; path = SO/RongCloudSDK/RongCloud.bundle; sourceTree = "<group>"; };
 		8AF8FA7C1B54A20300401474 /* SOCommonStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCommonStrings.h; sourceTree = "<group>"; };
@@ -392,6 +400,7 @@
 		8A22DB281B52F8790032AB1E /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				8A8303E61B58D0A200FB22A5 /* Images */,
 				8AF8FA7A1B549D2600401474 /* RongCloud.bundle */,
 				8AF8FA761B549BEA00401474 /* Emoji.plist */,
 			);
@@ -429,6 +438,7 @@
 		8A5800421B522F010032EC1C /* SO */ = {
 			isa = PBXGroup;
 			children = (
+				8A8303D91B58B8FB00FB22A5 /* SOPeople */,
 				8A8303CB1B54BD2500FB22A5 /* SOLogin */,
 				8A692F221B53347A00E9DC22 /* SOMessage */,
 				4CA673921B525D7300D5FDFA /* SODefines.h */,
@@ -540,6 +550,8 @@
 			children = (
 				8A692F231B53349F00E9DC22 /* SOChatListViewController.h */,
 				8A692F241B53349F00E9DC22 /* SOChatListViewController.m */,
+				8A8303D61B58AC0900FB22A5 /* SOConversationViewController.h */,
+				8A8303D71B58AC0900FB22A5 /* SOConversationViewController.m */,
 			);
 			name = SOMessage;
 			sourceTree = "<group>";
@@ -553,6 +565,23 @@
 				8A8303D01B54BDCA00FB22A5 /* SOSignupViewController.m */,
 			);
 			name = SOLogin;
+			sourceTree = "<group>";
+		};
+		8A8303D91B58B8FB00FB22A5 /* SOPeople */ = {
+			isa = PBXGroup;
+			children = (
+				8A8303DA1B58B92100FB22A5 /* SOPeopleTableViewController.h */,
+				8A8303DB1B58B92100FB22A5 /* SOPeopleTableViewController.m */,
+			);
+			name = SOPeople;
+			sourceTree = "<group>";
+		};
+		8A8303E61B58D0A200FB22A5 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				8A8303E71B58D0B200FB22A5 /* portrait_placeholder.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -639,6 +668,7 @@
 				8A5800521B522F010032EC1C /* Main.storyboard in Resources */,
 				8A5800571B522F010032EC1C /* LaunchScreen.xib in Resources */,
 				8AF8FA771B549BEA00401474 /* Emoji.plist in Resources */,
+				8A8303E81B58D0B200FB22A5 /* portrait_placeholder.png in Resources */,
 				8A5800541B522F010032EC1C /* Images.xcassets in Resources */,
 				8AF8FA7B1B549D2600401474 /* RongCloud.bundle in Resources */,
 			);
@@ -684,6 +714,7 @@
 				4CBCF6B31B52510F00EE2195 /* SOBaseViewController.m in Sources */,
 				4CA6739B1B52661A00D5FDFA /* SODownloadManager.m in Sources */,
 				4CBCF6C31B5258BC00EE2195 /* SOPlaygroundDetailController.m in Sources */,
+				8A8303DC1B58B92100FB22A5 /* SOPeopleTableViewController.m in Sources */,
 				4CBCF6C01B5257D100EE2195 /* SOPlaygroundMainController.m in Sources */,
 				4CA673B81B54166400D5FDFA /* AFSecurityPolicy.m in Sources */,
 				4CA673D51B541D9C00D5FDFA /* UIRefreshControl+AFNetworking.m in Sources */,
@@ -693,6 +724,7 @@
 				4CBCF6CD1B525BA300EE2195 /* SOPlaygroundFeedCell.m in Sources */,
 				8AF8FA7E1B54A20300401474 /* SOCommonStrings.m in Sources */,
 				4CA673BB1B54166400D5FDFA /* AFURLResponseSerialization.m in Sources */,
+				8A8303D81B58AC0900FB22A5 /* SOConversationViewController.m in Sources */,
 				4CA673CF1B541D9C00D5FDFA /* AFNetworkActivityIndicatorManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

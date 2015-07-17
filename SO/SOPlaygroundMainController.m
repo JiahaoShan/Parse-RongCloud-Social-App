@@ -12,21 +12,13 @@
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
 
-@interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
+@interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic) NSArray* feedsData;
 @end
 
 @implementation SOPlaygroundMainController
 -(void)viewDidLoad{
     [super viewDidLoad];
-    // Check if login.
-    PFUser *currentUser = [PFUser currentUser];
-    if (currentUser) {
-        NSLog(@"Current user: %@", currentUser.username);
-    } else {
-        [self performSegueWithIdentifier:@"showLogin" sender:self];
-    }
-    
     // 这些应该用不到 因为用到Parse
     self.feedsData = @[@{
                            @"images":@[

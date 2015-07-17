@@ -7,6 +7,8 @@
 //
 
 #import "SOChatListViewController.h"
+#import "SOConversationViewController.h"
+#import "SOUICommons.h"
 #import <RongIMKit/RongIMKit.h>
 #import <RongIMKit/RCConversationListViewController.h>
 #import <RongIMKit/RCConversationViewController.h>
@@ -23,15 +25,15 @@
     self =[super initWithCoder:aDecoder];
     if (self) {
         //设置要显示的会话类型
-        [self setDisplayConversationTypes:@[@(ConversationType_PRIVATE),@(ConversationType_DISCUSSION), @(ConversationType_APPSERVICE), @(ConversationType_PUBLICSERVICE),@(ConversationType_GROUP),@(ConversationType_SYSTEM)]];
+        [self setDisplayConversationTypes:@[@(ConversationType_PRIVATE),@(ConversationType_DISCUSSION), @(ConversationType_APPSERVICE),@(ConversationType_SYSTEM)]];
         
         //聚合会话类型
-        [self setCollectionConversationType:@[@(ConversationType_GROUP),@(ConversationType_DISCUSSION)]];
+        [self setCollectionConversationType:@[]];
         
         //设置为不用默认渲染方式
-        self.tabBarItem.image = [[UIImage imageNamed:@"icon_chat"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        self.tabBarItem.selectedImage = [[UIImage imageNamed:@"icon_chat_hover"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        
+//        self.tabBarItem.image = [[UIImage imageNamed:@"icon_chat"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//        self.tabBarItem.selectedImage = [[UIImage imageNamed:@"icon_chat_hover"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//        
         // _myDataSource = [NSMutableArray new];
         
         // [self setConversationAvatarStyle:RCUserAvatarCycle];
@@ -41,7 +43,27 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.navigationBar.barTintColor = [SOUICommons primaryTintColor];
+    self.navigationController.navigationBar.tintColor = [SOUICommons textColor];
     
+    //自定义导航标题颜色
+    //[self setNavigationTitle:@"会话" textColor:[UIColor whiteColor]];
+    //[self.navigationItem.rightBarButtonItem.customView setHidden:YES];
+    //自定义导航左右按钮
+//    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithTitle:@"返回" style:UIBarButtonItemStyleBordered target:self action:@selector(leftBarButtonItemPressed:)];
+//    [leftButton setTintColor:[UIColor whiteColor]];
+//    self.navigationItem.leftBarButtonItem = leftButton;
+//    
+//    //自定义导航左右按钮
+//    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithTitle:@"选择" style:UIBarButtonItemStyleBordered target:self action:@selector(rightBarButtonItemPressed:)];
+//    [rightButton setTintColor:[UIColor whiteColor]];
+//    self.navigationItem.rightBarButtonItem = rightButton;
+    
+    //自定义backGroundView
+//    UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 640)];
+//    [v setBackgroundColor:[UIColor lightGrayColor]];
+//    [self setBackgroundView:v];
+//    
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     //设置tableView样式
@@ -125,7 +147,7 @@
 
 -(void)onSelectedTableRow:(RCConversationModelType)conversationModelType conversationModel:(RCConversationModel *)model atIndexPath:(NSIndexPath *)indexPath
 {
-    RCConversationViewController *conversationVC = [[RCConversationViewController alloc]init];
+    SOConversationViewController *conversationVC = [[SOConversationViewController alloc]init];
     conversationVC.conversationType =model.conversationType;
     conversationVC.targetId = model.targetId;
     conversationVC.userName =model.conversationTitle;
@@ -137,7 +159,7 @@
 -(void)rightBarButtonItemPressed:(id)sender
 {
     // 您需要根据自己的 App 选择场景触发聊天。这里的例子是一个 Button 点击事件。
-    RCConversationViewController *conversationVC = [[RCConversationViewController alloc]init];
+    SOConversationViewController *conversationVC = [[SOConversationViewController alloc]init];
     conversationVC.conversationType =ConversationType_PRIVATE; //会话类型，这里设置为 PRIVATE 即发起单聊会话。
     conversationVC.targetId = @"WMCqSrLKU0"; // 接收者的 targetId，这里为举例。
     conversationVC.userName = @"GuanqingYan"; // 接受者的 username，这里为举例。

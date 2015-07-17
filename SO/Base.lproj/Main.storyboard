@@ -114,7 +114,7 @@
             </objects>
             <point key="canvasLocation" x="-126" y="480"/>
         </scene>
-        <!--测试-->
+        <!--会话-->
         <scene sceneID="C6z-o7-If8">
             <objects>
                 <viewController id="dd4-78-mVX" customClass="SOChatListViewController" sceneMemberID="viewController">
@@ -127,31 +127,61 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="测试" id="ZP2-PE-4Vc">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="会话" id="ZP2-PE-4Vc">
                         <barButtonItem key="rightBarButtonItem" title="Item" id="348-es-6W1">
                             <connections>
                                 <action selector="test:" destination="dd4-78-mVX" id="9HY-Cc-COW"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="Bbq-Ke-3w5" id="4B3-01-syf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jec-SD-T0g" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="Bbq-Ke-3w5">
+                    <connections>
+                        <outlet property="delegate" destination="dd4-78-mVX" id="PZA-VW-1zy"/>
+                        <outlet property="searchContentsController" destination="dd4-78-mVX" id="QJ5-R9-sV0"/>
+                        <outlet property="searchResultsDataSource" destination="dd4-78-mVX" id="ds4-ww-kHc"/>
+                        <outlet property="searchResultsDelegate" destination="dd4-78-mVX" id="Fha-AY-ksq"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="544" y="1696"/>
         </scene>
         <!--朋友-->
         <scene sceneID="iRh-iN-sHl">
             <objects>
-                <tableViewController id="fKG-w5-BS8" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="gOH-bR-YrF">
+                <tableViewController id="fKG-w5-BS8" customClass="SOPeopleTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="22" sectionFooterHeight="22" id="gOH-bR-YrF">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="xSv-Lj-o60">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PeopleCell" rowHeight="80" id="xSv-Lj-o60" customClass="PFTableViewCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xSv-Lj-o60" id="hhS-kh-Uhf">
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zK4-xi-gDu" customClass="PFImageView">
+                                            <rect key="frame" x="8" y="8" width="64" height="64"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GZg-o5-GBa">
+                                            <rect key="frame" x="80" y="8" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FdT-71-xN7">
+                                            <rect key="frame" x="80" y="51" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
