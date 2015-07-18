@@ -9,11 +9,12 @@
 #import "SOPlaygroundMainController.h"
 #import "SOPlaygroundFeedCell.h"
 #import "SODefines.h"
+#import "SOImageViewController.h"
 
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
 
-@interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate>
+@interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate,SOPlaygroundFeedCellDelegate>
 @property (nonatomic) NSArray* feedsData;
 @property (nonatomic) BOOL initialized;
 @end
@@ -60,24 +61,25 @@
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
                         object:(PFObject *)object {
     if (indexPath.row>=self.objects.count) {
-        return [tableView dequeueReusableCellWithIdentifier:@"loadMore"];
+        return nil;//[tableView dequeueReusableCellWithIdentifier:@"loadMore"];
     }
     SOPlaygroundFeedCell* cell = [tableView dequeueReusableCellWithIdentifier:@"feedCell"];
     [cell configureWithData:object];
+    cell.delegate = self;
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    if (indexPath.row == self.objects.count && self.paginationEnabled) {
-        // Load More Cell
-        [self loadNextPage];
-    }
-    else{
-        PFObject *selectedObject = [self objectAtIndexPath:indexPath];
-        // ... do something else
-    }
-}
+//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+//    
+//    if (indexPath.row == self.objects.count && self.paginationEnabled) {
+//        // Load More Cell
+//        [self loadNextPage];
+//    }
+//    else{
+//        PFObject *selectedObject = [self objectAtIndexPath:indexPath];
+//        // ... do something else
+//    }
+//}
 
 -(void)viewDidLoad{
     [super viewDidLoad];
@@ -110,6 +112,15 @@
         return 44;
     }
     return [SOPlaygroundFeedCell estimatedHeightForData:[self.objects objectAtIndex:indexPath.row]];
+}
+#pragma mark - SOPlaygroundFeedCellDelegate
+
+-(void)cell:(SOPlaygroundFeedCell *)cell didTapImageAtIndex:(NSUInteger)index{
+    NSIndexPath* cellIndex = [self.tableView indexPathForCell:cell];
+    PFFile* image = self.objects[cellIndex.row][@"images"][index];
+    SOImageViewController* iv = [[SOImageViewController alloc] init];
+    [iv setImage:image];
+    [self.navigationController pushViewController:iv animated:true];
 }
 
 #pragma mark - Segue

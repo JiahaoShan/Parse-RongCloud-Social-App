@@ -9,9 +9,17 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
+@class SOPlaygroundFeedCell;
+@protocol SOPlaygroundFeedCellDelegate
+//called when user tap an image, the image itself is provided(though it can still be nil)
+//the url is also included for downloading high resolution images is user prefers
+@required
+-(void)cell:(SOPlaygroundFeedCell*)cell didTapImageAtIndex:(NSUInteger)index;
+@end
 
 @interface SOPlaygroundFeedCell : PFTableViewCell
 +(CGFloat)estimatedHeightForData:(PFObject*)data;
 
+@property (nonatomic,assign) id<SOPlaygroundFeedCellDelegate> delegate;
 -(void)configureWithData:(PFObject*)data;
 @end

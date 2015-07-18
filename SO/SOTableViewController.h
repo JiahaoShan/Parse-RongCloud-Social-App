@@ -10,5 +10,5 @@
 #import <ParseUI/ParseUI.h>
 
 @interface SOTableViewController : PFQueryTableViewController
-
+@property (nonatomic) BOOL pullToLoadMoreEnabled;
 @end

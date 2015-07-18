@@ -7,12 +7,13 @@
 //
 
 #import "SOPlaygroundFeedImageView.h"
-#import "SOPlaygroundFeedImageViewCell.h"
+#import <ParseUI/ParseUI.h>
 
 @interface SOPlaygroundFeedImageView()
 @property (nonatomic) BOOL visible;
 @property (nonatomic) NSArray* images; //an array of PFFiles
 @property (nonatomic) NSMutableArray* imageViews;
+@property (nonatomic) UITapGestureRecognizer* tapGesture;
 @end
 
 @implementation SOPlaygroundFeedImageView
@@ -23,14 +24,14 @@
 
 +(CGFloat)heightForImageCount:(NSUInteger)count{
     if (count==1) {
-        return kPlaygroundSingleImageHeight;
+        return kPlaygroundSingleImageHeight + 2*kPlaygroundImagePadding;
     }else if(count>0){
         //        CGFloat width = [[UIScreen mainScreen] bounds].size.width;
         //        CGFloat perRow = floor(width/kPlaygroundMultipleImageSize);
         //        int numRow = (int)ceil(count/perRow) + 1;
         //        return numRow * kPlaygroundMultipleImageSize;
         int numRow = (int)ceil(count/3.0);
-        return numRow * kPlaygroundMultipleImageSize;
+        return numRow * kPlaygroundMultipleImageSize + (numRow+1)*kPlaygroundImagePadding ;
     }
     return 0;
 }
@@ -42,11 +43,35 @@
     return _imageViews;
 }
 
+-(UITapGestureRecognizer*)tapGesture{
+    if (!_tapGesture) {
+        _tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
+    }
+    return _tapGesture;
+}
+
+-(void)tapped:(UIGestureRecognizer*)tap{
+    CGPoint p = [tap locationInView:self];
+    [self.imageViews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (CGRectContainsPoint([obj frame], p)) {
+            if (self.delegate) {
+                [self.delegate didTapImageAtIndex:idx];
+            }
+            NSLog(@"tapped image at index: %d",idx);
+            *stop = true;
+        }
+    }];
+}
+
 -(void)setImages:(NSArray*)files{
     if (files.count == 0) {
         [self setVisible:NO];
         return;
     }
+    if (!_tapGesture) {
+        [self addGestureRecognizer:self.tapGesture];
+    }
+    
     [self setVisible:true];
     [self.imageViews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [obj removeFromSuperview];
@@ -56,7 +81,7 @@
     _images = files;
     if (files.count==1) {
         PFImageView* iv = [[PFImageView alloc] initWithImage:[UIImage imageNamed:@"placeholderImage"]];
-        CGRect frame = CGRectMake(0,0,kPlaygroundSingleImageHeight,kPlaygroundSingleImageHeight);
+        CGRect frame = CGRectMake(kPlaygroundImagePadding,kPlaygroundImagePadding,kPlaygroundSingleImageHeight,kPlaygroundSingleImageHeight);
         [iv setFrame:frame];
         [iv setImage:[UIImage imageNamed:@"placeholderImage"]];
         [iv setFile:files[0]];
@@ -68,7 +93,7 @@
             PFImageView* iv = [[PFImageView alloc] initWithImage:[UIImage imageNamed:@"placeholderImage"]];
             int x = i%3;
             int y = i/3;
-            CGRect frame = CGRectMake(x*kPlaygroundMultipleImageSize, y*kPlaygroundMultipleImageSize, kPlaygroundMultipleImageSize, kPlaygroundMultipleImageSize);
+            CGRect frame = CGRectMake(x*kPlaygroundMultipleImageSize+(x+1)*kPlaygroundImagePadding, y*kPlaygroundMultipleImageSize+(y+1)*kPlaygroundImagePadding, kPlaygroundMultipleImageSize, kPlaygroundMultipleImageSize);
             [iv setFrame:frame];
             [iv setImage:[UIImage imageNamed:@"placeholderImage"]];
             [iv setFile:files[i]];

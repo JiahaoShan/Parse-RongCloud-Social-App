@@ -9,5 +9,4 @@
 #import "SOTableViewController.h"
 
 @interface SOPlaygroundMainController : SOTableViewController
-
 @end

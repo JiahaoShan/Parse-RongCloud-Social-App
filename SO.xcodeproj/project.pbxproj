@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4CA1CB791B5AC4C900B21EEF /* SOImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA1CB781B5AC4C900B21EEF /* SOImageViewController.m */; };
 		4CA673951B52615C00D5FDFA /* SOPlaygroundFeedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA673941B52615C00D5FDFA /* SOPlaygroundFeedImageView.m */; };
 		4CA6739B1B52661A00D5FDFA /* SODownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6739A1B52661A00D5FDFA /* SODownloadManager.m */; };
 		4CA6739F1B526DCF00D5FDFA /* SOPlaygoundTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6739E1B526DCF00D5FDFA /* SOPlaygoundTest.m */; };
@@ -27,7 +28,6 @@
 		4CA673D41B541D9C00D5FDFA /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA673CA1B541D9C00D5FDFA /* UIProgressView+AFNetworking.m */; };
 		4CA673D51B541D9C00D5FDFA /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA673CC1B541D9C00D5FDFA /* UIRefreshControl+AFNetworking.m */; };
 		4CA673D61B541D9C00D5FDFA /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA673CE1B541D9C00D5FDFA /* UIWebView+AFNetworking.m */; };
-		4CA673D91B54305E00D5FDFA /* SOPlaygroundFeedImageViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA673D81B54305E00D5FDFA /* SOPlaygroundFeedImageViewCell.m */; };
 		4CBCF6B01B524F7500EE2195 /* SOUICommons.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6AF1B524F7500EE2195 /* SOUICommons.m */; };
 		4CBCF6B31B52510F00EE2195 /* SOBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6B21B52510F00EE2195 /* SOBaseViewController.m */; };
 		4CBCF6B61B52517D00EE2195 /* SONavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6B51B52517D00EE2195 /* SONavigationController.m */; };
@@ -99,6 +99,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4CA1CB771B5AC4C900B21EEF /* SOImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOImageViewController.h; sourceTree = "<group>"; };
+		4CA1CB781B5AC4C900B21EEF /* SOImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOImageViewController.m; sourceTree = "<group>"; };
 		4CA673921B525D7300D5FDFA /* SODefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SODefines.h; sourceTree = "<group>"; };
 		4CA673931B52615C00D5FDFA /* SOPlaygroundFeedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPlaygroundFeedImageView.h; sourceTree = "<group>"; };
 		4CA673941B52615C00D5FDFA /* SOPlaygroundFeedImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedImageView.m; sourceTree = "<group>"; };
@@ -141,8 +143,6 @@
 		4CA673CC1B541D9C00D5FDFA /* UIRefreshControl+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIRefreshControl+AFNetworking.m"; sourceTree = "<group>"; };
 		4CA673CD1B541D9C00D5FDFA /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
 		4CA673CE1B541D9C00D5FDFA /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
-		4CA673D71B54305E00D5FDFA /* SOPlaygroundFeedImageViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPlaygroundFeedImageViewCell.h; sourceTree = "<group>"; };
-		4CA673D81B54305E00D5FDFA /* SOPlaygroundFeedImageViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedImageViewCell.m; sourceTree = "<group>"; };
 		4CBCF6AE1B524F7500EE2195 /* SOUICommons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOUICommons.h; sourceTree = "<group>"; };
 		4CBCF6AF1B524F7500EE2195 /* SOUICommons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOUICommons.m; sourceTree = "<group>"; };
 		4CBCF6B11B52510F00EE2195 /* SOBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOBaseViewController.h; sourceTree = "<group>"; };
@@ -340,6 +340,8 @@
 				4CBCF6B21B52510F00EE2195 /* SOBaseViewController.m */,
 				4CBCF6BB1B5257A500EE2195 /* SOTableViewController.h */,
 				4CBCF6BC1B5257A500EE2195 /* SOTableViewController.m */,
+				4CA1CB771B5AC4C900B21EEF /* SOImageViewController.h */,
+				4CA1CB781B5AC4C900B21EEF /* SOImageViewController.m */,
 				4CBCF6C41B52592F00EE2195 /* UIView+ActivityIndicator.h */,
 				4CBCF6C51B52592F00EE2195 /* UIView+ActivityIndicator.m */,
 			);
@@ -384,8 +386,6 @@
 				4CBCF6D21B525CD700EE2195 /* SOPlaygroundFeedGenderView.m */,
 				4CA673931B52615C00D5FDFA /* SOPlaygroundFeedImageView.h */,
 				4CA673941B52615C00D5FDFA /* SOPlaygroundFeedImageView.m */,
-				4CA673D71B54305E00D5FDFA /* SOPlaygroundFeedImageViewCell.h */,
-				4CA673D81B54305E00D5FDFA /* SOPlaygroundFeedImageViewCell.m */,
 			);
 			name = SOPlaygroundFeedCell;
 			sourceTree = "<group>";
@@ -690,7 +690,6 @@
 				4CA673D21B541D9C00D5FDFA /* UIButton+AFNetworking.m in Sources */,
 				8A692F251B53349F00E9DC22 /* SOChatListViewController.m in Sources */,
 				4CA673D61B541D9C00D5FDFA /* UIWebView+AFNetworking.m in Sources */,
-				4CA673D91B54305E00D5FDFA /* SOPlaygroundFeedImageViewCell.m in Sources */,
 				4CA673D41B541D9C00D5FDFA /* UIProgressView+AFNetworking.m in Sources */,
 				4CA673B61B54166400D5FDFA /* AFHTTPSessionManager.m in Sources */,
 				4CBCF6B61B52517D00EE2195 /* SONavigationController.m in Sources */,
@@ -718,6 +717,7 @@
 				4CA673D11B541D9C00D5FDFA /* UIAlertView+AFNetworking.m in Sources */,
 				4CBCF6D31B525CD700EE2195 /* SOPlaygroundFeedGenderView.m in Sources */,
 				4CA673B51B54166400D5FDFA /* AFHTTPRequestOperationManager.m in Sources */,
+				4CA1CB791B5AC4C900B21EEF /* SOImageViewController.m in Sources */,
 				4CBCF6CD1B525BA300EE2195 /* SOPlaygroundFeedCell.m in Sources */,
 				8AF8FA7E1B54A20300401474 /* SOCommonStrings.m in Sources */,
 				4CA673BB1B54166400D5FDFA /* AFURLResponseSerialization.m in Sources */,
