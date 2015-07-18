@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Parse/Parse.h>
+#import <ParseUI/ParseUI.h>
 
-@interface SOPlaygroundFeedCell : UITableViewCell
--(void)configureWithData:(NSDictionary*)data;
+@interface SOPlaygroundFeedCell : PFTableViewCell
++(CGFloat)estimatedHeightForData:(PFObject*)data;
+
+-(void)configureWithData:(PFObject*)data;
 @end

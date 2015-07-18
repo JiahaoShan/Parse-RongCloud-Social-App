@@ -72,7 +72,6 @@
 		8A5800821B522FC70032EC1C /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5800811B522FC70032EC1C /* MobileCoreServices.framework */; };
 		8A5800841B522FCE0032EC1C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5800831B522FCE0032EC1C /* QuartzCore.framework */; };
 		8A5800861B522FD50032EC1C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5800851B522FD50032EC1C /* Security.framework */; };
-		8A5800881B522FDA0032EC1C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5800871B522FDA0032EC1C /* StoreKit.framework */; };
 		8A58008A1B522FE40032EC1C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5800891B522FE40032EC1C /* SystemConfiguration.framework */; };
 		8A58008C1B522FEC0032EC1C /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A58008B1B522FEC0032EC1C /* libz.dylib */; };
 		8A58008E1B522FF60032EC1C /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A58008D1B522FF60032EC1C /* libsqlite3.dylib */; };
@@ -86,8 +85,6 @@
 		8A8303D81B58AC0900FB22A5 /* SOConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8303D71B58AC0900FB22A5 /* SOConversationViewController.m */; };
 		8A8303DC1B58B92100FB22A5 /* SOPeopleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8303DB1B58B92100FB22A5 /* SOPeopleTableViewController.m */; };
 		8A8303E81B58D0B200FB22A5 /* portrait_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A8303E71B58D0B200FB22A5 /* portrait_placeholder.png */; };
-		8AF8FA771B549BEA00401474 /* Emoji.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AF8FA761B549BEA00401474 /* Emoji.plist */; };
-		8AF8FA7B1B549D2600401474 /* RongCloud.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8AF8FA7A1B549D2600401474 /* RongCloud.bundle */; };
 		8AF8FA7E1B54A20300401474 /* SOCommonStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF8FA7D1B54A20300401474 /* SOCommonStrings.m */; };
 /* End PBXBuildFile section */
 
@@ -205,7 +202,6 @@
 		8A5800811B522FC70032EC1C /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8A5800831B522FCE0032EC1C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8A5800851B522FD50032EC1C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		8A5800871B522FDA0032EC1C /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		8A5800891B522FE40032EC1C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8A58008B1B522FEC0032EC1C /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		8A58008D1B522FF60032EC1C /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -224,8 +220,6 @@
 		8A8303DA1B58B92100FB22A5 /* SOPeopleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPeopleTableViewController.h; sourceTree = "<group>"; };
 		8A8303DB1B58B92100FB22A5 /* SOPeopleTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPeopleTableViewController.m; sourceTree = "<group>"; };
 		8A8303E71B58D0B200FB22A5 /* portrait_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = portrait_placeholder.png; path = SO/Resources/portrait_placeholder.png; sourceTree = "<group>"; };
-		8AF8FA761B549BEA00401474 /* Emoji.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Emoji.plist; path = SO/RongCloudSDK/Emoji.plist; sourceTree = "<group>"; };
-		8AF8FA7A1B549D2600401474 /* RongCloud.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RongCloud.bundle; path = SO/RongCloudSDK/RongCloud.bundle; sourceTree = "<group>"; };
 		8AF8FA7C1B54A20300401474 /* SOCommonStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCommonStrings.h; sourceTree = "<group>"; };
 		8AF8FA7D1B54A20300401474 /* SOCommonStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCommonStrings.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -259,7 +253,6 @@
 				8A22DB2F1B52F8CA0032AB1E /* AssetsLibrary.framework in Frameworks */,
 				8A5800921B5230190032EC1C /* Social.framework in Frameworks */,
 				8A5800901B5230110032EC1C /* Accounts.framework in Frameworks */,
-				8A5800881B522FDA0032EC1C /* StoreKit.framework in Frameworks */,
 				8A5800861B522FD50032EC1C /* Security.framework in Frameworks */,
 				8A5800821B522FC70032EC1C /* MobileCoreServices.framework in Frameworks */,
 				8A5800781B522F5A0032EC1C /* ParseUI.framework in Frameworks */,
@@ -401,8 +394,6 @@
 			isa = PBXGroup;
 			children = (
 				8A8303E61B58D0A200FB22A5 /* Images */,
-				8AF8FA7A1B549D2600401474 /* RongCloud.bundle */,
-				8AF8FA761B549BEA00401474 /* Emoji.plist */,
 			);
 			name = Resource;
 			sourceTree = "<group>";
@@ -533,7 +524,6 @@
 				8A58008D1B522FF60032EC1C /* libsqlite3.dylib */,
 				8A58008B1B522FEC0032EC1C /* libz.dylib */,
 				8A5800891B522FE40032EC1C /* SystemConfiguration.framework */,
-				8A5800871B522FDA0032EC1C /* StoreKit.framework */,
 				8A5800851B522FD50032EC1C /* Security.framework */,
 				8A5800831B522FCE0032EC1C /* QuartzCore.framework */,
 				8A5800811B522FC70032EC1C /* MobileCoreServices.framework */,
@@ -633,6 +623,15 @@
 				TargetAttributes = {
 					8A58003F1B522F010032EC1C = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 9H8793KMK2;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 0;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 					8A58005B1B522F010032EC1C = {
 						CreatedOnToolsVersion = 6.4;
@@ -667,10 +666,8 @@
 				4CBCF6CF1B525BCD00EE2195 /* SOPlaygroundFeedCell.xib in Resources */,
 				8A5800521B522F010032EC1C /* Main.storyboard in Resources */,
 				8A5800571B522F010032EC1C /* LaunchScreen.xib in Resources */,
-				8AF8FA771B549BEA00401474 /* Emoji.plist in Resources */,
 				8A8303E81B58D0B200FB22A5 /* portrait_placeholder.png in Resources */,
 				8A5800541B522F010032EC1C /* Images.xcassets in Resources */,
-				8AF8FA7B1B549D2600401474 /* RongCloud.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -852,6 +849,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/SO/ParseFramework",
@@ -862,6 +861,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -870,6 +870,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/SO/ParseFramework",
@@ -880,6 +882,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

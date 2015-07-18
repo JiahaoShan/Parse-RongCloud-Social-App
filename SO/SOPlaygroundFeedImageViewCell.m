@@ -11,7 +11,7 @@
 @implementation SOPlaygroundFeedImageViewCell
 -(UIImageView*)imageView{
     if(!_imageView){
-        _imageView = [[UIImageView alloc] init];
+        _imageView = [[PFImageView alloc] init];
         [self addSubview:_imageView];
     }
     return _imageView;

@@ -22,9 +22,11 @@
 @end
 
 @interface SOPlaygroundFeedImageView : UIView
++(CGFloat)estimatedHeightForImages:(NSArray*)files;
+
 //if passed only 1 url, the view shows a large image
 //if passed more than 1 url, the view shows a few thubmnail images
 //however, thumbnail messages should still be provided
 //expected an array of SOImageURL object
--(void)setImages:(NSArray*)urls;
+-(void)setImages:(NSArray*)files;
 @end

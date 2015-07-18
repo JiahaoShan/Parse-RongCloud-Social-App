@@ -7,53 +7,76 @@
 //
 
 #import "SOPlaygroundFeedImageView.h"
-#import "UIImageView+AFNetworking.h"
 #import "SOPlaygroundFeedImageViewCell.h"
 
-@interface SOPlaygroundFeedImageView()<UICollectionViewDataSource,UICollectionViewDelegate>
-@property (nonatomic) UICollectionView* collectionView;
+@interface SOPlaygroundFeedImageView()
 @property (nonatomic) BOOL visible;
-@property (nonatomic) NSArray* images;
+@property (nonatomic) NSArray* images; //an array of PFFiles
+@property (nonatomic) NSMutableArray* imageViews;
 @end
 
 @implementation SOPlaygroundFeedImageView
 
--(void)awakeFromNib{
-    [super awakeFromNib];
-   // [self setVisible:NO];
++(CGFloat)estimatedHeightForImages:(NSArray*)files{
+    return [self heightForImageCount:files.count];
 }
 
--(void)setImages:(NSArray*)urls{
-    if (urls.count == 0) {
++(CGFloat)heightForImageCount:(NSUInteger)count{
+    if (count==1) {
+        return kPlaygroundSingleImageHeight;
+    }else if(count>0){
+        //        CGFloat width = [[UIScreen mainScreen] bounds].size.width;
+        //        CGFloat perRow = floor(width/kPlaygroundMultipleImageSize);
+        //        int numRow = (int)ceil(count/perRow) + 1;
+        //        return numRow * kPlaygroundMultipleImageSize;
+        int numRow = (int)ceil(count/3.0);
+        return numRow * kPlaygroundMultipleImageSize;
+    }
+    return 0;
+}
+
+-(NSMutableArray*)imageViews{
+    if (!_imageViews) {
+        _imageViews = [[NSMutableArray alloc] init];
+    }
+    return _imageViews;
+}
+
+-(void)setImages:(NSArray*)files{
+    if (files.count == 0) {
         [self setVisible:NO];
         return;
     }
     [self setVisible:true];
-    //CGRect frame = self.frame;
-    //frame.size.height = [self heightFromImageCount:urls.count];
-    //self.frame = frame;
-    self.frame = self.superview.bounds;
+    [self.imageViews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [obj removeFromSuperview];
+    }];
+    [self.imageViews removeAllObjects];
     
-    if (!self.collectionView) {
-        UICollectionViewFlowLayout* fl = [[UICollectionViewFlowLayout alloc] init];
-        [fl setItemSize:CGSizeMake(kPlaygroundMultipleImageSize, kPlaygroundMultipleImageSize)];
-        [fl setScrollDirection:UICollectionViewScrollDirectionVertical];
-        [fl setMinimumInteritemSpacing:1];
-        [fl setEstimatedItemSize:CGSizeMake(kPlaygroundMultipleImageSize, kPlaygroundMultipleImageSize)];
-        [fl setMinimumLineSpacing:0];
-        fl.sectionInset = UIEdgeInsetsMake(0, 24, 0, 24);
-        self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:fl];
-        [self.collectionView registerClass:[SOPlaygroundFeedImageViewCell class] forCellWithReuseIdentifier:@"cell"];
-        self.collectionView.dataSource = self;
-        self.collectionView.delegate = self;
-        self.collectionView.backgroundColor = [UIColor clearColor];
-        [self addSubview:self.collectionView];
+    _images = files;
+    if (files.count==1) {
+        PFImageView* iv = [[PFImageView alloc] initWithImage:[UIImage imageNamed:@"placeholderImage"]];
+        CGRect frame = CGRectMake(0,0,kPlaygroundSingleImageHeight,kPlaygroundSingleImageHeight);
+        [iv setFrame:frame];
+        [iv setImage:[UIImage imageNamed:@"placeholderImage"]];
+        [iv setFile:files[0]];
+        [iv loadInBackground];
+        [self addSubview:iv];
+        [self.imageViews addObject:iv];
+    }else{
+        for (int i=0;i<files.count;i++) {
+            PFImageView* iv = [[PFImageView alloc] initWithImage:[UIImage imageNamed:@"placeholderImage"]];
+            int x = i%3;
+            int y = i/3;
+            CGRect frame = CGRectMake(x*kPlaygroundMultipleImageSize, y*kPlaygroundMultipleImageSize, kPlaygroundMultipleImageSize, kPlaygroundMultipleImageSize);
+            [iv setFrame:frame];
+            [iv setImage:[UIImage imageNamed:@"placeholderImage"]];
+            [iv setFile:files[i]];
+            [iv loadInBackground];
+            [self addSubview:iv];
+            [self.imageViews addObject:iv];
+        }
     }
-    
-    _images = urls;
-    //dispatch_async(dispatch_get_main_queue(), ^ {
-        [self.collectionView reloadData];
-    //});
 }
 
 //different from setHidden
@@ -68,7 +91,6 @@
     if(visible){
         self.hidden = false;
     }else{
-        self.collectionView = nil;
         CGRect frame = self.frame;
         frame.size.height = 0;
         self.frame = frame;
@@ -77,33 +99,5 @@
     _visible = visible;
 }
 
--(CGFloat)heightFromImageCount:(NSUInteger)count{
-    if (count==1) {
-        return kPlaygroundSingleImageHeight;
-    }else if(count>0){
-        CGFloat width = self.bounds.size.width;
-        CGFloat perRow = floor(width/kPlaygroundMultipleImageSize);
-        int numRow = (int)ceil(count/perRow);
-        return numRow * kPlaygroundMultipleImageSize;
-    }
-    return 0;
-}
-
-#pragma mark - UICollectionViewDataSource
--(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
-    return 1;
-}
-
--(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return self.images.count;
-}
-
--(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    SOPlaygroundFeedImageViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    [cell setBackgroundColor:[UIColor yellowColor]];
-    UIImageView* iv = [cell imageView];
-    [iv setImageWithURL:[NSURL URLWithString:self.images[indexPath.row]] placeholderImage:[UIImage imageNamed:@"placeholderImage"]];
-    return cell;
-}
 
 @end

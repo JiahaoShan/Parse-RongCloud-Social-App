@@ -10,18 +10,12 @@
 
 @implementation SOPlaygroundFeedGenderView
 -(void)setGender:(SOGender)gender{
-    switch (gender) {
-        case Male:
-            self.image = [UIImage imageNamed:@"gender-male"];
-            break;
-        case Female:
-            self.image = [UIImage imageNamed:@"gender-female"];
-            break;
-        case NotSpecified:
-            self.image = [UIImage imageNamed:@"gender-notspecified"];
-            break;
-        default:
-            break;
+    if ([gender isEqualToString:kSOGenderMale]) {
+        self.image = [UIImage imageNamed:@"gender-male"];
+    }else if([gender isEqualToString:kSOGenderFemale]){
+        self.image = [UIImage imageNamed:@"gender-female"];
+    }else{
+        self.image = [UIImage imageNamed:@"gender-notspecified"];
     }
 }
 @end

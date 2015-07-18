@@ -8,44 +8,108 @@
 
 #import "SOPlaygroundMainController.h"
 #import "SOPlaygroundFeedCell.h"
+#import "SODefines.h"
 
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
 
 @interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic) NSArray* feedsData;
+@property (nonatomic) BOOL initialized;
 @end
 
 @implementation SOPlaygroundMainController
+
+- (instancetype)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:style];
+    if (self) {
+        [self initialize];
+    }
+    return self;
+}
+
+-(void)awakeFromNib{
+    [super awakeFromNib];
+    [self initialize];
+}
+
+-(void)initialize{
+    if (!_initialized) {
+        _initialized = true;
+        self.parseClassName = @"PlaygroundFeed";
+        self.pullToRefreshEnabled = YES;
+        self.paginationEnabled = YES;
+        self.objectsPerPage = 10;
+    }
+}
+
+- (PFQuery *)queryForTable {
+    PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
+    
+    // If no objects are loaded in memory, we look to the cache first to fill the table
+    // and then subsequently do a query against the network.
+    if (self.objects.count == 0) {
+        //query.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    }
+    
+    [query orderByDescending:@"createdAt"];
+    return query;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath
+                        object:(PFObject *)object {
+    if (indexPath.row>=self.objects.count) {
+        return [tableView dequeueReusableCellWithIdentifier:@"loadMore"];
+    }
+    SOPlaygroundFeedCell* cell = [tableView dequeueReusableCellWithIdentifier:@"feedCell"];
+    [cell configureWithData:object];
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (indexPath.row == self.objects.count && self.paginationEnabled) {
+        // Load More Cell
+        [self loadNextPage];
+    }
+    else{
+        PFObject *selectedObject = [self objectAtIndexPath:indexPath];
+        // ... do something else
+    }
+}
+
 -(void)viewDidLoad{
     [super viewDidLoad];
-    // 这些应该用不到 因为用到Parse
-    self.feedsData = @[@{
-                           @"images":@[
-                                   @"http://hashtagzoned.com/wp-content/uploads/2015/01/jennifer_lawrence2-160x160.jpg",
-                                   @"http://www.promipool.de/var/promipool/storage/images/media/images/jennifer-lawrence65/2266057-1-ger-DE/jennifer-lawrence_article_hoch_1_thumbnail.jpg",
-                                   @"http://www.bakimlikadin.net/wp-content/plugins/contextual-related-posts/timthumb/timthumb.php?src=http%3A%2F%2Fwww.bakimlikadin.net%2Fwp-content%2Fuploads%2F2013%2F03%2Fjennifer-lawrence-11.jpg&w=150&h=150&zc=1&q=75",
-                                   @"http://www.filmibeat.com/img/143x178/popcorn/profile_photos/jennifer-lawrence-25267.jpg",
-                                   @"https://losjuegosdelhambrechile.files.wordpress.com/2011/06/jennifer-lawrence-14.png?w=130&h=130"]}];
+    
     [self.tableView registerNib:[UINib nibWithNibName:@"SOPlaygroundFeedCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"feedCell"];
-    [self.tableView reloadData];
+    
+//    UIImage* sampleImage = [UIImage imageNamed:@"sampleImage"];
+//    NSData* imageData = UIImagePNGRepresentation(sampleImage);
+//    PFFile* image1 = [PFFile fileWithName:@"sampleImage.png" data:imageData];
+//    //[image1 saveInBackground];
+//    
+//    PFObject* sampleFeed = [PFObject objectWithClassName:@"PlaygroundFeed"];
+//    sampleFeed[@"poster"] = [PFUser currentUser];
+//    sampleFeed[@"text"] = @"这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。";
+//    sampleFeed[@"images"] = @[image1];
+//    [sampleFeed saveInBackground];
 }
 
 #pragma mark - UITableViewDelegate
 #pragma mark - UITableViewDataSource
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 350;
+    if (indexPath.row == self.objects.count && self.paginationEnabled) {
+        return 44;
+    }
+    return [SOPlaygroundFeedCell estimatedHeightForData:[self.objects objectAtIndex:indexPath.row]];
 }
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
-}
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 30;
-}
--(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    SOPlaygroundFeedCell* cell = [tableView dequeueReusableCellWithIdentifier:@"feedCell"];
-    [cell configureWithData:self.feedsData[0]];
-    return cell;
+
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row == self.objects.count && self.paginationEnabled) {
+        return 44;
+    }
+    return [SOPlaygroundFeedCell estimatedHeightForData:[self.objects objectAtIndex:indexPath.row]];
 }
 
 #pragma mark - Segue

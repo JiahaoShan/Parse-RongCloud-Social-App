@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <ParseUI/ParseUI.h>
 @interface SOPlaygroundFeedImageViewCell : UICollectionViewCell
-@property (nonatomic) UIImageView* imageView;
+@property (nonatomic) PFImageView* imageView;
 @end

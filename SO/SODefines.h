@@ -9,11 +9,10 @@
 #ifndef SO_SODefines_h
 #define SO_SODefines_h
 
-typedef enum{
-    Male,
-    Female,
-    NotSpecified
-}SOGender;
+typedef NSString* SOGender;
+static NSString* kSOGenderMale = @"Male";
+static NSString* kSOGenderFemale = @"Female";
+static NSString* kSOGenderNotSpecified = @"NotSpecified";
 
 @interface SOImageURL : NSObject
 @property NSURL* thumbnailURL;
