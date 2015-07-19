@@ -17,7 +17,8 @@
 @end
 
 @implementation SOActionSheetManager
--(void)initNewActionSheet{
+-(instancetype)init{
+    self = [super init];
     if (!_titles) {
         _titles = [[NSMutableArray alloc] init];
     }else {
@@ -33,6 +34,7 @@
     }else {
         [_handlers removeAllObjects];
     }
+    return self;
 }
 -(void)addAction:(NSString*)title type:(SOActionType)type handler:(SOActionHandler)handler{
     [self.titles addObject:title];

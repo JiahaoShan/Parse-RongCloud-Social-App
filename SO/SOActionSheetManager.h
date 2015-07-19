@@ -17,9 +17,10 @@ typedef NS_ENUM(NSUInteger, SOActionType) {
 };
 
 //UIActionSheet deprecated in ios8, use this to support all versions
+
+//todo: need testing for ios7 support
 @interface SOActionSheetManager : NSObject
--(void)initNewActionSheet;
 -(void)addAction:(NSString*)title type:(SOActionType)type handler:(SOActionHandler)handler;
--(void)showInView:(UIView*)view;
+-(void)showInViewController:(UIViewController*)viewController;
 -(void)dismiss;
 @end

@@ -7,9 +7,11 @@
 //
 
 #import "SOImageViewController.h"
+#import "SOActionSheetManager.h"
 
 @interface SOImageViewController ()
 @property (nonatomic) PFImageView* imageView;
+@property (nonatomic) UILongPressGestureRecognizer* longPress;
 @end
 
 @implementation SOImageViewController
@@ -47,15 +49,14 @@
 }
 
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setExtendedLayoutIncludesOpaqueBars:false];
     [self.view setBackgroundColor:[UIColor blackColor]];
-    UILongPressGestureRecognizer* lp = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressed:)];
-    [lp setMinimumPressDuration:1];
+    _longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressed:)];
+    [_longPress setMinimumPressDuration:0.7];
     UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
-    [self.view addGestureRecognizer:lp];
+    [self.view addGestureRecognizer:_longPress];
     [self.view addGestureRecognizer:tap];
 }
 
@@ -74,6 +75,15 @@
 
 -(void)longPressed:(UILongPressGestureRecognizer*)g{
     NSLog(@"longPressed");
+    [g setEnabled:false];
+    SOActionSheetManager* actionSheet = [[SOActionSheetManager alloc] init];
+    [actionSheet addAction:@"Save" type:SOActionTypeDefault handler:^{
+        NSLog(@"should save");
+    }];
+    [actionSheet addAction:@"Cancel" type:SOActionTypeCancel handler:^{
+         self.longPress.enabled = true;
+    }];
+    [actionSheet showInViewController:self];
 }
 
 -(void)tapped:(UITapGestureRecognizer*)t{

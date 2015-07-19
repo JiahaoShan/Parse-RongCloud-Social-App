@@ -57,29 +57,6 @@
     return query;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView
-         cellForRowAtIndexPath:(NSIndexPath *)indexPath
-                        object:(PFObject *)object {
-    if (indexPath.row>=self.objects.count) {
-        return nil;//[tableView dequeueReusableCellWithIdentifier:@"loadMore"];
-    }
-    SOPlaygroundFeedCell* cell = [tableView dequeueReusableCellWithIdentifier:@"feedCell"];
-    [cell configureWithData:object];
-    cell.delegate = self;
-    return cell;
-}
-
-//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    
-//    if (indexPath.row == self.objects.count && self.paginationEnabled) {
-//        // Load More Cell
-//        [self loadNextPage];
-//    }
-//    else{
-//        PFObject *selectedObject = [self objectAtIndexPath:indexPath];
-//        // ... do something else
-//    }
-//}
 
 -(void)viewDidLoad{
     [super viewDidLoad];
@@ -99,7 +76,36 @@
 }
 
 #pragma mark - UITableViewDelegate
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    return false;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (indexPath.row == self.objects.count && self.paginationEnabled) {
+        // Load More Cell
+        [self loadNextPage];
+    }
+    else{
+        PFObject *selectedObject = [self objectAtIndexPath:indexPath];
+        // ... do something else
+    }
+}
+
 #pragma mark - UITableViewDataSource
+
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath
+                        object:(PFObject *)object {
+    if (indexPath.row>=self.objects.count) {
+        return nil;//[tableView dequeueReusableCellWithIdentifier:@"loadMore"];
+    }
+    SOPlaygroundFeedCell* cell = [tableView dequeueReusableCellWithIdentifier:@"feedCell"];
+    [cell configureWithData:object];
+    cell.delegate = self;
+    return cell;
+}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == self.objects.count && self.paginationEnabled) {
         return 44;
