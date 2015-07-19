@@ -14,5 +14,10 @@
     [super awakeFromNib];
     [[self tabBar] setBarTintColor:[SOUICommons primaryTintColor]];
     [[self tabBar] setTintColor:[SOUICommons textColor]];
+    self.navigationController.navigationBarHidden = NO;
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    self.navigationController.navigationBarHidden = NO;
 }
 @end
