@@ -103,7 +103,7 @@
     
     
     
-    //[PFUser logOut];
+    [PFUser logOut];
     [self registerNotificationCenter];
     [self initRongCloudService];
     //登录

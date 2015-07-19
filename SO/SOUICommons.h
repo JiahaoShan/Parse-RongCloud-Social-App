@@ -12,4 +12,5 @@
 @interface SOUICommons : NSObject
 +(UIColor*)primaryTintColor;
 +(UIColor*)textColor;
+
 @end

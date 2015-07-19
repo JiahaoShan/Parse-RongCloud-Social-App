@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4CA1CB791B5AC4C900B21EEF /* SOImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA1CB781B5AC4C900B21EEF /* SOImageViewController.m */; };
+		4CA1CB7C1B5B40BD00B21EEF /* SOActionSheetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA1CB7B1B5B40BD00B21EEF /* SOActionSheetManager.m */; };
 		4CA673951B52615C00D5FDFA /* SOPlaygroundFeedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA673941B52615C00D5FDFA /* SOPlaygroundFeedImageView.m */; };
 		4CA6739B1B52661A00D5FDFA /* SODownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6739A1B52661A00D5FDFA /* SODownloadManager.m */; };
 		4CA6739F1B526DCF00D5FDFA /* SOPlaygoundTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA6739E1B526DCF00D5FDFA /* SOPlaygoundTest.m */; };
@@ -101,6 +102,8 @@
 /* Begin PBXFileReference section */
 		4CA1CB771B5AC4C900B21EEF /* SOImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOImageViewController.h; sourceTree = "<group>"; };
 		4CA1CB781B5AC4C900B21EEF /* SOImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOImageViewController.m; sourceTree = "<group>"; };
+		4CA1CB7A1B5B40BD00B21EEF /* SOActionSheetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOActionSheetManager.h; sourceTree = "<group>"; };
+		4CA1CB7B1B5B40BD00B21EEF /* SOActionSheetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOActionSheetManager.m; sourceTree = "<group>"; };
 		4CA673921B525D7300D5FDFA /* SODefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SODefines.h; sourceTree = "<group>"; };
 		4CA673931B52615C00D5FDFA /* SOPlaygroundFeedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPlaygroundFeedImageView.h; sourceTree = "<group>"; };
 		4CA673941B52615C00D5FDFA /* SOPlaygroundFeedImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedImageView.m; sourceTree = "<group>"; };
@@ -340,6 +343,8 @@
 				4CBCF6B21B52510F00EE2195 /* SOBaseViewController.m */,
 				4CBCF6BB1B5257A500EE2195 /* SOTableViewController.h */,
 				4CBCF6BC1B5257A500EE2195 /* SOTableViewController.m */,
+				4CA1CB7A1B5B40BD00B21EEF /* SOActionSheetManager.h */,
+				4CA1CB7B1B5B40BD00B21EEF /* SOActionSheetManager.m */,
 				4CA1CB771B5AC4C900B21EEF /* SOImageViewController.h */,
 				4CA1CB781B5AC4C900B21EEF /* SOImageViewController.m */,
 				4CBCF6C41B52592F00EE2195 /* UIView+ActivityIndicator.h */,
@@ -703,6 +708,7 @@
 				8A5800491B522F010032EC1C /* AppDelegate.m in Sources */,
 				4CBCF6B01B524F7500EE2195 /* SOUICommons.m in Sources */,
 				8A8303D11B54BDCA00FB22A5 /* SOSignupViewController.m in Sources */,
+				4CA1CB7C1B5B40BD00B21EEF /* SOActionSheetManager.m in Sources */,
 				4CA673D01B541D9C00D5FDFA /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				8A5800461B522F010032EC1C /* main.m in Sources */,
 				4CBCF6C61B52592F00EE2195 /* UIView+ActivityIndicator.m in Sources */,

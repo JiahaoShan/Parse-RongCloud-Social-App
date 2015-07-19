@@ -46,6 +46,7 @@
 
 -(void)configureWithData:(PFObject*)data{
     PFUser* user = [data objectForKey:@"poster"];
+    [user fetchIfNeeded];
     [self.feedImageView setImages:[data objectForKey:@"images"]];
     self.feedImageView.delegate = self;
     

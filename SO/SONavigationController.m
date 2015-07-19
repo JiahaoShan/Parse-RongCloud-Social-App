@@ -14,5 +14,6 @@
     [super awakeFromNib];
     [[self navigationBar] setBarTintColor:[SOUICommons primaryTintColor]];
     [[self navigationBar] setTitleTextAttributes:@{NSForegroundColorAttributeName:[SOUICommons textColor]}];
+    [self setExtendedLayoutIncludesOpaqueBars:false];
 }
 @end
