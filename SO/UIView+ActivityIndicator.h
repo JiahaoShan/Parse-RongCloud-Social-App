@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface UIView (ActivityIndicator)
-@property UIActivityIndicatorView* activityIndicator;
+@property (nonatomic, strong) UIActivityIndicatorView* activityIndicator;
 -(void)showActivityIndicator;
 -(void)hideActivityIndicator;
 @end

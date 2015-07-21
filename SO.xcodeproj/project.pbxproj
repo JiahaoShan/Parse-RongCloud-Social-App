@@ -92,6 +92,7 @@
 		8AA7BC891B5DF98300ABB812 /* PlaygroundImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA7BC881B5DF98300ABB812 /* PlaygroundImage.m */; };
 		8AA7BC8C1B5DFA9D00ABB812 /* UserRelation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA7BC8B1B5DFA9D00ABB812 /* UserRelation.m */; };
 		8AA7BC8F1B5DFCA300ABB812 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA7BC8E1B5DFCA300ABB812 /* User.m */; };
+		8AA7BC921B5E07CE00ABB812 /* SOImagePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA7BC911B5E07CE00ABB812 /* SOImagePageViewController.m */; };
 		8AF8FA7E1B54A20300401474 /* SOCommonStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF8FA7D1B54A20300401474 /* SOCommonStrings.m */; };
 /* End PBXBuildFile section */
 
@@ -241,6 +242,8 @@
 		8AA7BC8B1B5DFA9D00ABB812 /* UserRelation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserRelation.m; sourceTree = "<group>"; };
 		8AA7BC8D1B5DFCA300ABB812 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		8AA7BC8E1B5DFCA300ABB812 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		8AA7BC901B5E07CE00ABB812 /* SOImagePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOImagePageViewController.h; sourceTree = "<group>"; };
+		8AA7BC911B5E07CE00ABB812 /* SOImagePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOImagePageViewController.m; sourceTree = "<group>"; };
 		8AF8FA7C1B54A20300401474 /* SOCommonStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCommonStrings.h; sourceTree = "<group>"; };
 		8AF8FA7D1B54A20300401474 /* SOCommonStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCommonStrings.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -367,6 +370,8 @@
 				4CA1CB781B5AC4C900B21EEF /* SOImageViewController.m */,
 				4CBCF6C41B52592F00EE2195 /* UIView+ActivityIndicator.h */,
 				4CBCF6C51B52592F00EE2195 /* UIView+ActivityIndicator.m */,
+				8AA7BC901B5E07CE00ABB812 /* SOImagePageViewController.h */,
+				8AA7BC911B5E07CE00ABB812 /* SOImagePageViewController.m */,
 			);
 			name = SOBasicUI;
 			sourceTree = "<group>";
@@ -731,6 +736,7 @@
 				4CA673951B52615C00D5FDFA /* SOPlaygroundFeedImageView.m in Sources */,
 				8AA7BC891B5DF98300ABB812 /* PlaygroundImage.m in Sources */,
 				4CBCF6B91B52521200EE2195 /* SOTabBarController.m in Sources */,
+				8AA7BC921B5E07CE00ABB812 /* SOImagePageViewController.m in Sources */,
 				4CA673D21B541D9C00D5FDFA /* UIButton+AFNetworking.m in Sources */,
 				8A692F251B53349F00E9DC22 /* SOChatListViewController.m in Sources */,
 				4CA673D61B541D9C00D5FDFA /* UIWebView+AFNetworking.m in Sources */,

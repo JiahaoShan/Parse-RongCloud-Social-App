@@ -8,6 +8,7 @@
 
 #import "SOImageViewController.h"
 #import "SOActionSheetManager.h"
+#import "UIView+ActivityIndicator.h"
 
 @interface SOImageViewController ()
 @property (nonatomic) PFImageView* imageView;
@@ -25,13 +26,26 @@
     return _imageView;
 }
 
+- (void)setImage:(PFFile*)image WithPlaceholder:(PFImageView*) placeholder {
+    UIImage * placeholderImage = placeholder.image;
+    [self.imageView setImage:placeholderImage];
+    // 现在看上去可能比较大 因为Playgournd现在没有加载thumbnail
+    _imageView.frame = CGRectMake(0, 0, placeholderImage.size.width, placeholderImage.size.height);
+    _imageView.center = self.view.center;
+    _imageView.clipsToBounds = YES;
+    _imageView.alpha = 0.7;
+    //[self.view showActivityIndicator];
+    [self setImage:image];
+}
+
 -(void)setImage:(PFFile*)image{
     [self.imageView setFile:image];
     [self.imageView loadInBackground:^(UIImage *image,  NSError *error){
+    //[self.view hideActivityIndicator];
+
         CGFloat height = image.size.height;
         CGFloat width = image.size.width;
         CGFloat ratio = height/width;
-        
         
         CGSize screen = [UIScreen mainScreen].bounds.size;
         CGFloat sRatio = screen.height / screen.width;
@@ -42,9 +56,18 @@
         }else{
             frame.size = CGSizeMake(screen.width, height * screen.width / width);
         }
-        
-        _imageView.frame = frame;
-        _imageView.center = self.view.center;
+        [UIView animateWithDuration:0.3
+                              delay:0.0
+                            options:0
+                         animations:^{
+                             _imageView.transform = CGAffineTransformIdentity;
+                             _imageView.alpha = 1.0;
+                             _imageView.frame = frame;
+                             _imageView.center = self.view.center;
+                         }
+                         completion:^(BOOL finished){
+                             
+                         }];
     }];
 }
 
@@ -61,10 +84,12 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    if (!self.disablesNavigationBarHiddenControl)
     [self.navigationController setNavigationBarHidden:true animated:animated];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
+    if (!self.disablesNavigationBarHiddenControl)
     [self.navigationController setNavigationBarHidden:false animated:animated];
 }
 
@@ -87,7 +112,7 @@
 }
 
 -(void)tapped:(UITapGestureRecognizer*)t{
-    [[self navigationController] popViewControllerAnimated:true];
+    [[self navigationController] popViewControllerAnimated:NO];
 }
 
 /*

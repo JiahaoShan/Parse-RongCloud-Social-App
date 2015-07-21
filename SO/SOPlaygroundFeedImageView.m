@@ -97,7 +97,12 @@
             [iv setFrame:frame];
             [iv setImage:[UIImage imageNamed:@"placeholderImage"]];
             [iv setFile:files[i]];
-            [iv loadInBackground];
+            [iv loadInBackground: ^(UIImage *image, NSError *error) {
+                if (!error) {
+                    // Configure your image view in here
+                    
+                }
+            }];
             [self addSubview:iv];
             [self.imageViews addObject:iv];
         }
@@ -124,5 +129,7 @@
     _visible = visible;
 }
 
-
+- (NSMutableArray*) getImageViews {
+    return self.imageViews;
+}
 @end

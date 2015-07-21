@@ -66,4 +66,8 @@
 -(void)didTapImageAtIndex:(NSUInteger)index{
     [self.delegate cell:self didTapImageAtIndex:index];
 }
+
+- (NSMutableArray*) getFeedImageViews {
+    return self.feedImageView.getImageViews;
+}
 @end

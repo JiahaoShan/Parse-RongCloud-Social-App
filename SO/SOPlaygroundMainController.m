@@ -10,8 +10,7 @@
 #import "SOPlaygroundFeedCell.h"
 #import "SODefines.h"
 #import "SOImageViewController.h"
-#import "PlaygroundFeed.h"
-
+#import "SOImagePageViewController.h"
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
 
@@ -126,10 +125,24 @@
 //    PlaygroundFeed * feed = [PlaygroundFeed object];
 //    feed.message = @"Hahahahah";
     NSIndexPath* cellIndex = [self.tableView indexPathForCell:cell];
-    PFFile* image = self.objects[cellIndex.row][@"images"][index];
-    SOImageViewController* iv = [[SOImageViewController alloc] init];
-    [iv setImage:image];
-    [self.navigationController pushViewController:iv animated:true];
+    NSArray* images = self.objects[cellIndex.row][@"images"];
+    UIViewController* imageViewController = nil;
+    NSMutableArray* feedImageView = cell.getFeedImageViews;
+    PFImageView* imageView = (PFImageView*)feedImageView[index];
+    UIWindow *mainWindow = [[UIApplication sharedApplication] keyWindow];
+    CGPoint pointInWindowCenter = [mainWindow convertPoint:imageView.center  fromWindow:nil];
+
+    if ([images count] > 1) {
+        NSMutableArray* feedImageView = cell.getFeedImageViews;
+        imageViewController = (SOImagePageViewController*)[[SOImagePageViewController alloc] initWithImages:images AndThumbnails:feedImageView AtIndex:index];
+    }
+    else {
+        PFFile* image = images[index];
+        imageViewController = (SOImageViewController*)[[SOImageViewController alloc] init];
+        NSMutableArray* feedImageView = cell.getFeedImageViews;
+        [(SOImageViewController*)imageViewController setImage:image WithPlaceholder:[feedImageView firstObject]];
+    }
+    [self.navigationController pushViewController:imageViewController animated:NO];
 }
 
 #pragma mark - Segue
