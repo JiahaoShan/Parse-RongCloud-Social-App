@@ -10,6 +10,7 @@
 #import "SOPlaygroundFeedCell.h"
 #import "SODefines.h"
 #import "SOImageViewController.h"
+#import "PlaygroundFeed.h"
 
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
@@ -122,6 +123,8 @@
 #pragma mark - SOPlaygroundFeedCellDelegate
 
 -(void)cell:(SOPlaygroundFeedCell *)cell didTapImageAtIndex:(NSUInteger)index{
+//    PlaygroundFeed * feed = [PlaygroundFeed object];
+//    feed.message = @"Hahahahah";
     NSIndexPath* cellIndex = [self.tableView indexPathForCell:cell];
     PFFile* image = self.objects[cellIndex.row][@"images"][index];
     SOImageViewController* iv = [[SOImageViewController alloc] init];

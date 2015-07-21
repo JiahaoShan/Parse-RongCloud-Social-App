@@ -28,6 +28,13 @@
 #import "SOCommonStrings.h"
 #import "SOTabBarController.h"
 
+#import "PlaygroundFeed.h"
+#import "PlaygroundImage.h"
+#import "PlaygroundComment.h"
+#import "PlaygroundLike.h"
+#import "UserRelation.h"
+#import "User.h"
+
 #define iPhone6                                                                \
 ([UIScreen instancesRespondToSelector:@selector(currentMode)]                \
 ? CGSizeEqualToSize(CGSizeMake(750, 1334),                              \
@@ -52,6 +59,7 @@
     // use Local Datastore features or want to use cachePolicy.
     
     [Parse enableLocalDatastore];
+    [self initCustomizedDataModel];
     //[ParseCrashReporting enable];
 
     [Parse setApplicationId:@"uBuTDLkmhCRldizIowfn0RKXztA95UnsFJBtDaXG"
@@ -407,6 +415,15 @@
         SOTabBarController *rootNavi = [storyboard instantiateViewControllerWithIdentifier:@"SOtabBarController"];
         self.window.rootViewController = rootNavi;
     });
+}
+
+- (void) initCustomizedDataModel{
+    [PlaygroundFeed registerSubclass];
+    [PlaygroundComment registerSubclass];
+    [PlaygroundImage registerSubclass];
+    [PlaygroundLike registerSubclass];
+    [UserRelation registerSubclass];
+    [User registerSubclass];
 }
 //PFFile *imageFile = [photo objectForKey:@"file"];
 //NSURL *imageFileUrl = [[NSURL alloc] initWithString:imageFile.url];

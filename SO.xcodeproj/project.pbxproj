@@ -86,6 +86,12 @@
 		8A8303D81B58AC0900FB22A5 /* SOConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8303D71B58AC0900FB22A5 /* SOConversationViewController.m */; };
 		8A8303DC1B58B92100FB22A5 /* SOPeopleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8303DB1B58B92100FB22A5 /* SOPeopleTableViewController.m */; };
 		8A8303E81B58D0B200FB22A5 /* portrait_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A8303E71B58D0B200FB22A5 /* portrait_placeholder.png */; };
+		8AA7BC801B5C929600ABB812 /* PlaygroundFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA7BC7F1B5C929600ABB812 /* PlaygroundFeed.m */; };
+		8AA7BC831B5DF77200ABB812 /* PlaygroundLike.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA7BC821B5DF77200ABB812 /* PlaygroundLike.m */; };
+		8AA7BC861B5DF8AF00ABB812 /* PlaygroundComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA7BC851B5DF8AF00ABB812 /* PlaygroundComment.m */; };
+		8AA7BC891B5DF98300ABB812 /* PlaygroundImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA7BC881B5DF98300ABB812 /* PlaygroundImage.m */; };
+		8AA7BC8C1B5DFA9D00ABB812 /* UserRelation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA7BC8B1B5DFA9D00ABB812 /* UserRelation.m */; };
+		8AA7BC8F1B5DFCA300ABB812 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA7BC8E1B5DFCA300ABB812 /* User.m */; };
 		8AF8FA7E1B54A20300401474 /* SOCommonStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF8FA7D1B54A20300401474 /* SOCommonStrings.m */; };
 /* End PBXBuildFile section */
 
@@ -223,6 +229,18 @@
 		8A8303DA1B58B92100FB22A5 /* SOPeopleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPeopleTableViewController.h; sourceTree = "<group>"; };
 		8A8303DB1B58B92100FB22A5 /* SOPeopleTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPeopleTableViewController.m; sourceTree = "<group>"; };
 		8A8303E71B58D0B200FB22A5 /* portrait_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = portrait_placeholder.png; path = SO/Resources/portrait_placeholder.png; sourceTree = "<group>"; };
+		8AA7BC7E1B5C929600ABB812 /* PlaygroundFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaygroundFeed.h; path = DataModel/PlaygroundFeed.h; sourceTree = "<group>"; };
+		8AA7BC7F1B5C929600ABB812 /* PlaygroundFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlaygroundFeed.m; path = DataModel/PlaygroundFeed.m; sourceTree = "<group>"; };
+		8AA7BC811B5DF77200ABB812 /* PlaygroundLike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaygroundLike.h; sourceTree = "<group>"; };
+		8AA7BC821B5DF77200ABB812 /* PlaygroundLike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaygroundLike.m; sourceTree = "<group>"; };
+		8AA7BC841B5DF8AF00ABB812 /* PlaygroundComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaygroundComment.h; sourceTree = "<group>"; };
+		8AA7BC851B5DF8AF00ABB812 /* PlaygroundComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaygroundComment.m; sourceTree = "<group>"; };
+		8AA7BC871B5DF98300ABB812 /* PlaygroundImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaygroundImage.h; sourceTree = "<group>"; };
+		8AA7BC881B5DF98300ABB812 /* PlaygroundImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaygroundImage.m; sourceTree = "<group>"; };
+		8AA7BC8A1B5DFA9D00ABB812 /* UserRelation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserRelation.h; sourceTree = "<group>"; };
+		8AA7BC8B1B5DFA9D00ABB812 /* UserRelation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserRelation.m; sourceTree = "<group>"; };
+		8AA7BC8D1B5DFCA300ABB812 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		8AA7BC8E1B5DFCA300ABB812 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		8AF8FA7C1B54A20300401474 /* SOCommonStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCommonStrings.h; sourceTree = "<group>"; };
 		8AF8FA7D1B54A20300401474 /* SOCommonStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCommonStrings.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -434,6 +452,7 @@
 		8A5800421B522F010032EC1C /* SO */ = {
 			isa = PBXGroup;
 			children = (
+				8AA7BC7D1B5C920600ABB812 /* DataModel */,
 				8A8303D91B58B8FB00FB22A5 /* SOPeople */,
 				8A8303CB1B54BD2500FB22A5 /* SOLogin */,
 				8A692F221B53347A00E9DC22 /* SOMessage */,
@@ -579,6 +598,25 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
+		8AA7BC7D1B5C920600ABB812 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				8AA7BC7E1B5C929600ABB812 /* PlaygroundFeed.h */,
+				8AA7BC7F1B5C929600ABB812 /* PlaygroundFeed.m */,
+				8AA7BC811B5DF77200ABB812 /* PlaygroundLike.h */,
+				8AA7BC821B5DF77200ABB812 /* PlaygroundLike.m */,
+				8AA7BC841B5DF8AF00ABB812 /* PlaygroundComment.h */,
+				8AA7BC851B5DF8AF00ABB812 /* PlaygroundComment.m */,
+				8AA7BC871B5DF98300ABB812 /* PlaygroundImage.h */,
+				8AA7BC881B5DF98300ABB812 /* PlaygroundImage.m */,
+				8AA7BC8A1B5DFA9D00ABB812 /* UserRelation.h */,
+				8AA7BC8B1B5DFA9D00ABB812 /* UserRelation.m */,
+				8AA7BC8D1B5DFCA300ABB812 /* User.h */,
+				8AA7BC8E1B5DFCA300ABB812 /* User.m */,
+			);
+			name = DataModel;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -691,6 +729,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4CA673951B52615C00D5FDFA /* SOPlaygroundFeedImageView.m in Sources */,
+				8AA7BC891B5DF98300ABB812 /* PlaygroundImage.m in Sources */,
 				4CBCF6B91B52521200EE2195 /* SOTabBarController.m in Sources */,
 				4CA673D21B541D9C00D5FDFA /* UIButton+AFNetworking.m in Sources */,
 				8A692F251B53349F00E9DC22 /* SOChatListViewController.m in Sources */,
@@ -698,6 +737,7 @@
 				4CA673D41B541D9C00D5FDFA /* UIProgressView+AFNetworking.m in Sources */,
 				4CA673B61B54166400D5FDFA /* AFHTTPSessionManager.m in Sources */,
 				4CBCF6B61B52517D00EE2195 /* SONavigationController.m in Sources */,
+				8AA7BC831B5DF77200ABB812 /* PlaygroundLike.m in Sources */,
 				4CA673D31B541D9C00D5FDFA /* UIImageView+AFNetworking.m in Sources */,
 				8A8303CE1B54BD5600FB22A5 /* SOLoginViewController.m in Sources */,
 				4CA673B71B54166400D5FDFA /* AFNetworkReachabilityManager.m in Sources */,
@@ -710,6 +750,8 @@
 				8A8303D11B54BDCA00FB22A5 /* SOSignupViewController.m in Sources */,
 				4CA1CB7C1B5B40BD00B21EEF /* SOActionSheetManager.m in Sources */,
 				4CA673D01B541D9C00D5FDFA /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				8AA7BC8C1B5DFA9D00ABB812 /* UserRelation.m in Sources */,
+				8AA7BC801B5C929600ABB812 /* PlaygroundFeed.m in Sources */,
 				8A5800461B522F010032EC1C /* main.m in Sources */,
 				4CBCF6C61B52592F00EE2195 /* UIView+ActivityIndicator.m in Sources */,
 				4CBCF6BD1B5257A500EE2195 /* SOTableViewController.m in Sources */,
@@ -720,6 +762,7 @@
 				4CBCF6C01B5257D100EE2195 /* SOPlaygroundMainController.m in Sources */,
 				4CA673B81B54166400D5FDFA /* AFSecurityPolicy.m in Sources */,
 				4CA673D51B541D9C00D5FDFA /* UIRefreshControl+AFNetworking.m in Sources */,
+				8AA7BC8F1B5DFCA300ABB812 /* User.m in Sources */,
 				4CA673D11B541D9C00D5FDFA /* UIAlertView+AFNetworking.m in Sources */,
 				4CBCF6D31B525CD700EE2195 /* SOPlaygroundFeedGenderView.m in Sources */,
 				4CA673B51B54166400D5FDFA /* AFHTTPRequestOperationManager.m in Sources */,
@@ -728,6 +771,7 @@
 				8AF8FA7E1B54A20300401474 /* SOCommonStrings.m in Sources */,
 				4CA673BB1B54166400D5FDFA /* AFURLResponseSerialization.m in Sources */,
 				8A8303D81B58AC0900FB22A5 /* SOConversationViewController.m in Sources */,
+				8AA7BC861B5DF8AF00ABB812 /* PlaygroundComment.m in Sources */,
 				4CA673CF1B541D9C00D5FDFA /* AFNetworkActivityIndicatorManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
