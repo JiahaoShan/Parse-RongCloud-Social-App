@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
+#import "User.h"
 
 @interface SOPeopleTableViewController ()
 
@@ -101,7 +102,7 @@
 - (PFQuery *)queryForTable {
     //PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
 
-    PFQuery *query = [PFUser query];
+    PFQuery *query = [User query];
     [query whereKey:@"eduDomain" equalTo:@"wisc.edu"];
     
     // If Pull To Refresh is enabled, query against the network by default.

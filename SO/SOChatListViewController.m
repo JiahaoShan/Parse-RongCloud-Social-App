@@ -16,6 +16,7 @@
 
 @interface SOChatListViewController ()
 
+
 @end
 
 @implementation SOChatListViewController

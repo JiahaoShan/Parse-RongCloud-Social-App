@@ -57,20 +57,21 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Enable storing and querying data from Local Datastore. Remove this line if you don't want to
     // use Local Datastore features or want to use cachePolicy.
-    
+
     [Parse enableLocalDatastore];
-    [self initCustomizedDataModel];
     //[ParseCrashReporting enable];
+    [self initCustomizedDataModel];
 
     [Parse setApplicationId:@"uBuTDLkmhCRldizIowfn0RKXztA95UnsFJBtDaXG"
                   clientKey:@"eWLFMmcLaMSgUgYoOyz8UoNdpq24iTTFFmPrlEhB"];
+
     // ****************************************************************************
     // If you are using Facebook, uncomment and add your FacebookAppID to your bundle's plist as
     // described here: https://developers.facebook.com/docs/getting-started/facebook-sdk-for-ios/
     // [PFFacebookUtils initializeFacebook];
     // ****************************************************************************
     
-    //[PFUser enableAutomaticUser];  // No anonymous user allowed
+    //[User enableAutomaticUser];  // No anonymous user allowed
     PFACL *defaultACL = [PFACL ACL];
     // If you would like all objects to be private by default, remove this line.
     [defaultACL setPublicReadAccess:YES];
@@ -111,12 +112,12 @@
     
     
     
-    //[PFUser logOut];
+    //[User logOut];
     [self registerNotificationCenter];
     [self initRongCloudService];
     //登录
     NSString *token =[[NSUserDefaults standardUserDefaults] objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
-    if (token.length && [PFUser currentUser]) {
+    if (token.length && [User currentUser]) {
         [self connectToRongCloud];
     } else {
         SOLoginViewController *logInController = [[SOLoginViewController alloc] init];
@@ -253,7 +254,7 @@
 #pragma mark NotificationCenter Handlers
 
 - (void) userDidLogIn: (id) sender {
-    if ([PFUser currentUser]) {
+    if ([User currentUser]) {
         [self registerRongCloudService];
     }
     else {
@@ -266,7 +267,7 @@
 }
 
 - (void) userDidSignUp: (id) sender {
-    if ([PFUser currentUser]) {
+    if ([User currentUser]) {
         [self registerRongCloudService];
     }
     else {
@@ -293,7 +294,7 @@
 }
 
 - (void) getRongCloudTokenForUser {
-    PFUser *currentUser = [PFUser currentUser];
+    User *currentUser = [User currentUser];
     [PFCloud callFunctionInBackground:@"getToken"
                        withParameters:@{@"userId": currentUser.objectId , @"name" : [currentUser objectForKey:UserNameKey], @"portraitUri" :
                                         @"http://img.135q.com/2015-06/20/14348061890006.jpg"}
@@ -314,7 +315,7 @@
 }
 
 - (void) connectToRongCloud {
-    PFUser* user = [PFUser currentUser];
+    User* user = [User currentUser];
     RCUserInfo *_currentUserInfo =
     [[RCUserInfo alloc] initWithUserId:user.objectId
                                   name:[user objectForKey:UserNameKey]
@@ -350,14 +351,14 @@
 - (void)getUserInfoWithUserId:(NSString *)userId completion:(void(^)(RCUserInfo* userInfo))completion
 {
     RCUserInfo *user = nil;
-    PFQuery *query = [PFUser query];
+    PFQuery *query = [User query];
     [query fromLocalDatastore];
-    PFUser* targetUser = (PFUser *)[query getObjectWithId:userId];
+    User* targetUser = (User *)[query getObjectWithId:userId];
     if (!targetUser) {
         // Error, Fetch???
-        PFQuery *query = [PFUser query];
+        PFQuery *query = [User query];
 //        query.cachePolicy = kPFCachePolicyNetworkElseCache;
-        PFUser* targetUser = (PFUser *)[query getObjectWithId:userId];
+        User* targetUser = (User *)[query getObjectWithId:userId];
         if (!targetUser) {
             // User does not even exist online, must be an Error, Fetch???
             NSLog(@"userId not even existed online.");
@@ -383,7 +384,7 @@
 #pragma mark - Parse Login delegate
 
 - (void)logInViewController:(PFLogInViewController *)controller
-               didLogInUser:(PFUser *)user {
+               didLogInUser:(User *)user {
     [[NSNotificationCenter defaultCenter] postNotificationName:SONotificationUserLogIn object:nil];
     [self showTabViewController];
 }
@@ -394,7 +395,7 @@
 
 #pragma mark - Parse Signup delegate
 
-- (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
+- (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(User *)user {
     [[NSNotificationCenter defaultCenter] postNotificationName:SONotificationUserSignUp object:nil];
     [self showTabViewController];
 }
@@ -418,12 +419,12 @@
 }
 
 - (void) initCustomizedDataModel{
+    [User registerSubclass];
     [PlaygroundFeed registerSubclass];
     [PlaygroundComment registerSubclass];
     [PlaygroundImage registerSubclass];
     [PlaygroundLike registerSubclass];
     [UserRelation registerSubclass];
-    [User registerSubclass];
 }
 //PFFile *imageFile = [photo objectForKey:@"file"];
 //NSURL *imageFileUrl = [[NSURL alloc] initWithString:imageFile.url];
@@ -675,7 +676,7 @@
 //    if (remoteNotificationPayload) {
 //        [[NSNotificationCenter defaultCenter] postNotificationName:PAPAppDelegateApplicationDidReceiveRemoteNotification object:nil userInfo:remoteNotificationPayload];
 //        
-//        if (![PFUser currentUser]) {
+//        if (![User currentUser]) {
 //            return;
 //        }
 //        
@@ -689,7 +690,7 @@
 //        // If the push notification payload references a user, we will attempt to push their profile into view
 //        NSString *fromObjectId = [remoteNotificationPayload objectForKey:kPAPPushPayloadFromUserObjectIdKey];
 //        if (fromObjectId && fromObjectId.length > 0) {
-//            PFQuery *query = [PFUser query];
+//            PFQuery *query = [User query];
 //            query.cachePolicy = kPFCachePolicyCacheElseNetwork;
 //            [query getObjectInBackgroundWithId:fromObjectId block:^(PFObject *user, NSError *error) {
 //                if (!error) {
@@ -698,7 +699,7 @@
 //                    
 //                    PAPAccountViewController *accountViewController = [[PAPAccountViewController alloc] initWithStyle:UITableViewStylePlain];
 //                    NSLog(@"Presenting account view controller with user: %@", user);
-//                    accountViewController.user = (PFUser *)user;
+//                    accountViewController.user = (User *)user;
 //                    [homeNavigationController pushViewController:accountViewController animated:YES];
 //                }
 //            }];

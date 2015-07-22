@@ -10,6 +10,7 @@
 #import "SOPlaygroundFeedImageView.h"
 #import "SOPlaygroundFeedGenderView.h"
 #import <ParseUI/ParseUI.h>
+#import "User.h"
 
 @interface SOPlaygroundFeedCell()<SOPlaygroundFeedImageViewDelegate>
 @property (weak, nonatomic) IBOutlet SOPlaygroundFeedGenderView *feedGenderView;
@@ -45,7 +46,7 @@
 }
 
 -(void)configureWithData:(PFObject*)data{
-    PFUser* user = [data objectForKey:@"poster"];
+    User* user = [data objectForKey:@"poster"];
     [user fetchIfNeeded];
     [self.feedImageView setImages:[data objectForKey:@"images"]];
     self.feedImageView.delegate = self;
