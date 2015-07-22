@@ -15,6 +15,7 @@
 @property (nonatomic) NSInteger startIndex;
 @property (nonatomic) NSInteger currentIndex;
 @property (nonatomic, strong) NSMutableDictionary* ifVisited;
+@property (nonatomic, strong) NSMutableArray* frames;
 @end
 
 @implementation SOImagePageViewController
@@ -36,16 +37,26 @@
     [super viewWillDisappear:animated];
 }
 
-- (id)initWithImages: (NSArray*) images AndThumbnails: (NSArray*) thumbnails AtIndex:(NSInteger) index {
+- (id)initWithImages: (NSArray*) images AndThumbnails: (NSArray*) thumbnails AtIndex:(NSInteger) index FromParent: (id) parent{
     self = [super init];
     if(self) {
+        self.parent = parent;
         self.pageImages = images;
         self.pageImagesThumbnails = thumbnails;
         self.startIndex = index;
+        [self initFrames];
         [self createPageViewControllerWithInitImageAtIndex: index];
         [self setupPageControl];
     }
     return self;
+}
+
+- (void) initFrames {
+    self.frames = [[NSMutableArray alloc] init];
+    for (int i = 0 ; i < [self.pageImagesThumbnails count]; i++) {
+        PFImageView* pageImagesThumbnailView = (PFImageView*)self.pageImagesThumbnails[i];
+        [self.frames addObject:[NSValue valueWithCGRect:[pageImagesThumbnailView.superview convertRect:pageImagesThumbnailView.frame toView:[[UIApplication sharedApplication] keyWindow]]]];
+    }
 }
 
 - (void)createPageViewControllerWithInitImageAtIndex: (NSInteger) index
@@ -105,12 +116,15 @@
 {
     if (imageIndex < [self.pageImages count])
     {
+        PFImageView* pageImagesThumbnailView = (PFImageView*)self.pageImagesThumbnails[imageIndex];
         SOImageViewController *imageController = [[SOImageViewController alloc] init];
         imageController.imageIndex = imageIndex;
         imageController.disablesNavigationBarHiddenControl = YES;
-        // 
         [imageController setImage:self.pageImages[imageIndex] WithPlaceholder:self.pageImagesThumbnails[imageIndex]];
         self.currentIndex = imageIndex;
+        imageController.delegate = self.parent;
+        CGRect frameInWindow = [[self.frames objectAtIndex:imageIndex] CGRectValue];
+        imageController.returnToFrame = frameInWindow;
         return imageController;
     }
     

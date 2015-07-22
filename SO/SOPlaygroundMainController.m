@@ -14,7 +14,7 @@
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
 
-@interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate,SOPlaygroundFeedCellDelegate>
+@interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate,SOPlaygroundFeedCellDelegate, imageViewDelegate>
 @property (nonatomic) NSArray* feedsData;
 @property (nonatomic) BOOL initialized;
 @end
@@ -126,23 +126,68 @@
 //    feed.message = @"Hahahahah";
     NSIndexPath* cellIndex = [self.tableView indexPathForCell:cell];
     NSArray* images = self.objects[cellIndex.row][@"images"];
-    UIViewController* imageViewController = nil;
     NSMutableArray* feedImageView = cell.getFeedImageViews;
     PFImageView* imageView = (PFImageView*)feedImageView[index];
-    UIWindow *mainWindow = [[UIApplication sharedApplication] keyWindow];
-    CGPoint pointInWindowCenter = [mainWindow convertPoint:imageView.center  fromWindow:nil];
+    
+    CGRect frameInWindow = [imageView.superview convertRect:imageView.frame toView:[[UIApplication sharedApplication] keyWindow]];
 
-    if ([images count] > 1) {
-        NSMutableArray* feedImageView = cell.getFeedImageViews;
-        imageViewController = (SOImagePageViewController*)[[SOImagePageViewController alloc] initWithImages:images AndThumbnails:feedImageView AtIndex:index];
-    }
-    else {
-        PFFile* image = images[index];
-        imageViewController = (SOImageViewController*)[[SOImageViewController alloc] init];
-        NSMutableArray* feedImageView = cell.getFeedImageViews;
-        [(SOImageViewController*)imageViewController setImage:image WithPlaceholder:[feedImageView firstObject]];
-    }
-    [self.navigationController pushViewController:imageViewController animated:NO];
+    UIView * blackOverlay = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    blackOverlay.backgroundColor = [UIColor clearColor];
+    
+    UIWindow* currentWindow = [UIApplication sharedApplication].keyWindow;
+    [currentWindow addSubview:blackOverlay];
+    
+    UIImageView* imageAnimationView = [[UIImageView alloc] initWithImage:imageView.image];
+    imageAnimationView.frame = frameInWindow;
+    [currentWindow addSubview:imageAnimationView];
+    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         blackOverlay.backgroundColor = [UIColor blackColor];
+                         imageAnimationView.center = currentWindow.center;
+                         imageAnimationView.alpha = 0.5;
+                     } completion:^(BOOL finished) {
+                         [blackOverlay removeFromSuperview];
+                         [imageAnimationView removeFromSuperview];
+                         
+                         UIViewController* imageViewController = nil;
+                         if ([images count] > 1) {
+                             imageViewController = (SOImagePageViewController*)[[SOImagePageViewController alloc] initWithImages:images AndThumbnails:feedImageView AtIndex:index FromParent:self];
+                         }
+                         else {
+                             PFFile* image = images[index];
+                             imageViewController = (SOImageViewController*)[[SOImageViewController alloc] init];
+                             [(SOImageViewController*)imageViewController setImage:image WithPlaceholder:[feedImageView firstObject]];
+                             ((SOImageViewController*)imageViewController).returnToFrame = frameInWindow;
+                             ((SOImageViewController*)imageViewController).delegate = self;
+                         }
+                         [self.navigationController pushViewController:imageViewController animated:NO];
+                     }];
+    blackOverlay = nil;
+    imageAnimationView = nil;
+}
+
+#pragma mark - SOImageViewController Delegate
+
+-(void)backFromImageView:(PFImageView *)imageView withFrame:(CGRect)frame{
+    UIView * blackOverlay = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    blackOverlay.backgroundColor = [UIColor blackColor];
+    
+    UIWindow* currentWindow = [UIApplication sharedApplication].keyWindow;
+    [currentWindow addSubview:blackOverlay];
+    
+    [currentWindow addSubview:imageView];
+    
+    [UIView animateWithDuration:0.4
+                     animations:^{
+                         blackOverlay.backgroundColor = [UIColor clearColor];
+                         imageView.frame = frame;
+                     } completion:^(BOOL finished) {
+                         [blackOverlay removeFromSuperview];
+                         [imageView removeFromSuperview];
+                     }];
+    blackOverlay = nil;
+    imageView = nil;
 }
 
 #pragma mark - Segue

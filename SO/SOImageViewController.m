@@ -20,7 +20,7 @@
 -(PFImageView*)imageView{
     if (!_imageView) {
         _imageView = [[PFImageView alloc] initWithFrame:self.view.bounds];
-        _imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        //_imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         [self.view addSubview:_imageView];
     }
     return _imageView;
@@ -30,8 +30,8 @@
     UIImage * placeholderImage = placeholder.image;
     [self.imageView setImage:placeholderImage];
     // 现在看上去可能比较大 因为Playgournd现在没有加载thumbnail
-    _imageView.frame = CGRectMake(0, 0, placeholderImage.size.width, placeholderImage.size.height);
-    _imageView.center = self.view.center;
+    _imageView.frame = CGRectMake(0, 0, placeholder.bounds.size.width, placeholder.bounds.size.height);
+    _imageView.center = [UIApplication sharedApplication].keyWindow.center;
     _imageView.clipsToBounds = YES;
     _imageView.alpha = 0.7;
     //[self.view showActivityIndicator];
@@ -63,7 +63,7 @@
                              _imageView.transform = CGAffineTransformIdentity;
                              _imageView.alpha = 1.0;
                              _imageView.frame = frame;
-                             _imageView.center = self.view.center;
+                             _imageView.center = [UIApplication sharedApplication].keyWindow.center;
                          }
                          completion:^(BOOL finished){
                              
@@ -112,6 +112,7 @@
 }
 
 -(void)tapped:(UITapGestureRecognizer*)t{
+    [self.delegate backFromImageView:self.imageView withFrame:self.returnToFrame];
     [[self navigationController] popViewControllerAnimated:NO];
 }
 
