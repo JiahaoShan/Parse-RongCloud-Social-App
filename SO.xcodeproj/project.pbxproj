@@ -40,6 +40,9 @@
 		4CBCF6CD1B525BA300EE2195 /* SOPlaygroundFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6CC1B525BA300EE2195 /* SOPlaygroundFeedCell.m */; };
 		4CBCF6CF1B525BCD00EE2195 /* SOPlaygroundFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CBCF6CE1B525BCD00EE2195 /* SOPlaygroundFeedCell.xib */; };
 		4CBCF6D31B525CD700EE2195 /* SOPlaygroundFeedGenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6D21B525CD700EE2195 /* SOPlaygroundFeedGenderView.m */; };
+		4CCD26481B5E8EDA006CDAF5 /* SOCommunityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD26471B5E8EDA006CDAF5 /* SOCommunityViewController.m */; };
+		4CCD264B1B5E8FEE006CDAF5 /* SOPersonAvatarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD264A1B5E8FEE006CDAF5 /* SOPersonAvatarView.m */; };
+		4CCD26501B5E9FA9006CDAF5 /* SOCommunityContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD264F1B5E9FA9006CDAF5 /* SOCommunityContentView.m */; };
 		8A22DB2F1B52F8CA0032AB1E /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB2E1B52F8CA0032AB1E /* AssetsLibrary.framework */; };
 		8A22DB311B52F8DD0032AB1E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB301B52F8DD0032AB1E /* AVFoundation.framework */; };
 		8A22DB331B52F8EC0032AB1E /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB321B52F8EC0032AB1E /* CoreAudio.framework */; };
@@ -174,6 +177,12 @@
 		4CBCF6CE1B525BCD00EE2195 /* SOPlaygroundFeedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SOPlaygroundFeedCell.xib; sourceTree = "<group>"; };
 		4CBCF6D11B525CD700EE2195 /* SOPlaygroundFeedGenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPlaygroundFeedGenderView.h; sourceTree = "<group>"; };
 		4CBCF6D21B525CD700EE2195 /* SOPlaygroundFeedGenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedGenderView.m; sourceTree = "<group>"; };
+		4CCD26461B5E8EDA006CDAF5 /* SOCommunityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCommunityViewController.h; sourceTree = "<group>"; };
+		4CCD26471B5E8EDA006CDAF5 /* SOCommunityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCommunityViewController.m; sourceTree = "<group>"; };
+		4CCD26491B5E8FEE006CDAF5 /* SOPersonAvatarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPersonAvatarView.h; sourceTree = "<group>"; };
+		4CCD264A1B5E8FEE006CDAF5 /* SOPersonAvatarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPersonAvatarView.m; sourceTree = "<group>"; };
+		4CCD264E1B5E9FA9006CDAF5 /* SOCommunityContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCommunityContentView.h; sourceTree = "<group>"; };
+		4CCD264F1B5E9FA9006CDAF5 /* SOCommunityContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCommunityContentView.m; sourceTree = "<group>"; };
 		8A22DB2E1B52F8CA0032AB1E /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		8A22DB301B52F8DD0032AB1E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		8A22DB321B52F8EC0032AB1E /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -418,6 +427,19 @@
 			name = SOPlaygroundFeedCell;
 			sourceTree = "<group>";
 		};
+		4CCD26451B5E8EA4006CDAF5 /* SOCommunity */ = {
+			isa = PBXGroup;
+			children = (
+				4CCD26461B5E8EDA006CDAF5 /* SOCommunityViewController.h */,
+				4CCD26471B5E8EDA006CDAF5 /* SOCommunityViewController.m */,
+				4CCD264E1B5E9FA9006CDAF5 /* SOCommunityContentView.h */,
+				4CCD264F1B5E9FA9006CDAF5 /* SOCommunityContentView.m */,
+				4CCD26491B5E8FEE006CDAF5 /* SOPersonAvatarView.h */,
+				4CCD264A1B5E8FEE006CDAF5 /* SOPersonAvatarView.m */,
+			);
+			name = SOCommunity;
+			sourceTree = "<group>";
+		};
 		8A22DB281B52F8790032AB1E /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -466,6 +488,7 @@
 				4CA6739A1B52661A00D5FDFA /* SODownloadManager.m */,
 				4CBCF6AC1B524DE700EE2195 /* SOBasicUI */,
 				4CBCF6BA1B5256EB00EE2195 /* SOPlayground */,
+				4CCD26451B5E8EA4006CDAF5 /* SOCommunity */,
 				8A5800931B52303D0032EC1C /* Framework */,
 				8A5800471B522F010032EC1C /* AppDelegate.h */,
 				8A5800481B522F010032EC1C /* AppDelegate.m */,
@@ -739,6 +762,7 @@
 				8AA7BC921B5E07CE00ABB812 /* SOImagePageViewController.m in Sources */,
 				4CA673D21B541D9C00D5FDFA /* UIButton+AFNetworking.m in Sources */,
 				8A692F251B53349F00E9DC22 /* SOChatListViewController.m in Sources */,
+				4CCD26481B5E8EDA006CDAF5 /* SOCommunityViewController.m in Sources */,
 				4CA673D61B541D9C00D5FDFA /* UIWebView+AFNetworking.m in Sources */,
 				4CA673D41B541D9C00D5FDFA /* UIProgressView+AFNetworking.m in Sources */,
 				4CA673B61B54166400D5FDFA /* AFHTTPSessionManager.m in Sources */,
@@ -751,6 +775,7 @@
 				4CA673BA1B54166400D5FDFA /* AFURLRequestSerialization.m in Sources */,
 				4CA673B91B54166400D5FDFA /* AFURLConnectionOperation.m in Sources */,
 				4CA673BC1B54166400D5FDFA /* AFURLSessionManager.m in Sources */,
+				4CCD26501B5E9FA9006CDAF5 /* SOCommunityContentView.m in Sources */,
 				8A5800491B522F010032EC1C /* AppDelegate.m in Sources */,
 				4CBCF6B01B524F7500EE2195 /* SOUICommons.m in Sources */,
 				8A8303D11B54BDCA00FB22A5 /* SOSignupViewController.m in Sources */,
@@ -759,6 +784,7 @@
 				8AA7BC8C1B5DFA9D00ABB812 /* UserRelation.m in Sources */,
 				8AA7BC801B5C929600ABB812 /* PlaygroundFeed.m in Sources */,
 				8A5800461B522F010032EC1C /* main.m in Sources */,
+				4CCD264B1B5E8FEE006CDAF5 /* SOPersonAvatarView.m in Sources */,
 				4CBCF6C61B52592F00EE2195 /* UIView+ActivityIndicator.m in Sources */,
 				4CBCF6BD1B5257A500EE2195 /* SOTableViewController.m in Sources */,
 				4CBCF6B31B52510F00EE2195 /* SOBaseViewController.m in Sources */,
