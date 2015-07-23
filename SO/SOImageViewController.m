@@ -10,9 +10,10 @@
 #import "SOActionSheetManager.h"
 #import "UIView+ActivityIndicator.h"
 
-@interface SOImageViewController ()
+@interface SOImageViewController () <UIScrollViewDelegate>
 @property (nonatomic) PFImageView* imageView;
 @property (nonatomic) UILongPressGestureRecognizer* longPress;
+@property (nonatomic, strong) UIScrollView* scrollView;
 @end
 
 @implementation SOImageViewController
@@ -21,9 +22,17 @@
     if (!_imageView) {
         _imageView = [[PFImageView alloc] initWithFrame:self.view.bounds];
         //_imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-        [self.view addSubview:_imageView];
+        [self.scrollView addSubview:_imageView];
     }
     return _imageView;
+}
+
+-(UIScrollView*)scrollView{
+    if (!_scrollView) {
+        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+        [self.view addSubview:_scrollView];
+    }
+    return _scrollView;
 }
 
 - (void)setImage:(PFFile*)image WithPlaceholder:(PFImageView*) placeholder {
@@ -56,6 +65,7 @@
         }else{
             frame.size = CGSizeMake(screen.width, height * screen.width / width);
         }
+        self.scrollView.contentSize = self.imageView.image.size;
         [UIView animateWithDuration:0.3
                               delay:0.0
                             options:0
@@ -86,6 +96,17 @@
 -(void)viewWillAppear:(BOOL)animated{
     if (!self.disablesNavigationBarHiddenControl)
     [self.navigationController setNavigationBarHidden:true animated:animated];
+    
+    // Set up the minimum & maximum zoom scales
+    CGRect scrollViewFrame = self.scrollView.frame;
+    CGFloat scaleWidth = scrollViewFrame.size.width / self.scrollView.contentSize.width;
+    CGFloat scaleHeight = scrollViewFrame.size.height / self.scrollView.contentSize.height;
+    CGFloat minScale = MIN(scaleWidth, scaleHeight);
+    
+    self.scrollView.delegate = self;
+    self.scrollView.minimumZoomScale = 1;
+    self.scrollView.maximumZoomScale = 2.0f;
+    self.scrollView.zoomScale = 1;
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -126,4 +147,31 @@
 }
 */
 
+- (UIView*)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+    // Return the view that we want to zoom
+    return self.imageView;
+}
+
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    // The scroll view has zoomed, so we need to re-center the contents
+    // [self centerScrollViewContents];
+}
+
+- (void)centerScrollViewContents {
+    CGSize boundsSize = self.scrollView.bounds.size;
+    CGRect contentsFrame = self.imageView.frame;
+    
+    if (contentsFrame.size.width < boundsSize.width) {
+        contentsFrame.origin.x = (boundsSize.width - contentsFrame.size.width) / 2.0f;
+    } else {
+        contentsFrame.origin.x = 0.0f;
+    }
+    
+    if (contentsFrame.size.height < boundsSize.height) {
+        contentsFrame.origin.y = (boundsSize.height - contentsFrame.size.height) / 2.0f;
+    } else {
+        contentsFrame.origin.y = 0.0f;
+    }
+    self.imageView.frame = contentsFrame;
+}
 @end

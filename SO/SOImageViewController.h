@@ -19,12 +19,9 @@
 -(void)backFromImageView:(PFImageView *)imageView withFrame:(CGRect)frame;
 @end
 
-@interface SOImageViewController : SOBaseViewController
+@interface SOImageViewController : SOBaseViewController 
 -(void)setImage:(PFFile*)image;
 -(void)setImage:(PFFile*)image WithPlaceholder:(UIImage*) placeholder;
-
-//todo:
--(void)setImages:(NSArray*)images startIndex:(NSUInteger)index;
 
 @property (nonatomic) NSUInteger imageIndex;
 @property (nonatomic) BOOL disablesNavigationBarHiddenControl;

@@ -170,10 +170,12 @@ static CGFloat radius = 20;
 }
 
 -(void)addViewWithFrame:(CGRect)frame{
-    NSArray *nibContents = [[NSBundle mainBundle] loadNibNamed:@"SOPersonAvatarView"
-                                                         owner:self
-                                                       options:nil];
-    SOPersonAvatarView *newView = [nibContents objectAtIndex:0];
+//    NSArray *nibContents = [[NSBundle mainBundle] loadNibNamed:@"SOPersonAvatarView"
+//                                                         owner:self
+//                                                       options:nil];
+//    SOPersonAvatarView *newView = [nibContents objectAtIndex:0];
+     SOPersonAvatarView *newView = [[SOPersonAvatarView alloc]init];
+
     [newView setTranslatesAutoresizingMaskIntoConstraints:true];
     newView.frame = frame;
     [newView setName:@"me"];
