@@ -43,15 +43,18 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
 -(void)generateFrames{
     _viewsArray = [[NSMutableArray alloc] init];
     _hiddenFramesArray = [[NSMutableArray alloc] init];
-    _contentBackgroudView = [[UIView alloc] init];
+    if (!_contentBackgroudView) {
+        _contentBackgroudView = [[UIView alloc] init];
+        _contentBackgroudView.tag = 1;
+        [self.contentView addSubview:self.contentBackgroudView];
+        [self.contentBackgroudView setUserInteractionEnabled:false];
+    }
     radius=0;
     int num = arc4random()%200;
         [self addRandomFrame:num];
     
     [self.contentBackgroudView setFrame:CGRectMake(radius, radius, 2*radius, 2*radius)];
     [self.contentView setContentSize:self.contentBackgroudView.frame.size];
-    [self.contentView addSubview:self.contentBackgroudView];
-    [self.contentBackgroudView setUserInteractionEnabled:false];
     [self.contentView setContentRadius:radius];
     self.contentView.communityViewDelegate=self;
 }

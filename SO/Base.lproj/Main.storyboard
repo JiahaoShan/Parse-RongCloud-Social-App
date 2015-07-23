@@ -128,9 +128,38 @@
                     <view key="view" contentMode="scaleToFill" id="pU1-Hu-i7a">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rhr-Ew-DNv" customClass="SOCommunityContentView">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                            </scrollView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OPR-MG-4C7">
+                                <rect key="frame" x="279" y="522" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="rhr-Ew-DNv" firstAttribute="bottom" secondItem="56L-2Y-ir6" secondAttribute="top" id="1Ua-uH-iCb"/>
+                            <constraint firstItem="rhr-Ew-DNv" firstAttribute="top" secondItem="hsS-P1-ccn" secondAttribute="bottom" id="9qb-tS-qW1"/>
+                            <constraint firstItem="rhr-Ew-DNv" firstAttribute="centerX" secondItem="OPR-MG-4C7" secondAttribute="centerX" id="Cf5-dO-X19"/>
+                            <constraint firstItem="56L-2Y-ir6" firstAttribute="top" secondItem="OPR-MG-4C7" secondAttribute="bottom" constant="8" id="E0H-Po-9XW"/>
+                            <constraint firstItem="OPR-MG-4C7" firstAttribute="centerY" secondItem="pU1-Hu-i7a" secondAttribute="centerY" id="Htz-HI-kdW"/>
+                            <constraint firstItem="rhr-Ew-DNv" firstAttribute="leading" secondItem="pU1-Hu-i7a" secondAttribute="leading" id="abi-gb-PDV"/>
+                            <constraint firstAttribute="trailing" secondItem="rhr-Ew-DNv" secondAttribute="trailing" id="auK-ay-cae"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Htz-HI-kdW"/>
+                            </mask>
+                        </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="onM-Pr-McQ"/>
+                    <connections>
+                        <outlet property="contentView" destination="rhr-Ew-DNv" id="4cs-nj-tIT"/>
+                        <outlet property="viewCountLabel" destination="OPR-MG-4C7" id="Iux-1T-lXg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5kO-EA-fmV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

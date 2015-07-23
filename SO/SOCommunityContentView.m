@@ -21,12 +21,12 @@
 
 -(void)onDoubleTap:(UITapGestureRecognizer*)tap{
     CGPoint position = [tap locationInView:self];
-    position = [self convertPoint:position toView:[self.subviews lastObject]];
-    for (UIView* v in [[self.subviews lastObject] subviews]) {
+    position = [self convertPoint:position toView:[self viewWithTag:1]];
+    for (UIView* v in [[self viewWithTag:1] subviews]) {
         if (CGRectContainsPoint(v.frame, position)) {
             [v setBackgroundColor:[UIColor redColor]];
             if (self.communityViewDelegate) {
-                [self.communityViewDelegate didDoubleTapViewAtIndex:[[[self.subviews lastObject] subviews] indexOfObject:v]];
+                [self.communityViewDelegate didDoubleTapViewAtIndex:[[[self viewWithTag:1] subviews] indexOfObject:v]];
             }
             break;
         }
