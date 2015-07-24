@@ -149,7 +149,6 @@
                      } completion:^(BOOL finished) {
                          [blackOverlay removeFromSuperview];
                          [imageAnimationView removeFromSuperview];
-                         
                          UIViewController* imageViewController = nil;
                          if ([images count] > 1) {
                              imageViewController = (SOImagePageViewController*)[[SOImagePageViewController alloc] initWithImages:images AndThumbnails:feedImageView AtIndex:index FromParent:self];
@@ -176,8 +175,10 @@
     UIWindow* currentWindow = [UIApplication sharedApplication].keyWindow;
     [currentWindow addSubview:blackOverlay];
     
-    [currentWindow addSubview:imageView];
+        imageView.frame = [imageView.superview convertRect:imageView.frame toView:[[UIApplication sharedApplication] keyWindow]];
     
+    [currentWindow addSubview:imageView];
+
     [UIView animateWithDuration:0.4
                      animations:^{
                          blackOverlay.backgroundColor = [UIColor clearColor];

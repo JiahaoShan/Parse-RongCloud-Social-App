@@ -107,6 +107,11 @@
     self.scrollView.minimumZoomScale = 1;
     self.scrollView.maximumZoomScale = 2.0f;
     self.scrollView.zoomScale = 1;
+    
+//    NSLog(@"Show self.view.frame from ImageView: %@", NSStringFromCGRect(self.view.frame));  // as a string
+//    NSLog(@"Show self.imageView from ImagePageView: %@", NSStringFromCGRect(self.imageView.frame));  // as a string
+//    NSLog(@"================================");
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -155,6 +160,8 @@
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
     // The scroll view has zoomed, so we need to re-center the contents
     // [self centerScrollViewContents];
+//    NSLog(@"Show self.imageView from ImagePageView: %@", NSStringFromCGRect(self.imageView.frame));  // as a string
+//    NSLog(@"================================");
 }
 
 - (void)centerScrollViewContents {
