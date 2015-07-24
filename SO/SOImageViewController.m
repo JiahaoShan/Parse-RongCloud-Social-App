@@ -88,9 +88,15 @@
     [self.view setBackgroundColor:[UIColor blackColor]];
     _longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressed:)];
     [_longPress setMinimumPressDuration:0.7];
-    UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
+    UITapGestureRecognizer* singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
+    singleTapRecognizer.numberOfTapsRequired = 1;
+    UITapGestureRecognizer *doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapped:)];
+    doubleTapRecognizer.numberOfTapsRequired = 2;
+    doubleTapRecognizer.numberOfTouchesRequired = 1;
     [self.view addGestureRecognizer:_longPress];
-    [self.view addGestureRecognizer:tap];
+    [self.view addGestureRecognizer:singleTapRecognizer];
+    [self.view addGestureRecognizer:doubleTapRecognizer];
+    [singleTapRecognizer requireGestureRecognizerToFail:doubleTapRecognizer];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -101,11 +107,11 @@
     CGRect scrollViewFrame = self.scrollView.frame;
     CGFloat scaleWidth = scrollViewFrame.size.width / self.scrollView.contentSize.width;
     CGFloat scaleHeight = scrollViewFrame.size.height / self.scrollView.contentSize.height;
-    CGFloat minScale = MIN(scaleWidth, scaleHeight);
+    CGFloat maxScale = MAX(scaleWidth, scaleHeight);
     
     self.scrollView.delegate = self;
     self.scrollView.minimumZoomScale = 1;
-    self.scrollView.maximumZoomScale = 2.0f;
+    self.scrollView.maximumZoomScale = maxScale;
     self.scrollView.zoomScale = 1;
     
 //    NSLog(@"Show self.view.frame from ImageView: %@", NSStringFromCGRect(self.view.frame));  // as a string
@@ -142,14 +148,40 @@
     [[self navigationController] popViewControllerAnimated:NO];
 }
 
+
+-(void)doubleTapped:(UITapGestureRecognizer*)t{
+    
+    float newScale = self.scrollView.maximumZoomScale;;
+    
+    if (self.scrollView.zoomScale > self.scrollView.minimumZoomScale)
+    {
+        [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:YES];
+    }
+    else
+    {
+        CGRect zoomRect = [self zoomRectForScale:newScale
+                                      withCenter:[t locationInView:self.scrollView]];
+        [self.scrollView zoomToRect:zoomRect animated:YES];
+    }
+
+}
+
+
+- (CGRect)zoomRectForScale:(float)scale withCenter:(CGPoint)center {
+    CGRect zoomRect;
+    zoomRect.size.height = [_imageView frame].size.height / scale;
+    zoomRect.size.width  = [_imageView frame].size.width  / scale;
+    center = [_imageView convertPoint:center fromView:self.scrollView];
+    zoomRect.origin.x    = center.x - ((zoomRect.size.width / 2.0));
+    zoomRect.origin.y    = center.y - ((zoomRect.size.height / 2.0));
+    return zoomRect;
+}
+
+
+
+
 /*
 #pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
 */
 
 - (UIView*)viewForZoomingInScrollView:(UIScrollView *)scrollView {
@@ -158,27 +190,11 @@
 }
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
-    // The scroll view has zoomed, so we need to re-center the contents
-    // [self centerScrollViewContents];
-//    NSLog(@"Show self.imageView from ImagePageView: %@", NSStringFromCGRect(self.imageView.frame));  // as a string
-//    NSLog(@"================================");
+    CGFloat offsetX = MAX((self.scrollView.bounds.size.width - self.scrollView.contentSize.width) * 0.5, 0.0);
+    CGFloat offsetY = MAX((self.scrollView.bounds.size.height - self.scrollView.contentSize.height) * 0.5, 0.0);
+    self.imageView.center = CGPointMake(self.scrollView.contentSize.width * 0.5 + offsetX,
+                                 self.scrollView.contentSize.height * 0.5 + offsetY);
 }
 
-- (void)centerScrollViewContents {
-    CGSize boundsSize = self.scrollView.bounds.size;
-    CGRect contentsFrame = self.imageView.frame;
-    
-    if (contentsFrame.size.width < boundsSize.width) {
-        contentsFrame.origin.x = (boundsSize.width - contentsFrame.size.width) / 2.0f;
-    } else {
-        contentsFrame.origin.x = 0.0f;
-    }
-    
-    if (contentsFrame.size.height < boundsSize.height) {
-        contentsFrame.origin.y = (boundsSize.height - contentsFrame.size.height) / 2.0f;
-    } else {
-        contentsFrame.origin.y = 0.0f;
-    }
-    self.imageView.frame = contentsFrame;
-}
+
 @end
