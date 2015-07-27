@@ -21,7 +21,6 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
 }
 
 @interface SOCommunityViewController ()<UIScrollViewDelegate,SOCommunityContentViewDelegate>
-@property (weak, nonatomic) IBOutlet UILabel *viewCountLabel;
 @property (weak, nonatomic) IBOutlet SOCommunityContentView *contentView;
 @property (strong, nonatomic) UIView* contentBackgroudView;
 @property (nonatomic) NSMutableArray* viewsArray;
@@ -33,7 +32,6 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //[self.contentView setContentSize:CGSizeMake(3000, 3000)];
     [self.contentView setDelegate:self];
     [self generateFrames];
     [self checkVisible:true];
@@ -51,7 +49,7 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
     }
     radius=0;
     int num = arc4random()%200;
-        [self addRandomFrame:num];
+    [self addRandomFrame:num];
     
     [self.contentBackgroudView setFrame:CGRectMake(radius, radius, 2*radius, 2*radius)];
     [self.contentView setContentSize:self.contentBackgroudView.frame.size];
@@ -59,16 +57,6 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
     self.contentView.communityViewDelegate=self;
 }
 
-static int count=0;
--(void)incrementCount{
-    count++;
-    [self.viewCountLabel setText:[NSString stringWithFormat:@"%d",count]];
-}
-
--(void)decrementCount{
-    count--;
-    [self.viewCountLabel setText:[NSString stringWithFormat:@"%d",count]];
-}
 
 -(NSArray*)checkVisible:(BOOL)show{
     NSMutableArray* visible = [[NSMutableArray alloc] init];
@@ -84,7 +72,6 @@ static int count=0;
             }else{
                 [visible addObject:NSStringFromCGRect(rect)];
             }
-            [self incrementCount];
         }
     }
     for (NSInteger i = self.viewsArray.count-1;i>=0;i--) {
@@ -93,7 +80,6 @@ static int count=0;
             [v removeFromSuperview];
             [self.viewsArray removeObjectAtIndex:i];
             [self.hiddenFramesArray addObject:NSStringFromCGRect(v.frame)];
-            [self decrementCount];
         }
     }
     if (show) {
@@ -108,6 +94,7 @@ static int count=0;
         [self checkVisible:true];
     }
     [self.contentView setNeedsDisplay];//necessary
+    NSLog(@"didScroll");
 }
 
 static CGFloat radius = 20;
@@ -170,10 +157,7 @@ static CGFloat radius = 20;
 }
 
 -(void)addViewWithFrame:(CGRect)frame{
-    NSArray *nibContents = [[NSBundle mainBundle] loadNibNamed:@"SOPersonAvatarView"
-                                                         owner:self
-                                                       options:nil];
-    SOPersonAvatarView *newView = [nibContents objectAtIndex:0];
+    SOPersonAvatarView* newView = [[SOPersonAvatarView alloc] initWithFrame:CGRectZero];
     [newView setTranslatesAutoresizingMaskIntoConstraints:true];
     newView.frame = frame;
     [newView setName:@"me"];
@@ -184,48 +168,35 @@ static CGFloat radius = 20;
 }
 -(void)didDoubleTapViewAtIndex:(NSInteger)index{
     [self.contentView setContentOffset:centerRectUpperLeftPoint(self.contentView.contentSize, self.contentView.bounds.size) animated:true];
-    NSLog(@"%f",CFAbsoluteTimeGetCurrent());
     self.animating = true;
+    [self.contentView setScrollEnabled:NO];
     [UIView animateWithDuration:0.2 animations:^{
-        NSLog(@"%f",CFAbsoluteTimeGetCurrent());
         for (UIView* v in self.viewsArray) {
             [v setCenter:CGPointZero];
         }
-        NSLog(@"%f",CFAbsoluteTimeGetCurrent());
     } completion:^(BOOL finished) {
-        NSLog(@"%f",CFAbsoluteTimeGetCurrent());
         for (UIView* v in self.viewsArray) {
             [v removeFromSuperview];
         }
-        NSLog(@"%f",CFAbsoluteTimeGetCurrent());
         [self generateFrames];
-        NSLog(@"%f",CFAbsoluteTimeGetCurrent());
+        [self.contentView setContentOffset:centerRectUpperLeftPoint(self.contentView.contentSize, self.contentView.bounds.size)];
         NSArray* arr = [self checkVisible:false];
-        NSLog(@"%f",CFAbsoluteTimeGetCurrent());
         for (NSString* str in arr) {
-            //NSArray *nibContents = [[NSBundle mainBundle] loadNibNamed:@"SOPersonAvatarView"
-                                //                                 owner:self
-                                 //                              options:nil];
-            //SOPersonAvatarView *newView = [nibContents objectAtIndex:0];
-            SOPersonAvatarView* newView = [[SOPersonAvatarView alloc] initWithFrame:CGRectZero];
+            SOPersonAvatarView* newView = [[SOPersonAvatarView alloc] initWithFrame:CGRectMake(0,0,50,80)];
             [newView setTranslatesAutoresizingMaskIntoConstraints:true];
             [newView setCenter:CGPointZero];
-            //[newView setFrame:CGRectWithCenterAndSize(CGPointZero,CGSizeMake(50, 80))];
             [newView setName:@"me"];
             [newView setAvatar:nil];
             [self.contentBackgroudView addSubview:newView];
             [self.viewsArray addObject:newView];
         }
-        NSLog(@"%f",CFAbsoluteTimeGetCurrent());
         [UIView animateWithDuration:0.2 animations:^{
             for (int i=0;i<arr.count; i++) {
                 [[self.viewsArray objectAtIndex:i] setFrame:CGRectFromString(arr[i])];
             }
-            [self.contentView setContentOffset:centerRectUpperLeftPoint(self.contentView.contentSize, self.contentView.bounds.size) animated:false];
         } completion:^(BOOL finished) {
-            self.animating = false;
+            [self.contentView setScrollEnabled:YES];
             [self checkVisible:true];
-            //[self.contentView setContentOffset:centerRectUpperLeftPoint(self.contentView.contentSize, self.contentView.bounds.size) animated:true];
         }];
     }];
 }
