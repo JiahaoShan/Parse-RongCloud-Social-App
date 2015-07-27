@@ -43,6 +43,12 @@
 		4CCD26481B5E8EDA006CDAF5 /* SOCommunityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD26471B5E8EDA006CDAF5 /* SOCommunityViewController.m */; };
 		4CCD264B1B5E8FEE006CDAF5 /* SOPersonAvatarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD264A1B5E8FEE006CDAF5 /* SOPersonAvatarView.m */; };
 		4CCD26501B5E9FA9006CDAF5 /* SOCommunityContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD264F1B5E9FA9006CDAF5 /* SOCommunityContentView.m */; };
+		8A14F6641B65785B001AE83D /* SOProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A14F6631B65785B001AE83D /* SOProfileViewController.m */; };
+		8A14F6671B657D7C001AE83D /* SOSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A14F6661B657D7C001AE83D /* SOSettingViewController.m */; };
+		8A14F66B1B65800E001AE83D /* HMSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A14F6691B65800E001AE83D /* HMSegmentedControl.m */; };
+		8A14F66E1B658C9B001AE83D /* CAPSPageMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A14F66D1B658C9B001AE83D /* CAPSPageMenu.m */; };
+		8A14F6731B6595F6001AE83D /* SOPersonalInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A14F6711B6595F6001AE83D /* SOPersonalInfoTableViewController.m */; };
+		8A14F6791B659702001AE83D /* PersonalInfoSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A14F6771B659702001AE83D /* PersonalInfoSettingTableViewCell.m */; };
 		8A22DB2F1B52F8CA0032AB1E /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB2E1B52F8CA0032AB1E /* AssetsLibrary.framework */; };
 		8A22DB311B52F8DD0032AB1E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB301B52F8DD0032AB1E /* AVFoundation.framework */; };
 		8A22DB331B52F8EC0032AB1E /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB321B52F8EC0032AB1E /* CoreAudio.framework */; };
@@ -183,6 +189,18 @@
 		4CCD264A1B5E8FEE006CDAF5 /* SOPersonAvatarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPersonAvatarView.m; sourceTree = "<group>"; };
 		4CCD264E1B5E9FA9006CDAF5 /* SOCommunityContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCommunityContentView.h; sourceTree = "<group>"; };
 		4CCD264F1B5E9FA9006CDAF5 /* SOCommunityContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCommunityContentView.m; sourceTree = "<group>"; };
+		8A14F6621B65785B001AE83D /* SOProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOProfileViewController.h; sourceTree = "<group>"; };
+		8A14F6631B65785B001AE83D /* SOProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOProfileViewController.m; sourceTree = "<group>"; };
+		8A14F6651B657D7C001AE83D /* SOSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOSettingViewController.h; sourceTree = "<group>"; };
+		8A14F6661B657D7C001AE83D /* SOSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOSettingViewController.m; sourceTree = "<group>"; };
+		8A14F6691B65800E001AE83D /* HMSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMSegmentedControl.m; sourceTree = "<group>"; };
+		8A14F66A1B65800E001AE83D /* HMSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMSegmentedControl.h; sourceTree = "<group>"; };
+		8A14F66C1B658C9B001AE83D /* CAPSPageMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAPSPageMenu.h; sourceTree = "<group>"; };
+		8A14F66D1B658C9B001AE83D /* CAPSPageMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAPSPageMenu.m; sourceTree = "<group>"; };
+		8A14F6701B6595F6001AE83D /* SOPersonalInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SOPersonalInfoTableViewController.h; path = SOSetting/SOPersonalInfoTableViewController.h; sourceTree = "<group>"; };
+		8A14F6711B6595F6001AE83D /* SOPersonalInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SOPersonalInfoTableViewController.m; path = SOSetting/SOPersonalInfoTableViewController.m; sourceTree = "<group>"; };
+		8A14F6761B659702001AE83D /* PersonalInfoSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PersonalInfoSettingTableViewCell.h; path = SOSetting/PersonalInfoSettingTableViewCell.h; sourceTree = "<group>"; };
+		8A14F6771B659702001AE83D /* PersonalInfoSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PersonalInfoSettingTableViewCell.m; path = SOSetting/PersonalInfoSettingTableViewCell.m; sourceTree = "<group>"; };
 		8A22DB2E1B52F8CA0032AB1E /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		8A22DB301B52F8DD0032AB1E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		8A22DB321B52F8EC0032AB1E /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -440,6 +458,48 @@
 			name = SOCommunity;
 			sourceTree = "<group>";
 		};
+		8A14F65E1B6575F9001AE83D /* SOProfile */ = {
+			isa = PBXGroup;
+			children = (
+				8A14F66F1B6595B3001AE83D /* SettingSubViewController */,
+				8A14F6621B65785B001AE83D /* SOProfileViewController.h */,
+				8A14F6631B65785B001AE83D /* SOProfileViewController.m */,
+				8A14F6651B657D7C001AE83D /* SOSettingViewController.h */,
+				8A14F6661B657D7C001AE83D /* SOSettingViewController.m */,
+			);
+			name = SOProfile;
+			sourceTree = "<group>";
+		};
+		8A14F6681B657FF2001AE83D /* SegmentedControl */ = {
+			isa = PBXGroup;
+			children = (
+				8A14F66C1B658C9B001AE83D /* CAPSPageMenu.h */,
+				8A14F66D1B658C9B001AE83D /* CAPSPageMenu.m */,
+				8A14F6691B65800E001AE83D /* HMSegmentedControl.m */,
+				8A14F66A1B65800E001AE83D /* HMSegmentedControl.h */,
+			);
+			name = SegmentedControl;
+			sourceTree = "<group>";
+		};
+		8A14F66F1B6595B3001AE83D /* SettingSubViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8A14F6751B659638001AE83D /* Cell */,
+				8A14F6701B6595F6001AE83D /* SOPersonalInfoTableViewController.h */,
+				8A14F6711B6595F6001AE83D /* SOPersonalInfoTableViewController.m */,
+			);
+			name = SettingSubViewController;
+			sourceTree = "<group>";
+		};
+		8A14F6751B659638001AE83D /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				8A14F6761B659702001AE83D /* PersonalInfoSettingTableViewCell.h */,
+				8A14F6771B659702001AE83D /* PersonalInfoSettingTableViewCell.m */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
 		8A22DB281B52F8790032AB1E /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -479,6 +539,7 @@
 		8A5800421B522F010032EC1C /* SO */ = {
 			isa = PBXGroup;
 			children = (
+				8A14F65E1B6575F9001AE83D /* SOProfile */,
 				8AA7BC7D1B5C920600ABB812 /* DataModel */,
 				8A8303D91B58B8FB00FB22A5 /* SOPeople */,
 				8A8303CB1B54BD2500FB22A5 /* SOLogin */,
@@ -545,6 +606,7 @@
 		8A5800931B52303D0032EC1C /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				8A14F6681B657FF2001AE83D /* SegmentedControl */,
 				4CA673BD1B541D9C00D5FDFA /* UIKit+AFNetworking */,
 				4CA673A01B54166400D5FDFA /* AFNetworking */,
 				8A22DB291B52F89A0032AB1E /* RoungCloud */,
@@ -759,11 +821,15 @@
 				4CA673951B52615C00D5FDFA /* SOPlaygroundFeedImageView.m in Sources */,
 				8AA7BC891B5DF98300ABB812 /* PlaygroundImage.m in Sources */,
 				4CBCF6B91B52521200EE2195 /* SOTabBarController.m in Sources */,
+				8A14F6671B657D7C001AE83D /* SOSettingViewController.m in Sources */,
 				8AA7BC921B5E07CE00ABB812 /* SOImagePageViewController.m in Sources */,
+				8A14F66E1B658C9B001AE83D /* CAPSPageMenu.m in Sources */,
+				8A14F66B1B65800E001AE83D /* HMSegmentedControl.m in Sources */,
 				4CA673D21B541D9C00D5FDFA /* UIButton+AFNetworking.m in Sources */,
 				8A692F251B53349F00E9DC22 /* SOChatListViewController.m in Sources */,
 				4CCD26481B5E8EDA006CDAF5 /* SOCommunityViewController.m in Sources */,
 				4CA673D61B541D9C00D5FDFA /* UIWebView+AFNetworking.m in Sources */,
+				8A14F6641B65785B001AE83D /* SOProfileViewController.m in Sources */,
 				4CA673D41B541D9C00D5FDFA /* UIProgressView+AFNetworking.m in Sources */,
 				4CA673B61B54166400D5FDFA /* AFHTTPSessionManager.m in Sources */,
 				4CBCF6B61B52517D00EE2195 /* SONavigationController.m in Sources */,
@@ -792,6 +858,7 @@
 				4CBCF6C31B5258BC00EE2195 /* SOPlaygroundDetailController.m in Sources */,
 				8A8303DC1B58B92100FB22A5 /* SOPeopleTableViewController.m in Sources */,
 				4CBCF6C01B5257D100EE2195 /* SOPlaygroundMainController.m in Sources */,
+				8A14F6791B659702001AE83D /* PersonalInfoSettingTableViewCell.m in Sources */,
 				4CA673B81B54166400D5FDFA /* AFSecurityPolicy.m in Sources */,
 				4CA673D51B541D9C00D5FDFA /* UIRefreshControl+AFNetworking.m in Sources */,
 				8AA7BC8F1B5DFCA300ABB812 /* User.m in Sources */,
@@ -803,6 +870,7 @@
 				8AF8FA7E1B54A20300401474 /* SOCommonStrings.m in Sources */,
 				4CA673BB1B54166400D5FDFA /* AFURLResponseSerialization.m in Sources */,
 				8A8303D81B58AC0900FB22A5 /* SOConversationViewController.m in Sources */,
+				8A14F6731B6595F6001AE83D /* SOPersonalInfoTableViewController.m in Sources */,
 				8AA7BC861B5DF8AF00ABB812 /* PlaygroundComment.m in Sources */,
 				4CA673CF1B541D9C00D5FDFA /* AFNetworkActivityIndicatorManager.m in Sources */,
 			);

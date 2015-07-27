@@ -84,6 +84,7 @@
     [[UIPageControl appearance] setPageIndicatorTintColor: [UIColor grayColor]];
     [[UIPageControl appearance] setCurrentPageIndicatorTintColor: [UIColor whiteColor]];
     [[UIPageControl appearance] setBackgroundColor: [UIColor clearColor]];
+    [[UIPageControl appearance] setOpaque:NO];
 }
 
 #pragma mark UIPageViewControllerDataSource
