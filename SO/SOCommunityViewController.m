@@ -9,6 +9,8 @@
 #import "SOCommunityViewController.h"
 #import "SOCommunityContentView.h"
 #import "SOPersonAvatarView.h"
+#import "SOCommunityViewController+DataSource.h"
+#import "User.h"
 
 static CGRect CGRectWithCenterAndSize(CGPoint p, CGSize s){
     return CGRectMake(p.x-s.width/2, p.y-s.height/2, s.width, s.height);
@@ -21,10 +23,12 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
 }
 
 @interface SOCommunityViewController ()<UIScrollViewDelegate,SOCommunityContentViewDelegate>
-@property (weak, nonatomic) IBOutlet SOCommunityContentView *contentView;
+@property (strong, nonatomic) IBOutlet SOCommunityContentView *contentView;
 @property (strong, nonatomic) UIView* contentBackgroudView;
+@property (strong,nonatomic) UIView* currentUserAvatarView;
 @property (nonatomic) NSMutableArray* viewsArray;
 @property (nonatomic) NSMutableArray* hiddenFramesArray;
+@property (nonatomic) NSArray* userArray;
 @property (nonatomic) BOOL animating;
 @end
 
@@ -33,12 +37,16 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.contentView setDelegate:self];
-    [self generateFrames];
-    [self checkVisible:true];
-    self.animating = false;
+    [self startQueryFriendsOfUser:[self currentUser] batch:0 completion:^(int batchIndex, NSArray *users) {
+        self.userArray = users;
+        [self initialize];
+        [self generateFrames:(int)users.count];
+        [self checkVisible:true];
+        self.animating = false;
+    }];
 }
 
--(void)generateFrames{
+-(void)initialize{
     _viewsArray = [[NSMutableArray alloc] init];
     _hiddenFramesArray = [[NSMutableArray alloc] init];
     if (!_contentBackgroudView) {
@@ -47,9 +55,12 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
         [self.contentView addSubview:self.contentBackgroudView];
         [self.contentBackgroudView setUserInteractionEnabled:false];
     }
-    radius=0;
-    int num = arc4random()%200;
-    [self addRandomFrame:num];
+    radius=20;
+}
+
+static CGFloat radius;
+-(void)generateFrames:(int)count{
+    [self generateRandomFrame:count];
     
     [self.contentBackgroudView setFrame:CGRectMake(radius, radius, 2*radius, 2*radius)];
     [self.contentView setContentSize:self.contentBackgroudView.frame.size];
@@ -57,7 +68,43 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
     self.contentView.communityViewDelegate=self;
 }
 
+-(void)generateRandomFrame:(int)count{
+    CGFloat rd = (arc4random()%50 / 50.0f);
+    CGPoint center = CGPointZero;
+    [self.hiddenFramesArray addObject:NSStringFromCGRect(CGRectWithCenterAndSize(center, CGSizeMake(50, 80)))];
+    int currCount = 1;
+    while (currCount<count) {
+        BOOL placed = false;
+        CGRect newRect;
+        int numStep = currCount>50?currCount/5:8;
+        CGFloat step = M_PI / numStep;
+        for (int j=0; j<numStep*2 && currCount<count; j++) {
+            BOOL b = false;
+            CGFloat angle = j * step + rd;
+            CGFloat x = center.x + radius*cos(angle);
+            CGFloat y = center.y + radius*sin(angle);
+            newRect = CGRectWithCenterAndSize(CGPointMake(x, y), CGSizeMake(50, 80));
+            for (NSString* v in self.hiddenFramesArray) {
+                if (CGRectIntersectsRect(CGRectFromString(v), newRect)) {
+                    placed=false;
+                    b = true;
+                    break;
+                }
+            }
+            if (!b) {
+                placed=true;
+                currCount++;
+                [self.hiddenFramesArray addObject:NSStringFromCGRect(newRect)];
+            }
+        }
+        if (!placed) {
+            radius+=15;
+        }
+    }
+}
 
+//if show is true, then view is added to contentBackgroundView, nil will be returned
+//if show is false, views will not be added, and will be returned in an array
 -(NSArray*)checkVisible:(BOOL)show{
     NSMutableArray* visible = [[NSMutableArray alloc] init];
     CGRect visibleRect = {self.contentView.contentOffset,self.view.bounds.size};
@@ -68,7 +115,7 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
         if (CGRectIntersectsRect(visibleRect, rect)) {
             [self.hiddenFramesArray removeObjectAtIndex:i];
             if (show) {
-                [self addViewWithFrame:rect];
+                [self addAvatarViewWithFrame:rect User:[self.userArray objectAtIndex:i] toView:self.contentBackgroudView];
             }else{
                 [visible addObject:NSStringFromCGRect(rect)];
             }
@@ -89,82 +136,15 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
     }
 }
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    if (!self.animating) {
-        [self checkVisible:true];
-    }
-    [self.contentView setNeedsDisplay];//necessary
-    NSLog(@"didScroll");
-}
-
-static CGFloat radius = 20;
--(void)addRandomFrame:(int)count{
-    //    BOOL collide = false;
-    //    CGRect temp;
-    //    do {
-    //        CGFloat x = (CGFloat)(arc4random()%1000);
-    //        CGFloat y = (CGFloat)(arc4random()%1000);
-    //        temp = CGRectMake(x, y, 50, 80);
-    //        BOOL b = false;
-    //        for (NSValue* v in self.hiddenFramesArray) {
-    //            if (CGRectIntersectsRect([v CGRectValue], temp)) {
-    //                collide=true;
-    //                b=true;
-    //                break;
-    //            }
-    //        }
-    //        if (!b) {
-    //            collide = false;
-    //        }
-    //    } while (collide);
-    //
-    //    [self.hiddenFramesArray addObject:[NSValue valueWithCGRect:temp]];
-    CGFloat rd = (arc4random()%50 / 50.0f);
-    CGSize size = self.contentBackgroudView.bounds.size;
-    //CGPoint center = CGPointMake(size.width/2, size.height/2);
-    CGPoint center = CGPointZero;
-    [self.hiddenFramesArray addObject:NSStringFromCGRect(CGRectWithCenterAndSize(center, CGSizeMake(50, 80)))];
-    int currCount = 1;
-    while (currCount<count) {
-        BOOL placed = false;
-        CGRect newRect;
-        int numStep = currCount>50?currCount/5:8;
-        CGFloat step = M_PI / numStep;
-            for (int j=0; j<numStep*2 && currCount<count; j++) {
-                //CGFloat angle = (arc4random()%1000)/500.0f * M_PI;
-                BOOL b = false;
-                CGFloat angle = j * step + rd;
-                CGFloat x = center.x + radius*cos(angle);
-                CGFloat y = center.y + radius*sin(angle);
-                newRect = CGRectWithCenterAndSize(CGPointMake(x, y), CGSizeMake(50, 80));
-                for (NSString* v in self.hiddenFramesArray) {
-                    if (CGRectIntersectsRect(CGRectFromString(v), newRect)) {
-                        placed=false;
-                        b = true;
-                        break;
-                    }
-                }
-                if (!b) {
-                    placed=true;
-                    currCount++;
-                    [self.hiddenFramesArray addObject:NSStringFromCGRect(newRect)];
-                }
-            }
-        if (!placed) {
-            radius+=15;
-        }
-    }
-}
-
--(void)addViewWithFrame:(CGRect)frame{
+-(SOPersonAvatarView*)addAvatarViewWithFrame:(CGRect)frame User:(User*)user toView:(UIView*)view{
     SOPersonAvatarView* newView = [[SOPersonAvatarView alloc] initWithFrame:CGRectZero];
     [newView setTranslatesAutoresizingMaskIntoConstraints:true];
     newView.frame = frame;
-    [newView setName:@"me"];
-    [newView setAvatar:nil];
+    [newView setName:[user username]];
+    [newView setAvatar:[user userPortraitThumbnail]];
     [self.contentBackgroudView addSubview:newView];
     [self.viewsArray addObject:newView];
-    
+    return newView;
 }
 -(void)didDoubleTapViewAtIndex:(NSInteger)index{
     [self.contentView setContentOffset:centerRectUpperLeftPoint(self.contentView.contentSize, self.contentView.bounds.size) animated:true];
@@ -178,17 +158,11 @@ static CGFloat radius = 20;
         for (UIView* v in self.viewsArray) {
             [v removeFromSuperview];
         }
-        [self generateFrames];
+        [self generateFrames:2];
         [self.contentView setContentOffset:centerRectUpperLeftPoint(self.contentView.contentSize, self.contentView.bounds.size)];
         NSArray* arr = [self checkVisible:false];
         for (NSString* str in arr) {
-            SOPersonAvatarView* newView = [[SOPersonAvatarView alloc] initWithFrame:CGRectMake(0,0,50,80)];
-            [newView setTranslatesAutoresizingMaskIntoConstraints:true];
-            [newView setCenter:CGPointZero];
-            [newView setName:@"me"];
-            [newView setAvatar:nil];
-            [self.contentBackgroudView addSubview:newView];
-            [self.viewsArray addObject:newView];
+            SOPersonAvatarView* v = [self addAvatarViewWithFrame:CGRectMake(-25,-40,50,80) User:nil toView:self.contentBackgroudView];
         }
         [UIView animateWithDuration:0.2 animations:^{
             for (int i=0;i<arr.count; i++) {
@@ -199,6 +173,15 @@ static CGFloat radius = 20;
             [self checkVisible:true];
         }];
     }];
+}
+
+#pragma mark UISCROLLVIEWDELEGATE
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if (!self.animating) {
+        [self checkVisible:true];
+    }
+    [self.contentView setNeedsDisplay];//necessary
+    NSLog(@"didScroll");
 }
 
 @end

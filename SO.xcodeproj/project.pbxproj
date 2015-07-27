@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C1E12F81B667D0D00D084D4 /* SOCommunityViewController+DataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E12F71B667D0D00D084D4 /* SOCommunityViewController+DataSource.m */; };
 		4CA1CB791B5AC4C900B21EEF /* SOImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA1CB781B5AC4C900B21EEF /* SOImageViewController.m */; };
 		4CA1CB7C1B5B40BD00B21EEF /* SOActionSheetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA1CB7B1B5B40BD00B21EEF /* SOActionSheetManager.m */; };
 		4CA673951B52615C00D5FDFA /* SOPlaygroundFeedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA673941B52615C00D5FDFA /* SOPlaygroundFeedImageView.m */; };
@@ -116,6 +117,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4C1E12F61B667D0D00D084D4 /* SOCommunityViewController+DataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SOCommunityViewController+DataSource.h"; sourceTree = "<group>"; };
+		4C1E12F71B667D0D00D084D4 /* SOCommunityViewController+DataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SOCommunityViewController+DataSource.m"; sourceTree = "<group>"; };
 		4CA1CB771B5AC4C900B21EEF /* SOImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOImageViewController.h; sourceTree = "<group>"; };
 		4CA1CB781B5AC4C900B21EEF /* SOImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOImageViewController.m; sourceTree = "<group>"; };
 		4CA1CB7A1B5B40BD00B21EEF /* SOActionSheetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOActionSheetManager.h; sourceTree = "<group>"; };
@@ -450,6 +453,8 @@
 			children = (
 				4CCD26461B5E8EDA006CDAF5 /* SOCommunityViewController.h */,
 				4CCD26471B5E8EDA006CDAF5 /* SOCommunityViewController.m */,
+				4C1E12F61B667D0D00D084D4 /* SOCommunityViewController+DataSource.h */,
+				4C1E12F71B667D0D00D084D4 /* SOCommunityViewController+DataSource.m */,
 				4CCD264E1B5E9FA9006CDAF5 /* SOCommunityContentView.h */,
 				4CCD264F1B5E9FA9006CDAF5 /* SOCommunityContentView.m */,
 				4CCD26491B5E8FEE006CDAF5 /* SOPersonAvatarView.h */,
@@ -863,6 +868,7 @@
 				4CA673D51B541D9C00D5FDFA /* UIRefreshControl+AFNetworking.m in Sources */,
 				8AA7BC8F1B5DFCA300ABB812 /* User.m in Sources */,
 				4CA673D11B541D9C00D5FDFA /* UIAlertView+AFNetworking.m in Sources */,
+				4C1E12F81B667D0D00D084D4 /* SOCommunityViewController+DataSource.m in Sources */,
 				4CBCF6D31B525CD700EE2195 /* SOPlaygroundFeedGenderView.m in Sources */,
 				4CA673B51B54166400D5FDFA /* AFHTTPRequestOperationManager.m in Sources */,
 				4CA1CB791B5AC4C900B21EEF /* SOImageViewController.m in Sources */,

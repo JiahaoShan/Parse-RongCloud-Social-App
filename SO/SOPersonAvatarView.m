@@ -34,6 +34,7 @@ static UIImage* image = nil;
         image = [UIImage imageNamed:@"placeholderImage"];
     }
     [self.imageView setImage:image];
+    [self.imageView loadInBackground];
     //[self setBackgroundColor:[UIColor yellowColor]];
 }
 -(void)setName:(NSString*)name{
