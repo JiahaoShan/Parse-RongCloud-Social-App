@@ -9,9 +9,10 @@
 #import "SOPersonalInfoTableViewController.h"
 #import "PersonalInfoSettingTableViewCell.h"
 
-@interface SOPersonalInfoTableViewController () <UITableViewDataSource,UITableViewDelegate>
+@interface SOPersonalInfoTableViewController () <UITableViewDataSource,UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 @property (nonatomic) BOOL initialized;
-
+@property (weak, nonatomic) IBOutlet UITextField *tf;
+@property (strong,nonatomic) NSArray *theData;
 @end
 
 @implementation SOPersonalInfoTableViewController
@@ -64,6 +65,12 @@ static NSString *PersonalInfoSettingTableViewCellIdentifier = @"kPersonalInfoSet
     // TODO: HARD CODE : NOT GOOD
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 49 , 0.0f);
     // Do any additional setup after loading the view from its nib.
+    
+    UIPickerView *picker = [[UIPickerView alloc] init];
+    picker.dataSource = self;
+    picker.delegate = self;
+    self.tf.inputView = picker;
+    self.theData = @[@"one",@"two",@"three",@"four"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -157,5 +164,22 @@ static NSString *PersonalInfoSettingTableViewCellIdentifier = @"kPersonalInfoSet
     // Pass the selected object to the new view controller.
 }
 */
+
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return self.theData.count;
+}
+
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return  1;
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return self.theData[row];
+}
+
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    self.tf.text = self.theData[row];
+    [self.tf resignFirstResponder];
+}
 
 @end

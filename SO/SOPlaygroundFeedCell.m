@@ -45,6 +45,11 @@
 //        }
 }
 
+-(void)awakeFromNib {
+    self.feedPosterAvatartView.layer.masksToBounds = YES;
+    self.feedPosterAvatartView.layer.cornerRadius = self.feedPosterAvatartView.frame.size.width / 2;
+}
+
 -(void)configureWithData:(PFObject*)data{
     User* user = [data objectForKey:@"poster"];
     [user fetchIfNeeded];
@@ -55,7 +60,6 @@
     
     [self.feedPosterNameView setText:user[@"username"]];
     
-    [self.feedPosterAvatartView setImage:[UIImage imageNamed:@"placeholderImage"]];
     [self.feedPosterAvatartView setFile:user[@"portraitThumbnail"]];
     [self.feedPosterAvatartView loadInBackground];
     
