@@ -7,7 +7,7 @@
 //
 
 #import "SOCommunityViewController+DataSource.h"
-#import <objc/objc-runtime.h>
+#import <objc/runtime.h>
 
 @interface SOCommunityViewController (DataSourcePrivate)
 @property (nonatomic) PFQuery* currentQuery;

@@ -161,7 +161,7 @@
                              ((SOImageViewController*)imageViewController).returnToFrame = frameInWindow;
                              ((SOImageViewController*)imageViewController).delegate = self;
                          }
-                         [self.navigationController pushViewController:imageViewController animated:NO];
+                             [self.navigationController pushViewController:imageViewController animated:NO];
                      }];
     blackOverlay = nil;
     imageAnimationView = nil;

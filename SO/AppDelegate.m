@@ -47,7 +47,7 @@
 : NO)
 
 
-@interface AppDelegate () <RCIMConnectionStatusDelegate, RCIMUserInfoDataSource, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
+@interface AppDelegate () <RCIMConnectionStatusDelegate, RCIMUserInfoDataSource, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate, RCIMClientReceiveMessageDelegate>
 
 @end
 
@@ -252,7 +252,6 @@
 }
 
 #pragma mark NotificationCenter Handlers
-
 - (void) userDidLogIn: (id) sender {
     if ([User currentUser]) {
         [self registerRongCloudService];
@@ -278,9 +277,14 @@
 
 #pragma mark RongCloud Methods && Delegate
 
+//- (void)onReceived:(RCMessage *)message left:(int)nLeft object:(id)object {
+//    NSLog(message.description);
+//}
+
 - (void) initRongCloudService {
     [[RCIM sharedRCIM] initWithAppKey:RONGCLOUD_IM_APPKEY];
     [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
+//    [[RCIMClient sharedRCIMClient] setReceiveMessageDelegate:self object:nil];
     if (iPhone6Plus) {
         [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(56, 56);
     } else {
