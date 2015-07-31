@@ -25,6 +25,7 @@
 #import "SOLoginViewController.h"
 #import "SOSignupViewController.h"
 
+#import "SODataManager.h"
 #import "SOCommonStrings.h"
 #import "SOTabBarController.h"
 
@@ -284,13 +285,20 @@
 - (void) initRongCloudService {
     [[RCIM sharedRCIM] initWithAppKey:RONGCLOUD_IM_APPKEY];
     [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
-//    [[RCIMClient sharedRCIMClient] setReceiveMessageDelegate:self object:nil];
+    //[[RCIMClient sharedRCIMClient] setReceiveMessageDelegate:self object:nil];
     if (iPhone6Plus) {
         [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(56, 56);
     } else {
         [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(46, 46);
     }
-    [[RCIM sharedRCIM] setUserInfoDataSource:self];
+    [[RCIM sharedRCIM] setUserInfoDataSource:SODataSource];
+    [RCIM sharedRCIM].groupInfoDataSource = SODataSource;
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(didReceiveMessageNotification:)
+     name:RCKitDispatchMessageNotification
+     object:nil];
 }
 
 - (void) registerRongCloudService {
@@ -349,42 +357,14 @@
                          }];
 }
 
-/**
- *此方法中要提供给融云用户的信息，建议缓存到本地，然后改方法每次从您的缓存返回
- */
-- (void)getUserInfoWithUserId:(NSString *)userId completion:(void(^)(RCUserInfo* userInfo))completion
-{
-    RCUserInfo *user = nil;
-    PFQuery *query = [User query];
-    [query fromLocalDatastore];
-    User* targetUser = (User *)[query getObjectWithId:userId];
-    if (!targetUser) {
-        // Error, Fetch???
-        PFQuery *query = [User query];
-//        query.cachePolicy = kPFCachePolicyNetworkElseCache;
-        User* targetUser = (User *)[query getObjectWithId:userId];
-        if (!targetUser) {
-            // User does not even exist online, must be an Error, Fetch???
-            NSLog(@"userId not even existed online.");
-        }
-        else {
-            user = [[RCUserInfo alloc] initWithUserId:targetUser.objectId
-                                          name:[targetUser objectForKey:UserNameKey]
-                                      portrait:@"http://img.135q.com/2015-06/20/14348061890006.jpg"];
-        }
-    }
-    else {
-        user = [[RCUserInfo alloc] initWithUserId:targetUser.objectId
-                                             name:[targetUser objectForKey:UserNameKey]
-                                         portrait:@"http://img.135q.com/2015-06/20/14348061890006.jpg"];
-    }
-    return completion(user);
-}
 
 - (void)onRCIMConnectionStatusChanged:(RCConnectionStatus)status {
     NSLog([NSString stringWithFormat:@"RongCloud connection status changed. %ld", (long)status]);
 }
 
+- (void)didReceiveMessageNotification:(NSNotification *)notification {
+    //NSLog(notification.description);
+}
 #pragma mark - Parse Login delegate
 
 - (void)logInViewController:(PFLogInViewController *)controller
