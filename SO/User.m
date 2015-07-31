@@ -12,7 +12,7 @@
 @implementation User
 
 @dynamic userPortrait;
-@dynamic userPortraitThumbnail;
+@dynamic portraitThumbnail;
 @dynamic yearOfEnrollment;
 @dynamic school;
 @dynamic major;

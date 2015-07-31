@@ -10,8 +10,8 @@
 #import <ParseUI/ParseUI.h>
 
 @interface SOPersonAvatarView()
-@property (strong, nonatomic) IBOutlet PFImageView *imageView;
-@property (strong, nonatomic) IBOutlet UILabel *nameLabel;
+@property (strong, nonatomic) PFImageView *imageView;
+@property (strong, nonatomic) UILabel *nameLabel;
 @end
 
 @implementation SOPersonAvatarView
@@ -20,6 +20,9 @@
     self.imageView = [[PFImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     self.imageView.layer.cornerRadius = 25;
     self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, 50, 20)];
+    [self.nameLabel setLineBreakMode:NSLineBreakByTruncatingTail];
+    [self.nameLabel setAdjustsFontSizeToFitWidth:true];
+    [self.nameLabel setMinimumScaleFactor:0.4];
     [self addSubview:self.imageView];
     [self addSubview:self.nameLabel];
     return self;
@@ -34,6 +37,7 @@ static UIImage* image = nil;
         image = [UIImage imageNamed:@"placeholderImage"];
     }
     [self.imageView setImage:image];
+    [self.imageView setFile:file];
     [self.imageView loadInBackground];
     //[self setBackgroundColor:[UIColor yellowColor]];
 }

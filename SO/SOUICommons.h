@@ -12,5 +12,6 @@
 @interface SOUICommons : NSObject
 +(UIColor*)primaryTintColor;
 +(UIColor*)textColor;
-
++(CGFloat)screenHeight;
++(CGFloat)screenWidth;
 @end

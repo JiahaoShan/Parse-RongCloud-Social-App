@@ -9,8 +9,8 @@
 #import "SOCommunityViewController.h"
 #import "SOCommunityContentView.h"
 #import "SOPersonAvatarView.h"
-#import "SOCommunityViewController+DataSource.h"
 #import "User.h"
+#import "SOUICommons.h"
 
 static CGRect CGRectWithCenterAndSize(CGPoint p, CGSize s){
     return CGRectMake(p.x-s.width/2, p.y-s.height/2, s.width, s.height);
@@ -30,6 +30,8 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
 @property (nonatomic) NSMutableArray* hiddenFramesArray;
 @property (nonatomic) NSArray* userArray;
 @property (nonatomic) BOOL animating;
+//datasource
+@property (nonatomic) PFQuery* currentQuery;
 @end
 
 @implementation SOCommunityViewController
@@ -42,6 +44,11 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
         [self initialize];
         [self generateFrames:(int)users.count];
         [self checkVisible:true];
+        for (int i=0; i<users.count; i++) {
+            User* user = users[i];
+            PFFile* thumbnail = [user portraitThumbnail];
+            [(SOPersonAvatarView*)self.viewsArray[i] setAvatar:thumbnail];
+        }
         self.animating = false;
     }];
 }
@@ -54,24 +61,16 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
         _contentBackgroudView.tag = 1;
         [self.contentView addSubview:self.contentBackgroudView];
         [self.contentBackgroudView setUserInteractionEnabled:false];
+        [self.contentBackgroudView setBackgroundColor:[UIColor redColor]];
     }
-    radius=20;
+    radius=0;
 }
 
 static CGFloat radius;
 -(void)generateFrames:(int)count{
-    [self generateRandomFrame:count];
     
-    [self.contentBackgroudView setFrame:CGRectMake(radius, radius, 2*radius, 2*radius)];
-    [self.contentView setContentSize:self.contentBackgroudView.frame.size];
-    [self.contentView setContentRadius:radius];
-    self.contentView.communityViewDelegate=self;
-}
-
--(void)generateRandomFrame:(int)count{
     CGFloat rd = (arc4random()%50 / 50.0f);
     CGPoint center = CGPointZero;
-    [self.hiddenFramesArray addObject:NSStringFromCGRect(CGRectWithCenterAndSize(center, CGSizeMake(50, 80)))];
     int currCount = 1;
     while (currCount<count) {
         BOOL placed = false;
@@ -101,6 +100,19 @@ static CGFloat radius;
             radius+=15;
         }
     }
+    
+    [self.contentBackgroudView setFrame:CGRectMake(radius, radius, 0, 0)];
+    [self.contentView setContentSize:CGSizeMake(radius*2, radius*2)];
+    if (radius < [SOUICommons screenWidth]/2) {
+        CGFloat heightPad = [SOUICommons screenHeight]/2-radius;
+        CGFloat widthPad = [SOUICommons screenWidth]/2-radius;
+        [self.contentView setContentInset:UIEdgeInsetsMake(heightPad, widthPad, heightPad, widthPad)];
+    }else{
+        [self.contentView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+    }
+    [self.contentView setContentOffset:centerRectUpperLeftPoint(self.contentView.contentSize, self.contentView.bounds.size)];
+    [self.contentView setContentRadius:radius];
+    self.contentView.communityViewDelegate=self;
 }
 
 //if show is true, then view is added to contentBackgroundView, nil will be returned
@@ -141,7 +153,7 @@ static CGFloat radius;
     [newView setTranslatesAutoresizingMaskIntoConstraints:true];
     newView.frame = frame;
     [newView setName:[user username]];
-    [newView setAvatar:[user userPortraitThumbnail]];
+    [newView setAvatar:[user portraitThumbnail]];
     [self.contentBackgroudView addSubview:newView];
     [self.viewsArray addObject:newView];
     return newView;
@@ -158,19 +170,24 @@ static CGFloat radius;
         for (UIView* v in self.viewsArray) {
             [v removeFromSuperview];
         }
-        [self generateFrames:2];
-        [self.contentView setContentOffset:centerRectUpperLeftPoint(self.contentView.contentSize, self.contentView.bounds.size)];
-        NSArray* arr = [self checkVisible:false];
-        for (NSString* str in arr) {
-            SOPersonAvatarView* v = [self addAvatarViewWithFrame:CGRectMake(-25,-40,50,80) User:nil toView:self.contentBackgroudView];
-        }
-        [UIView animateWithDuration:0.2 animations:^{
-            for (int i=0;i<arr.count; i++) {
-                [[self.viewsArray objectAtIndex:i] setFrame:CGRectFromString(arr[i])];
-            }
-        } completion:^(BOOL finished) {
-            [self.contentView setScrollEnabled:YES];
+        [self startQueryFriendsOfUser:[self currentUser] batch:0 completion:^(int batchIndex, NSArray *users) {
+            self.userArray = users;
+            [self initialize];
+            [self generateFrames:(int)users.count];
             [self checkVisible:true];
+            for (int i=0; i<users.count; i++) {
+                SOPersonAvatarView* v = [self addAvatarViewWithFrame:CGRectMake(-25,-40,50,80) User:users[i] toView:self.contentBackgroudView];
+            }
+            NSArray* arr = [self checkVisible:false];
+            [UIView animateWithDuration:0.2 animations:^{
+                for (int i=0;i<arr.count; i++) {
+                    [[self.viewsArray objectAtIndex:i] setFrame:CGRectFromString(arr[i])];
+                }
+            } completion:^(BOOL finished) {
+                [self.contentView setScrollEnabled:YES];
+                [self checkVisible:true];
+                self.animating = false;
+            }];
         }];
     }];
 }
@@ -182,6 +199,28 @@ static CGFloat radius;
     }
     [self.contentView setNeedsDisplay];//necessary
     NSLog(@"didScroll");
+}
+
+#pragma mark datasource
+-(PFUser*)currentUser{
+    return [PFUser currentUser];
+}
+
+-(void)startQueryFriendsOfUser:(PFUser*)user batch:(int)batch completion:(void(^)(int batchIndex, NSArray* users))completion{
+    NSLog(@"%@",self.currentQuery);
+    if (self.currentQuery) {
+        [self.currentQuery cancel];
+    }
+        self.currentQuery = [User query];
+        [self.currentQuery findObjectsInBackgroundWithBlock:^(NSArray *PF_NULLABLE_S objects, NSError *PF_NULLABLE_S error){
+            if(error){
+                NSLog(@"error: %@", [error localizedDescription]);
+                NSAssert(!error, @"eror");
+            }
+            if (completion) {
+                completion(0,objects);
+            }
+        }];
 }
 
 @end

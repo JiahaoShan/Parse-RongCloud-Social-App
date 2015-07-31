@@ -11,7 +11,7 @@
 @interface User : PFUser <PFSubclassing>
 
 @property PFFile *userPortrait;
-@property PFFile *userPortraitThumbnail;
+@property PFFile *portraitThumbnail;
 @property NSDate *yearOfEnrollment;
 @property NSString *school;
 @property NSString *major;
