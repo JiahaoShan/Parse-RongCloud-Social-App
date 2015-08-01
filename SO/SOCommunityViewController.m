@@ -205,11 +205,11 @@ static CGFloat radius;
 }
 
 #pragma mark datasource
--(PFUser*)currentUser{
-    return [PFUser currentUser];
+-(User*)currentUser{
+    return [User currentUser];
 }
 
--(void)startQueryFriendsOfUser:(PFUser*)user batch:(int)batch completion:(void(^)(int batchIndex, NSArray* users))completion{
+-(void)startQueryFriendsOfUser:(User*)user batch:(int)batch completion:(void(^)(int batchIndex, NSArray* users))completion{
     NSLog(@"%@",self.currentQuery);
     if (self.currentQuery) {
         [self.currentQuery cancel];

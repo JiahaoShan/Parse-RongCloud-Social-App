@@ -28,6 +28,7 @@
 #import "SODataManager.h"
 #import "SOCommonStrings.h"
 #import "SOTabBarController.h"
+#import "SONavigationController.h"
 
 #import "PlaygroundFeed.h"
 #import "PlaygroundImage.h"
@@ -397,7 +398,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         UIStoryboard *storyboard =
         [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        SOTabBarController *rootNavi = [storyboard instantiateViewControllerWithIdentifier:@"SOtabBarController"];
+        SONavigationController* rootNavi = [storyboard instantiateViewControllerWithIdentifier:@"rootNavigationController"];
         self.window.rootViewController = rootNavi;
     });
 }

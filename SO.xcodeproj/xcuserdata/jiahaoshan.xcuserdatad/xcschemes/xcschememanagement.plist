@@ -9,9 +9,19 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>SOBetterTableViewDevelopment.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>4C0AA25F1B6CD2A400CA31F1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>8A58003F1B522F010032EC1C</key>
 		<dict>
 			<key>primary</key>
