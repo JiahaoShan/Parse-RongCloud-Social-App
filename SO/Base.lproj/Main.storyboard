@@ -405,7 +405,7 @@
         <!--Navigation Controller-->
         <scene sceneID="dsy-Q3-OVR">
             <objects>
-                <navigationController storyboardIdentifier="rootNavigationController" id="BWw-ha-VuI" customClass="SONavigationController" sceneMemberID="viewController">
+                <navigationController id="BWw-ha-VuI" customClass="SONavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Wif-Q3-WiY">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

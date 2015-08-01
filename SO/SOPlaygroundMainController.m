@@ -14,6 +14,7 @@
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
 
+
 @interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate,SOPlaygroundFeedCellDelegate, imageViewDelegate>
 @property (nonatomic) NSArray* feedsData;
 @property (nonatomic) BOOL initialized;
@@ -41,7 +42,6 @@
         self.pullToRefreshEnabled = YES;
         self.paginationEnabled = YES;
         self.objectsPerPage = 10;
-        [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     }
 }
 

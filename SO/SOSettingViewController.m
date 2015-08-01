@@ -18,6 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.title = @"PAGE MENU";
 //    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:30.0/255.0 green:30.0/255.0 blue:30.0/255.0 alpha:1.0];
 //    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
@@ -55,13 +56,6 @@
     _pageMenu = [[CAPSPageMenu alloc] initWithViewControllers:controllerArray frame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height) options:parameters];
     [self.view addSubview:_pageMenu.view];
 }
-
-//-(void)viewWillAppear:(BOOL)animated{
-//    [self.navigationController setNavigationBarHidden:true];
-//}
-//-(void)viewWillDisappear:(BOOL)animated{
-//    [self.navigationController setNavigationBarHidden:false];
-//}
 
 - (void)didTapGoToLeft {
     NSInteger currentIndex = self.pageMenu.currentPageIndex;

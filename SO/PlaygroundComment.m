@@ -11,9 +11,9 @@
 
 @implementation PlaygroundComment
 
-@dynamic playgroudFeed;
-@dynamic commentOwner;
-//@dynamic commentReceiverId;
+@dynamic playgroudFeedId;
+@dynamic commentOwnerId;
+@dynamic commentReceiverId;
 @dynamic message;
 
 + (void)load {

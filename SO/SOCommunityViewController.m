@@ -27,7 +27,7 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
 @property (strong, nonatomic) UIView* contentBackgroudView;
 @property (strong,nonatomic) UIView* currentUserAvatarView;
 @property (nonatomic) NSMutableArray* viewsArray;
-@property (nonatomic) NSMutableArray* framesArray;
+@property (nonatomic) NSMutableArray* hiddenFramesArray;
 @property (nonatomic) NSArray* userArray;
 @property (nonatomic) BOOL animating;
 //datasource
@@ -43,8 +43,7 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
         self.userArray = users;
         [self initialize];
         [self generateFrames:(int)users.count];
-        [self adjustFrames];
-        //[self checkVisible:true];
+        [self checkVisible:true];
         for (int i=0; i<users.count; i++) {
             User* user = users[i];
             PFFile* thumbnail = [user portraitThumbnail];
@@ -56,7 +55,7 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
 
 -(void)initialize{
     _viewsArray = [[NSMutableArray alloc] init];
-    _framesArray = [[NSMutableArray alloc] init];
+    _hiddenFramesArray = [[NSMutableArray alloc] init];
     if (!_contentBackgroudView) {
         _contentBackgroudView = [[UIView alloc] init];
         _contentBackgroudView.tag = 1;
@@ -84,8 +83,8 @@ static CGFloat radius;
             CGFloat x = center.x + radius*cos(angle);
             CGFloat y = center.y + radius*sin(angle);
             newRect = CGRectWithCenterAndSize(CGPointMake(x, y), CGSizeMake(50, 80));
-            for (UIView* v in self.viewsArray) {
-                if (CGRectIntersectsRect(v.frame, newRect)) {
+            for (NSString* v in self.hiddenFramesArray) {
+                if (CGRectIntersectsRect(CGRectFromString(v), newRect)) {
                     placed=false;
                     b = true;
                     break;
@@ -94,17 +93,14 @@ static CGFloat radius;
             if (!b) {
                 placed=true;
                 currCount++;
-                [self addAvatarViewWithFrame:newRect User:[self.userArray objectAtIndex:currCount] toView:self.contentBackgroudView];
-                [self.framesArray addObject:NSStringFromCGRect(newRect)];
+                [self.hiddenFramesArray addObject:NSStringFromCGRect(newRect)];
             }
         }
         if (!placed) {
             radius+=15;
         }
     }
-}
-
--(void)adjustFrames{
+    
     [self.contentBackgroudView setFrame:CGRectMake(radius, radius, 0, 0)];
     [self.contentView setContentSize:CGSizeMake(radius*2, radius*2)];
     if (radius < [SOUICommons screenWidth]/2) {
@@ -121,36 +117,47 @@ static CGFloat radius;
 
 //if show is true, then view is added to contentBackgroundView, nil will be returned
 //if show is false, views will not be added, and will be returned in an array
-//-(NSArray*)checkVisible:(BOOL)show{
-//    NSMutableArray* visible = [[NSMutableArray alloc] init];
-//    CGRect visibleRect = {self.contentView.contentOffset,self.view.bounds.size};
-//    visibleRect = [self.contentBackgroudView convertRect:visibleRect fromView:self.contentView];
-//    for (NSInteger i = self.hiddenFramesArray.count-1;i>=0;i--) {
-//        NSString* value = self.hiddenFramesArray[i];
-//        CGRect rect = CGRectFromString(value);
-//        if (CGRectIntersectsRect(visibleRect, rect)) {
-//            [self.hiddenFramesArray removeObjectAtIndex:i];
-//            if (show) {
-//                [self addAvatarViewWithFrame:rect User:[self.userArray objectAtIndex:i] toView:self.contentBackgroudView];
-//            }else{
-//                [visible addObject:NSStringFromCGRect(rect)];
-//            }
-//        }
-//    }
-//    for (NSInteger i = self.viewsArray.count-1;i>=0;i--) {
-//        UIView* v = self.viewsArray[i];
-//        if (!CGRectIntersectsRect(visibleRect, v.frame)) {
-//            [v removeFromSuperview];
-//            [self.viewsArray removeObjectAtIndex:i];
-//            [self.hiddenFramesArray addObject:NSStringFromCGRect(v.frame)];
-//        }
-//    }
-//    if (show) {
-//        return nil;
-//    }else{
-//        return visible;
-//    }
-//}
+-(NSArray*)checkVisible:(BOOL)show{
+    NSMutableArray* visible = [[NSMutableArray alloc] init];
+    CGRect visibleRect = {self.contentView.contentOffset,self.view.bounds.size};
+    visibleRect = [self.contentBackgroudView convertRect:visibleRect fromView:self.contentView];
+    for (NSInteger i = self.hiddenFramesArray.count-1;i>=0;i--) {
+        NSString* value = self.hiddenFramesArray[i];
+        CGRect rect = CGRectFromString(value);
+        if (CGRectIntersectsRect(visibleRect, rect)) {
+            [self.hiddenFramesArray removeObjectAtIndex:i];
+            if (show) {
+                [self addAvatarViewWithFrame:rect User:[self.userArray objectAtIndex:i] toView:self.contentBackgroudView];
+            }else{
+                [visible addObject:NSStringFromCGRect(rect)];
+            }
+        }
+    }
+    for (NSInteger i = self.viewsArray.count-1;i>=0;i--) {
+        UIView* v = self.viewsArray[i];
+        if (!CGRectIntersectsRect(visibleRect, v.frame)) {
+            [v removeFromSuperview];
+            [self.viewsArray removeObjectAtIndex:i];
+            [self.hiddenFramesArray addObject:NSStringFromCGRect(v.frame)];
+        }
+    }
+    if (show) {
+        return nil;
+    }else{
+        return visible;
+    }
+}
+
+-(SOPersonAvatarView*)addAvatarViewWithFrame:(CGRect)frame User:(User*)user toView:(UIView*)view{
+    SOPersonAvatarView* newView = [[SOPersonAvatarView alloc] initWithFrame:CGRectZero];
+    [newView setTranslatesAutoresizingMaskIntoConstraints:true];
+    newView.frame = frame;
+    [newView setName:[user username]];
+    [newView setAvatar:[user portraitThumbnail]];
+    [self.contentBackgroudView addSubview:newView];
+    [self.viewsArray addObject:newView];
+    return newView;
+}
 -(void)didDoubleTapViewAtIndex:(NSInteger)index{
     [self.contentView setContentOffset:centerRectUpperLeftPoint(self.contentView.contentSize, self.contentView.bounds.size) animated:true];
     self.animating = true;
@@ -167,49 +174,39 @@ static CGFloat radius;
             self.userArray = users;
             [self initialize];
             [self generateFrames:(int)users.count];
-            //[self checkVisible:true];
+            [self checkVisible:true];
             for (int i=0; i<users.count; i++) {
-                [self addAvatarViewWithFrame:CGRectMake(-25,-40,50,80) User:users[i] toView:self.contentBackgroudView];
+                SOPersonAvatarView* v = [self addAvatarViewWithFrame:CGRectMake(-25,-40,50,80) User:users[i] toView:self.contentBackgroudView];
             }
+            NSArray* arr = [self checkVisible:false];
             [UIView animateWithDuration:0.2 animations:^{
-                for (int i=0;i<users.count; i++) {
-                    [[self.viewsArray objectAtIndex:i] setFrame:CGRectFromString(self.framesArray[i])];
+                for (int i=0;i<arr.count; i++) {
+                    [[self.viewsArray objectAtIndex:i] setFrame:CGRectFromString(arr[i])];
                 }
             } completion:^(BOOL finished) {
                 [self.contentView setScrollEnabled:YES];
-                //[self checkVisible:true];
+                [self checkVisible:true];
                 self.animating = false;
             }];
         }];
     }];
 }
 
--(SOPersonAvatarView*)addAvatarViewWithFrame:(CGRect)frame User:(User*)user toView:(UIView*)view{
-    SOPersonAvatarView* newView = [[SOPersonAvatarView alloc] initWithFrame:CGRectZero];
-    [newView setTranslatesAutoresizingMaskIntoConstraints:true];
-    newView.frame = frame;
-    [newView setName:[user username]];
-    [newView setAvatar:[user portraitThumbnail]];
-    [self.contentBackgroudView addSubview:newView];
-    [self.viewsArray addObject:newView];
-    return newView;
-}
-
 #pragma mark UISCROLLVIEWDELEGATE
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     if (!self.animating) {
-        //[self checkVisible:true];
+        [self checkVisible:true];
     }
     [self.contentView setNeedsDisplay];//necessary
     NSLog(@"didScroll");
 }
 
 #pragma mark datasource
--(User*)currentUser{
-    return [User currentUser];
+-(PFUser*)currentUser{
+    return [PFUser currentUser];
 }
 
--(void)startQueryFriendsOfUser:(User*)user batch:(int)batch completion:(void(^)(int batchIndex, NSArray* users))completion{
+-(void)startQueryFriendsOfUser:(PFUser*)user batch:(int)batch completion:(void(^)(int batchIndex, NSArray* users))completion{
     NSLog(@"%@",self.currentQuery);
     if (self.currentQuery) {
         [self.currentQuery cancel];
