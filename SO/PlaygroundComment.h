@@ -7,13 +7,15 @@
 //
 
 #import <Parse/Parse.h>
+#import "User.h"
+#import "PlaygroundFeed.h"
 
 @interface PlaygroundComment : PFObject <PFSubclassing>
 + (NSString *)parseClassName;
 
-@property NSString* playgroudFeedId;
-@property NSString* commentOwnerId;
-@property NSString* commentReceiverId;
+@property PlaygroundFeed* playgroudFeed;
+@property User* commentOwner;
+//@property User* commentReceiver;
 @property NSString* message;
 
 
