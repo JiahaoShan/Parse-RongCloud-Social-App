@@ -17,33 +17,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *feedPosterNameView;
 @property (weak, nonatomic) IBOutlet UILabel *feedPostedTimeLabel;
 @property (weak, nonatomic) IBOutlet PFImageView* feedPosterAvatartView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *feedTextViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet UITextView *feedTextView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *feedImageViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet SOPlaygroundFeedImageView *feedImageView;
 @end
 
 @implementation SOPlaygroundFeedCell
-
-+(CGFloat)estimatedHeightForData:(PFObject*)data{
-    return 60 + 16 + 48 + 16 + [SOPlaygroundFeedImageView estimatedHeightForImages:[data objectForKey:@"images"]] + [self heightForText:[data objectForKey:@"text"]];
-}
-
-+ (CGFloat)heightForText:(NSString *)text
-{
-    //    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
-    //    {
-    UIFont* font = [UIFont systemFontOfSize:14];
-    CGSize size = CGSizeMake([[UIScreen mainScreen] bounds].size.width-48, FLT_MAX);
-    CGRect frame = [text boundingRectWithSize:size
-                                      options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading
-                                   attributes:@{NSFontAttributeName:font}
-                                      context:nil];
-    return (frame.size.height - frame.origin.y)*0.75;
-//        }
-//        else
-//        {
-//            return [text sizeWithFont:font constrainedToSize:size];
-//        }
-}
 
 -(void)awakeFromNib {
     self.feedPosterAvatartView.layer.masksToBounds = YES;
@@ -53,8 +33,9 @@
 -(void)configureWithData:(PFObject*)data{
     User* user = [data objectForKey:@"poster"];
     [user fetchIfNeeded];
-    [self.feedImageView setImages:[data objectForKey:@"images"]];
+    CGFloat h1 = [self.feedImageView setImagesWithFiles:[data objectForKey:@"images"]];
     self.feedImageView.delegate = self;
+    [self.feedImageViewHeightConstraint setConstant:h1];
     
     [self.feedGenderView setGender:kSOGenderNotSpecified];
     
@@ -64,8 +45,9 @@
     [self.feedPosterAvatartView loadInBackground];
     
     [self.feedTextView setText:[data objectForKey:@"text"]];
+    CGSize size = [self.feedTextView sizeThatFits:CGSizeMake([[UIScreen mainScreen] bounds].size.width-16, CGFLOAT_MAX)];
+    [self.feedTextViewHeightConstraint setConstant:size.height];
     [self.feedPostedTimeLabel setText:[[data updatedAt] description]];
-    
 }
 
 -(void)didTapImageAtIndex:(NSUInteger)index{

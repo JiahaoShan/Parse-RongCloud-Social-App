@@ -16,6 +16,7 @@
 
 
 @interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate,SOPlaygroundFeedCellDelegate, imageViewDelegate>
+@property (nonatomic) NSMutableDictionary* feedsCellCache;
 @property (nonatomic) NSArray* feedsData;
 @property (nonatomic) BOOL initialized;
 @end
@@ -42,6 +43,7 @@
         self.pullToRefreshEnabled = YES;
         self.paginationEnabled = YES;
         self.objectsPerPage = 10;
+        self.feedsCellCache = [[NSMutableDictionary alloc] init];
     }
 }
 
@@ -99,7 +101,7 @@
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
                         object:(PFObject *)object {
     if (indexPath.row>=self.objects.count) {
-        return nil;//[tableView dequeueReusableCellWithIdentifier:@"loadMore"];
+        return [tableView dequeueReusableCellWithIdentifier:@"loadMore"];
     }
     SOPlaygroundFeedCell* cell = [tableView dequeueReusableCellWithIdentifier:@"feedCell"];
     [cell configureWithData:object];
@@ -111,14 +113,9 @@
     if (indexPath.row == self.objects.count && self.paginationEnabled) {
         return 44;
     }
-    return [SOPlaygroundFeedCell estimatedHeightForData:[self.objects objectAtIndex:indexPath.row]];
-}
-
--(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row == self.objects.count && self.paginationEnabled) {
-        return 44;
-    }
-    return [SOPlaygroundFeedCell estimatedHeightForData:[self.objects objectAtIndex:indexPath.row]];
+    UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+    CGSize size = [cell.contentView systemLayoutSizeFittingSize: UILayoutFittingCompressedSize];
+    return size.height;
 }
 #pragma mark - SOPlaygroundFeedCellDelegate
 

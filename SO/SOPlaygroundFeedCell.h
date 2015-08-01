@@ -19,10 +19,7 @@
 @end
 
 @interface SOPlaygroundFeedCell : PFTableViewCell
-+(CGFloat)estimatedHeightForData:(PFObject*)data;
-
 @property (nonatomic,assign) id<SOPlaygroundFeedCellDelegate> delegate;
--(void)configureWithData:(PFObject*)data;
-
+-(void)configureWithData:(PFObject*)data;//returns height
 -(NSMutableArray*) getFeedImageViews;
 @end

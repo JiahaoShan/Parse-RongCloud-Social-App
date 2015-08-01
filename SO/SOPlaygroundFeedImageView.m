@@ -17,25 +17,6 @@
 @end
 
 @implementation SOPlaygroundFeedImageView
-
-+(CGFloat)estimatedHeightForImages:(NSArray*)files{
-    return [self heightForImageCount:files.count];
-}
-
-+(CGFloat)heightForImageCount:(NSUInteger)count{
-    if (count==1) {
-        return kPlaygroundSingleImageHeight + 2*kPlaygroundImagePadding;
-    }else if(count>0){
-        //        CGFloat width = [[UIScreen mainScreen] bounds].size.width;
-        //        CGFloat perRow = floor(width/kPlaygroundMultipleImageSize);
-        //        int numRow = (int)ceil(count/perRow) + 1;
-        //        return numRow * kPlaygroundMultipleImageSize;
-        int numRow = (int)ceil(count/3.0);
-        return numRow * kPlaygroundMultipleImageSize + (numRow+1)*kPlaygroundImagePadding ;
-    }
-    return 0;
-}
-
 -(NSMutableArray*)imageViews{
     if (!_imageViews) {
         _imageViews = [[NSMutableArray alloc] init];
@@ -63,10 +44,26 @@
     }];
 }
 
--(void)setImages:(NSArray*)files{
+-(void)layoutSubviews{
+    if (self.imageViews.count==1) {
+        PFImageView* iv = [self.imageViews firstObject];
+        CGRect frame = CGRectMake(kPlaygroundImagePadding,kPlaygroundImagePadding,kPlaygroundSingleImageHeight,kPlaygroundSingleImageHeight);
+        [iv setFrame:frame];
+    }else{
+        for (int i=0;i<self.imageViews.count;i++) {
+            PFImageView* iv = self.imageViews[i];
+            int x = i%3;
+            int y = i/3;
+            CGRect frame = CGRectMake(x*kPlaygroundMultipleImageSize+(x+1)*kPlaygroundImagePadding, y*kPlaygroundMultipleImageSize+(y+1)*kPlaygroundImagePadding, kPlaygroundMultipleImageSize, kPlaygroundMultipleImageSize);
+            [iv setFrame:frame];
+        }
+    }
+}
+
+-(CGFloat)setImagesWithFiles:(NSArray*)files{
     if (files.count == 0) {
         [self setVisible:NO];
-        return;
+        return 0;
     }
     if (!_tapGesture) {
         [self addGestureRecognizer:self.tapGesture];
@@ -81,8 +78,6 @@
     _images = files;
     if (files.count==1) {
         PFImageView* iv = [[PFImageView alloc] initWithImage:[UIImage imageNamed:@"placeholderImage"]];
-        CGRect frame = CGRectMake(kPlaygroundImagePadding,kPlaygroundImagePadding,kPlaygroundSingleImageHeight,kPlaygroundSingleImageHeight);
-        [iv setFrame:frame];
         [iv setImage:[UIImage imageNamed:@"placeholderImage"]];
         [iv setFile:files[0]];
         [iv loadInBackground];
@@ -91,10 +86,6 @@
     }else{
         for (int i=0;i<files.count;i++) {
             PFImageView* iv = [[PFImageView alloc] initWithImage:[UIImage imageNamed:@"placeholderImage"]];
-            int x = i%3;
-            int y = i/3;
-            CGRect frame = CGRectMake(x*kPlaygroundMultipleImageSize+(x+1)*kPlaygroundImagePadding, y*kPlaygroundMultipleImageSize+(y+1)*kPlaygroundImagePadding, kPlaygroundMultipleImageSize, kPlaygroundMultipleImageSize);
-            [iv setFrame:frame];
             [iv setImage:[UIImage imageNamed:@"placeholderImage"]];
             [iv setFile:files[i]];
             [iv loadInBackground: ^(UIImage *image, NSError *error) {
@@ -107,6 +98,18 @@
             [self.imageViews addObject:iv];
         }
     }
+    
+    if (files.count==1) {
+        return kPlaygroundSingleImageHeight + 2*kPlaygroundImagePadding;
+    }else if(files.count>0){
+        //        CGFloat width = [[UIScreen mainScreen] bounds].size.width;
+        //        CGFloat perRow = floor(width/kPlaygroundMultipleImageSize);
+        //        int numRow = (int)ceil(count/perRow) + 1;
+        //        return numRow * kPlaygroundMultipleImageSize;
+        int numRow = (int)ceil(files.count/3.0);
+        return numRow * kPlaygroundMultipleImageSize + (numRow+1)*kPlaygroundImagePadding ;
+    }
+    return 0;
 }
 
 //different from setHidden
