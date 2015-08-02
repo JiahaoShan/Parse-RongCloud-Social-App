@@ -11,10 +11,10 @@
 
 @implementation PlaygroundComment
 
-@dynamic playgroudFeedId;
-@dynamic commentOwnerId;
-@dynamic commentReceiverId;
+@dynamic playgroudFeed;
 @dynamic message;
+@dynamic commentOwner;
+@dynamic targetUser;
 
 + (void)load {
     [self registerSubclass];

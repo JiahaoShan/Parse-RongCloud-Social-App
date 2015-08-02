@@ -45,4 +45,23 @@
 +(CGFloat)screenWidth{
     return [[UIScreen mainScreen] bounds].size.width;
 }
++(NSString*)descriptionForDate:(NSDate*)date{
+    NSDate* now = [[NSDate alloc] init];
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    NSDateComponents* comp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute fromDate:date toDate:now options:0];
+    if (comp.year!=0) {
+        return [NSString stringWithFormat:@"%ld年前",(long)comp.year];
+    }else if(comp.month!=0){
+        return [NSString stringWithFormat:@"%ld月前",(long)comp.month];
+    }else if(comp.day!=0){
+        return [NSString stringWithFormat:@"%ld天前",(long)comp.day];
+    }
+    else if(comp.hour!=0){
+        return [NSString stringWithFormat:@"%ld小时前",(long)comp.hour];
+    }
+    else if(comp.minute!=0){
+        return [NSString stringWithFormat:@"%ld分钟前",(long)comp.minute];
+    }
+    return @"刚刚";
+}
 @end

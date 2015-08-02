@@ -11,12 +11,13 @@
 
 @implementation PlaygroundFeed
 
-@dynamic feedOwnerId;
-@dynamic likeCount;
-@dynamic commentCount;
-@dynamic message;
-@dynamic photos;
+@dynamic poster;
+@dynamic text;
+@dynamic images;
 @dynamic thumbnails;
+@dynamic firstComment;
+@dynamic latestComment;
+@dynamic commentCount;
 
 + (void)load {
     [self registerSubclass];

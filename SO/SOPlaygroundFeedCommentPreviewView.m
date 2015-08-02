@@ -33,6 +33,10 @@
     NSAssert(feed, @"feed is nil");
     self.feed = feed;
     
+    if (comments.count==0) {
+        return 0;
+    }
+    
     NSMutableAttributedString* commentString = [[NSMutableAttributedString alloc] init];
     if (totalCount>comments.count) {
         UITextPosition *beginning = self.beginningOfDocument;

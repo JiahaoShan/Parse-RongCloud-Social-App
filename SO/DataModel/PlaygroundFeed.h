@@ -7,16 +7,15 @@
 //
 
 #import <Parse/Parse.h>
-
+@class User;
+@class PlaygroundComment;
 @interface PlaygroundFeed : PFObject <PFSubclassing>
 + (NSString *)parseClassName;
-
-@property NSString* feedOwnerId;
-@property NSNumber* likeCount;
-@property NSNumber* commentCount;
-@property NSString* message;
-@property NSArray* photos;
+@property User* poster;
+@property NSString* text;
+@property NSArray* images;
 @property NSArray* thumbnails;
-
-
+@property PlaygroundComment* firstComment;
+@property PlaygroundComment* latestComment;
+@property NSNumber* commentCount;
 @end

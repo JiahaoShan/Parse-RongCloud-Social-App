@@ -14,6 +14,7 @@
 #import "SOUICommons.h"
 #import <ParseUI/ParseUI.h>
 #import "User.h"
+#import "PlaygroundComment.h"
 
 @interface SOPlaygroundFeedCell()<SOPlaygroundFeedImageViewDelegate>
 @property (weak, nonatomic) IBOutlet SOPlaygroundFeedGenderView *feedGenderView;
@@ -37,29 +38,39 @@
 }
 
 -(void)configureWithFeed:(PlaygroundFeed*)data{
-    User* user = [data objectForKey:@"poster"];
+    User* user = data.poster;
     [user fetchIfNeeded];
-    CGFloat h1 = [self.feedImageView setImagesWithFiles:[data objectForKey:@"images"]];
+    CGFloat h1 = [self.feedImageView setImagesWithFiles:data.images];
     self.feedImageView.delegate = self;
     [self.feedImageViewHeightConstraint setConstant:h1];
     
     [self.feedGenderView setGender:kSOGenderNotSpecified];
     
-    [self.feedPosterNameView setText:user[@"username"]];
+    [self.feedPosterNameView setText:user.username];
     
-    [self.feedPosterAvatartView setFile:user[@"portraitThumbnail"]];
+    [self.feedPosterAvatartView setFile:user.portraitThumbnail];
     [self.feedPosterAvatartView loadInBackground];
     
-    [self.feedTextView setText:[data objectForKey:@"text"]];
+    [self.feedTextView setText:data.text];
     CGSize size = [self.feedTextView sizeThatFits:CGSizeMake([SOUICommons screenWidth]-32, CGFLOAT_MAX)];//-32 might depend on screen scale
     [self.feedTextViewHeightConstraint setConstant:size.height+1];//ios bug
-    [self.feedPostedTimeLabel setText:[[data updatedAt] description]];
+    [self.feedPostedTimeLabel setText:[SOUICommons descriptionForDate:data.createdAt]];
     
     [self.feedLikeView setLiked:false];
     [self.feedLikeView setCount:8927];
     
-    CGFloat h2 = [self.commentPreviewView setComments:@[@{kSOPlaygroundFeedCommentPreviewViewUserKey:user,kSOPlaygroundFeedCommentPreviewViewMessageKey:@"哇塞碉堡了,刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕，刷爆你的屏幕"},@{kSOPlaygroundFeedCommentPreviewViewUserKey:user,kSOPlaygroundFeedCommentPreviewViewMessageKey:@"哇塞好牛逼"},
-                                                        @{kSOPlaygroundFeedCommentPreviewViewUserKey:user,kSOPlaygroundFeedCommentPreviewViewMessageKey:@"哇塞超级棒"}] totalCount:23 feed:data width:[SOUICommons screenWidth]];
+    NSMutableArray* commentPreviewArr = [[NSMutableArray alloc] init];
+    if (data.latestComment) {
+        PlaygroundComment* c = data.latestComment;
+        [c fetchIfNeeded];
+        [commentPreviewArr addObject:@{kSOPlaygroundFeedCommentPreviewViewUserKey:c.commentOwner,kSOPlaygroundFeedCommentPreviewViewMessageKey:c.message}];
+    }
+    if (data.firstComment) {
+        PlaygroundComment* c = data.firstComment;
+        [c fetchIfNeeded];
+        [commentPreviewArr addObject:@{kSOPlaygroundFeedCommentPreviewViewUserKey:c.commentOwner,kSOPlaygroundFeedCommentPreviewViewMessageKey:c.message}];
+    }
+    CGFloat h2 = [self.commentPreviewView setComments:commentPreviewArr totalCount:[data.commentCount intValue] feed:data width:[SOUICommons screenWidth]];
     self.commentPreviewViewHeightConstraint.constant = h2;
 }
 
