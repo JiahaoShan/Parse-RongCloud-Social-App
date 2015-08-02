@@ -81,15 +81,19 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"SOPlaygroundFeedCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"feedCell"];
     
-//    UIImage* sampleImage = [UIImage imageNamed:@"sampleImage"];
+//    UIImage* sampleImage = [UIImage imageNamed:@"sampleImage2.png"];
 //    NSData* imageData = UIImagePNGRepresentation(sampleImage);
-//    PFFile* image1 = [PFFile fileWithName:@"sampleImage.png" data:imageData];
+//    PFFile* image1 = [PFFile fileWithName:@"sampleImage2.png" data:imageData];
+//    
+//    UIImage* sampleImage2 = [UIImage imageNamed:@"sampleImage3.png"];
+//    NSData* imageData2 = UIImagePNGRepresentation(sampleImage2);
+//    PFFile* image2 = [PFFile fileWithName:@"sampleImage3.png" data:imageData2];
 //    //[image1 saveInBackground];
 //    
 //    PFObject* sampleFeed = [PFObject objectWithClassName:@"PlaygroundFeed"];
 //    sampleFeed[@"poster"] = [PFUser currentUser];
-//    sampleFeed[@"text"] = @"这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。这是一段超级长的文字。我就是想看看它能不能被正常显示出来。";
-//    sampleFeed[@"images"] = @[image1];
+//    sampleFeed[@"text"] = @"这是一段超级长的文字。我就是想看看它能不能被正常显示出来。-- 并不能。";
+//    sampleFeed[@"images"] = @[image1,image2];
 //    [sampleFeed saveInBackground];
 }
 
