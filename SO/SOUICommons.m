@@ -31,6 +31,14 @@
     });
     return primaryTint;
 }
++(UIColor*)activeButtonColor{
+    static dispatch_once_t onceToken;
+    static UIColor* activeButtonColor = nil;
+    dispatch_once(&onceToken,^{
+        activeButtonColor = [UIColor blueColor];
+    });
+    return activeButtonColor;
+}
 +(CGFloat)screenHeight{
     return [[UIScreen mainScreen] bounds].size.height;
 }

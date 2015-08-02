@@ -12,6 +12,7 @@
 @interface SOUICommons : NSObject
 +(UIColor*)primaryTintColor;
 +(UIColor*)textColor;
++(UIColor*)activeButtonColor;//indicated tappable text
 +(CGFloat)screenHeight;
 +(CGFloat)screenWidth;
 @end

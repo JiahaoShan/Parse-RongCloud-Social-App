@@ -10,6 +10,7 @@
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
 #import "SOPlaygroundFeedImageView.h"
+#import "PlaygroundFeed.h"
 @class SOPlaygroundFeedCell;
 @protocol SOPlaygroundFeedCellDelegate
 //called when user tap an image, the image itself is provided(though it can still be nil)
@@ -20,6 +21,6 @@
 
 @interface SOPlaygroundFeedCell : PFTableViewCell
 @property (nonatomic,assign) id<SOPlaygroundFeedCellDelegate> delegate;
--(void)configureWithData:(PFObject*)data;//returns height
+-(void)configureWithFeed:(PlaygroundFeed*)feed;//returns height
 -(NSMutableArray*) getFeedImageViews;
 @end

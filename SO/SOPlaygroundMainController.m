@@ -104,7 +104,7 @@
         return [tableView dequeueReusableCellWithIdentifier:@"loadMore"];
     }
     SOPlaygroundFeedCell* cell = [tableView dequeueReusableCellWithIdentifier:@"feedCell"];
-    [cell configureWithData:object];
+    [cell configureWithFeed:object];
     cell.delegate = self;
     return cell;
 }
