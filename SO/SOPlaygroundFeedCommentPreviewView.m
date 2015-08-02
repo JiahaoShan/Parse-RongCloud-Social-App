@@ -74,8 +74,8 @@
     
     CGRect promptRect = [self firstRectForRange:self.promptRange];
     if (CGRectContainsPoint(promptRect, p)) {
-        if ([(NSObject*)self.soDelegate respondsToSelector:@selector(userDidTapViewAllForFeed:)]) {
-            [self.soDelegate userDidTapViewAllForFeed:self.feed];
+        if ([(NSObject*)self.soDelegate respondsToSelector:@selector(userDidTapViewAllCommentForFeed:)]) {
+            [self.soDelegate userDidTapViewAllCommentForFeed:self.feed];
         }
         return;
     }

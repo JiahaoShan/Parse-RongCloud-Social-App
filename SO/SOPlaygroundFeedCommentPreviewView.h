@@ -13,7 +13,7 @@
 #define kSOPlaygroundFeedCommentPreviewViewMessageKey @"m"
 
 @protocol SOPlaygroundFeedCommentPreviewViewDelegate
--(void)userDidTapViewAllForFeed:(PlaygroundFeed*)feed;
+-(void)userDidTapViewAllCommentForFeed:(PlaygroundFeed*)feed;
 -(void)userDidTapNameOfUser:(User*)user;
 @end
 

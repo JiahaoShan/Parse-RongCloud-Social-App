@@ -32,6 +32,7 @@
 		4CA673D61B541D9C00D5FDFA /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA673CE1B541D9C00D5FDFA /* UIWebView+AFNetworking.m */; };
 		4CB3B63E1B6E22E3009CE032 /* SOPlaygroundFeedLikeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB3B63D1B6E22E3009CE032 /* SOPlaygroundFeedLikeView.m */; };
 		4CB3B6411B6E2737009CE032 /* SOPlaygroundFeedCommentPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB3B6401B6E2737009CE032 /* SOPlaygroundFeedCommentPreviewView.m */; };
+		4CB3B6471B6E5FD2009CE032 /* MTStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB3B6461B6E5FD2009CE032 /* MTStatusBarOverlay.m */; };
 		4CBCF6B01B524F7500EE2195 /* SOUICommons.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6AF1B524F7500EE2195 /* SOUICommons.m */; };
 		4CBCF6B31B52510F00EE2195 /* SOBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6B21B52510F00EE2195 /* SOBaseViewController.m */; };
 		4CBCF6B61B52517D00EE2195 /* SONavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6B51B52517D00EE2195 /* SONavigationController.m */; };
@@ -187,6 +188,8 @@
 		4CB3B63D1B6E22E3009CE032 /* SOPlaygroundFeedLikeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedLikeView.m; sourceTree = "<group>"; };
 		4CB3B63F1B6E2737009CE032 /* SOPlaygroundFeedCommentPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPlaygroundFeedCommentPreviewView.h; sourceTree = "<group>"; };
 		4CB3B6401B6E2737009CE032 /* SOPlaygroundFeedCommentPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedCommentPreviewView.m; sourceTree = "<group>"; };
+		4CB3B6451B6E5FD2009CE032 /* MTStatusBarOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTStatusBarOverlay.h; sourceTree = "<group>"; };
+		4CB3B6461B6E5FD2009CE032 /* MTStatusBarOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTStatusBarOverlay.m; sourceTree = "<group>"; };
 		4CBCF6AE1B524F7500EE2195 /* SOUICommons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOUICommons.h; sourceTree = "<group>"; };
 		4CBCF6AF1B524F7500EE2195 /* SOUICommons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOUICommons.m; sourceTree = "<group>"; };
 		4CBCF6B11B52510F00EE2195 /* SOBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOBaseViewController.h; sourceTree = "<group>"; };
@@ -442,6 +445,8 @@
 			children = (
 				4CBCF6AE1B524F7500EE2195 /* SOUICommons.h */,
 				4CBCF6AF1B524F7500EE2195 /* SOUICommons.m */,
+				4CB3B6451B6E5FD2009CE032 /* MTStatusBarOverlay.h */,
+				4CB3B6461B6E5FD2009CE032 /* MTStatusBarOverlay.m */,
 				4CBCF6B71B52521200EE2195 /* SOTabBarController.h */,
 				4CBCF6B81B52521200EE2195 /* SOTabBarController.m */,
 				4CBCF6B41B52517D00EE2195 /* SONavigationController.h */,
@@ -959,6 +964,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CB3B6471B6E5FD2009CE032 /* MTStatusBarOverlay.m in Sources */,
 				4CA673951B52615C00D5FDFA /* SOPlaygroundFeedImageView.m in Sources */,
 				8AA7BC891B5DF98300ABB812 /* PlaygroundImage.m in Sources */,
 				4CBCF6B91B52521200EE2195 /* SOTabBarController.m in Sources */,

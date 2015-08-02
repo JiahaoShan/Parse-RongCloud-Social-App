@@ -13,7 +13,7 @@
 #import "SOImagePageViewController.h"
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
-
+#import "MTStatusBarOverlay.h"
 
 @interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate,SOPlaygroundFeedCellDelegate, imageViewDelegate>
 @property (nonatomic) NSMutableDictionary* feedsCellCache;
@@ -63,6 +63,21 @@
 
 -(void)viewDidLoad{
     [super viewDidLoad];
+    
+    MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
+    overlay.animation = MTStatusBarOverlayAnimationFallDown;  // MTStatusBarOverlayAnimationShrink
+    overlay.detailViewMode = MTDetailViewModeHistory;         // enable automatic history-tracking and show in detail-view
+    //overlay.delegate = self;
+    overlay.progress = 0.0;
+    [overlay postMessage:@"Following @myell0w on Twitter…"];
+    overlay.progress = 0.1;
+    // ...
+    [overlay postMessage:@"Following myell0w on Github…" animated:NO];
+    overlay.progress = 0.5;
+    // ...
+    [overlay postImmediateFinishMessage:@"Following was a good idea!" duration:2.0 animated:YES];
+    overlay.progress = 1.0;
+    
     
     [self.tableView registerNib:[UINib nibWithNibName:@"SOPlaygroundFeedCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"feedCell"];
     
