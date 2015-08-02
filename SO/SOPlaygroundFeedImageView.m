@@ -47,14 +47,14 @@
 -(void)layoutSubviews{
     if (self.imageViews.count==1) {
         PFImageView* iv = [self.imageViews firstObject];
-        CGRect frame = CGRectMake(kPlaygroundImagePadding,kPlaygroundImagePadding,kPlaygroundSingleImageHeight,kPlaygroundSingleImageHeight);
+        CGRect frame = CGRectMake(0,0,kPlaygroundSingleImageHeight,kPlaygroundSingleImageHeight);
         [iv setFrame:frame];
     }else{
         for (int i=0;i<self.imageViews.count;i++) {
             PFImageView* iv = self.imageViews[i];
             int x = i%3;
             int y = i/3;
-            CGRect frame = CGRectMake(x*kPlaygroundMultipleImageSize+(x+1)*kPlaygroundImagePadding, y*kPlaygroundMultipleImageSize+(y+1)*kPlaygroundImagePadding, kPlaygroundMultipleImageSize, kPlaygroundMultipleImageSize);
+            CGRect frame = CGRectMake(x*kPlaygroundMultipleImageSize+x*kPlaygroundImagePadding, y*kPlaygroundMultipleImageSize+y*kPlaygroundImagePadding, kPlaygroundMultipleImageSize, kPlaygroundMultipleImageSize);
             [iv setFrame:frame];
         }
     }
@@ -100,14 +100,10 @@
     }
     
     if (files.count==1) {
-        return kPlaygroundSingleImageHeight + 2*kPlaygroundImagePadding;
+        return kPlaygroundSingleImageHeight;
     }else if(files.count>0){
-        //        CGFloat width = [[UIScreen mainScreen] bounds].size.width;
-        //        CGFloat perRow = floor(width/kPlaygroundMultipleImageSize);
-        //        int numRow = (int)ceil(count/perRow) + 1;
-        //        return numRow * kPlaygroundMultipleImageSize;
         int numRow = (int)ceil(files.count/3.0);
-        return numRow * kPlaygroundMultipleImageSize + (numRow+1)*kPlaygroundImagePadding ;
+        return numRow * kPlaygroundMultipleImageSize + (numRow-1)*kPlaygroundImagePadding;
     }
     return 0;
 }

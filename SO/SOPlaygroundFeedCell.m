@@ -33,7 +33,7 @@
 
 -(void)awakeFromNib {
     self.feedPosterAvatartView.layer.masksToBounds = YES;
-    self.feedPosterAvatartView.layer.cornerRadius = self.feedPosterAvatartView.frame.size.width / 2;
+    self.feedPosterAvatartView.layer.cornerRadius = 30;
 }
 
 -(void)configureWithFeed:(PlaygroundFeed*)data{
@@ -51,8 +51,8 @@
     [self.feedPosterAvatartView loadInBackground];
     
     [self.feedTextView setText:[data objectForKey:@"text"]];
-    CGSize size = [self.feedTextView sizeThatFits:CGSizeMake([SOUICommons screenWidth]-16, CGFLOAT_MAX)];
-    [self.feedTextViewHeightConstraint setConstant:size.height];
+    CGSize size = [self.feedTextView sizeThatFits:CGSizeMake([SOUICommons screenWidth]-32, CGFLOAT_MAX)];//-32 might depend on screen scale
+    [self.feedTextViewHeightConstraint setConstant:size.height+1];//ios bug
     [self.feedPostedTimeLabel setText:[[data updatedAt] description]];
     
     [self.feedLikeView setLiked:false];

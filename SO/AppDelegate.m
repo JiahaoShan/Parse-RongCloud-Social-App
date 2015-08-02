@@ -397,7 +397,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         UIStoryboard *storyboard =
         [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        SOTabBarController *rootNavi = [storyboard instantiateViewControllerWithIdentifier:@"SOtabBarController"];
+        UINavigationController *rootNavi = [storyboard instantiateViewControllerWithIdentifier:@"rootNavigation"];
         self.window.rootViewController = rootNavi;
     });
 }

@@ -402,10 +402,10 @@
             </objects>
             <point key="canvasLocation" x="-110" y="678"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--rootNavigation-->
         <scene sceneID="dsy-Q3-OVR">
             <objects>
-                <navigationController id="BWw-ha-VuI" customClass="SONavigationController" sceneMemberID="viewController">
+                <navigationController title="rootNavigation" id="BWw-ha-VuI" customClass="SONavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Wif-Q3-WiY">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

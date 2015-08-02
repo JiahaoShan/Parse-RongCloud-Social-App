@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "SODefines.h"
 
-#define kPlaygroundSingleImageHeight 150.0f
+#define kPlaygroundSingleImageHeight 100.0f
 
 //if more than one image, each image is cropped as square
-#define kPlaygroundMultipleImageSize 70.0f
+#define kPlaygroundMultipleImageSize 60.0f
 
-#define kPlaygroundImagePadding 12.0f
+#define kPlaygroundImagePadding 8.0f
 
 @protocol SOPlaygroundFeedImageViewDelegate
 //called when user tap an image, the image itself is provided(though it can still be nil)
