@@ -11,16 +11,17 @@
 
 @implementation User
 
-@dynamic userPortrait;
+@dynamic portrait;
 @dynamic portraitThumbnail;
 @dynamic yearOfEnrollment;
-@dynamic school;
+@dynamic university;
 @dynamic major;
 @dynamic point;
 @dynamic male;
 @dynamic isFeature;
 @dynamic userPortraits;
 @dynamic userPortraitsThumbnails;
+
 
 + (void)load {
     [self registerSubclass];

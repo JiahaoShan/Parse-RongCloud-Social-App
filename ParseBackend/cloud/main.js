@@ -123,3 +123,148 @@ Parse.Cloud.beforeSave("PlaygroundFeed", function(request, response) {
         })
     }
 });
+
+Parse.Cloud.beforeSave(Parse.User, function(request, response) {
+    Parse.Cloud.useMasterKey(); 
+    var user = request.object;
+
+    if(!user.get("email")){
+        response.error("邮箱不能为空！");
+    }
+    else if(!user.get("username")){
+        response.error("用户名不能为空！");
+    }
+
+if (user.dirty("email")) {
+    var email = user.get("email");
+    var pos = email.indexOf("@");
+    var domain = email.substr((pos+1));
+
+    var university = Parse.Object.extend("University");
+    var query = new Parse.Query(university);
+    query.include("aliasPointer");
+    query.equalTo("domain", domain);
+                console.log("+++Succes@@s");
+
+    query.first({
+        success: function(object) {
+            console.log("+++Success");
+            if (object) {
+                            console.log("+++Succe1ss");
+                if (!object.get("aliasPointer")) {
+                user.set("University", object);
+                response.success();      
+              }
+                else {
+                                console.log("+++Success2");
+
+                user.set("University", object.get("aliasPointer")); 
+                response.success();     
+                }
+            }
+            else {
+                            console.log("+++Succ3ess");
+
+                console.error("Edu domain not found: " + domain);
+                if (domain.substr(domain.length - 4) == ".edu") {
+                    response.success("版本内测ing...由于近期流量过大，为了防止宇宙被破坏，服务器突然被累死，您所在的学校正在被逐步挖掘中，将于近几日逐步开启校园，请关注您的邮件。"
+                        + "您作为首批用户也将得到部分特权，如果您心急，可以分享到我们给您的朋友，人数达标次日将自动开通。");  
+                }
+                else response.success("这邮箱不对吧。。。");  
+            }
+            
+    },
+        error: function(error) {
+                console.error("Edu domain not found: " + domain);
+             console.error("Error: " + error.code + " " + error.message);
+             response.error(error.message);
+    }
+});
+}
+else if (user.dirty("portrait")) {
+    Parse.Cloud.httpRequest({
+    url: user.get("portrait").url()
+  }).then(function(response) {
+    var image = new Image();
+    return image.setData(response.buffer);
+  }).then(function(image) {
+    var size = Math.min(image.width(), image.height());
+    return image.crop({
+      left: (image.width() - size) / 2,
+      top: (image.height() - size) / 2,
+      width: size,
+      height: size
+    });
+  }).then(function(image) {
+    // Resize the image to 64x64.
+    return image.scale({
+      width: 64,
+      height: 64
+    });
+  }).then(function(image) {
+    return image.setFormat("JPEG");
+  }).then(function(image) {
+    return image.data();
+  }).then(function(buffer) {
+    var base64 = buffer.toString("base64");
+    var cropped = new Parse.File("thumbnail.jpg", { base64: base64 });
+    return cropped.save();
+  }).then(function(cropped) {
+    // Attach the image file to the original object.
+    user.set("portraitThumbnail", cropped);
+    // SHIFT POTRAITS
+    if (!user.get("userPortraits")) {
+        var portraitsArray = [];
+        var portraitThumbnailArray = [];
+        var image = user.get("portrait");
+        var data = {
+                        __type: 'File',
+                        name: image.name(),
+                        url: image.url()
+                    };
+        portraitsArray.push(data);
+        user.set("userPortraits", portraitsArray);
+        var thumbData = {
+                        __type: 'File',
+                        name: cropped.name(),
+                        url: cropped.url()
+                    };
+        portraitThumbnailArray.push(thumbData);
+        user.set("userPortraitsThumbnails", portraitsArray);
+    }
+    else {
+        var portraitsArray = user.get("userPortraits");
+        var portraitThumbnailArray = user.get("userPortraitsThumbnails");
+        var image = user.get("portrait");
+        var data = {
+                        __type: 'File',
+                        name: image.name(),
+                        url: image.url()
+                    };
+        portraitsArray.push(data);
+
+        var thumbData = {
+                        __type: 'File',
+                        name: cropped.name(),
+                        url: cropped.url()
+                    };
+        portraitThumbnailArray.push(thumbData);
+        // PotraitNumber
+        if (portraitsArray.length > 9) {
+            portraitsArray.shift();
+            portraitThumbnailArray.shift();
+        }
+        user.set("userPortraits", portraitsArray);
+        user.set("userPortraitsThumbnails", portraitThumbnailArray);
+    }
+  }).then(function(result) {
+    response.success();
+  }, function(error) {
+    response.error(error);
+  });
+}
+else {
+    response.success();
+}
+
+});

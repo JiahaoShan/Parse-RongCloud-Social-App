@@ -49,6 +49,7 @@
 		4CCD26501B5E9FA9006CDAF5 /* SOCommunityContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD264F1B5E9FA9006CDAF5 /* SOCommunityContentView.m */; };
 		8A1138B71B6E8EE70033B994 /* sampleImage2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A1138B61B6E8EE70033B994 /* sampleImage2.png */; };
 		8A1138B91B6EC6720033B994 /* sampleImage3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A1138B81B6EC6720033B994 /* sampleImage3.png */; };
+		8A1138BC1B6F23CC0033B994 /* University.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1138BB1B6F23CC0033B994 /* University.m */; };
 		8A14F6641B65785B001AE83D /* SOProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A14F6631B65785B001AE83D /* SOProfileViewController.m */; };
 		8A14F6671B657D7C001AE83D /* SOSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A14F6661B657D7C001AE83D /* SOSettingViewController.m */; };
 		8A14F66B1B65800E001AE83D /* HMSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A14F6691B65800E001AE83D /* HMSegmentedControl.m */; };
@@ -221,6 +222,8 @@
 		4CCD264F1B5E9FA9006CDAF5 /* SOCommunityContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCommunityContentView.m; sourceTree = "<group>"; };
 		8A1138B61B6E8EE70033B994 /* sampleImage2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sampleImage2.png; path = SO/Resources/sampleImage2.png; sourceTree = "<group>"; };
 		8A1138B81B6EC6720033B994 /* sampleImage3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sampleImage3.png; path = SO/Resources/sampleImage3.png; sourceTree = "<group>"; };
+		8A1138BA1B6F23CC0033B994 /* University.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = University.h; sourceTree = "<group>"; };
+		8A1138BB1B6F23CC0033B994 /* University.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = University.m; sourceTree = "<group>"; };
 		8A14F6621B65785B001AE83D /* SOProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOProfileViewController.h; sourceTree = "<group>"; };
 		8A14F6631B65785B001AE83D /* SOProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOProfileViewController.m; sourceTree = "<group>"; };
 		8A14F6651B657D7C001AE83D /* SOSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOSettingViewController.h; sourceTree = "<group>"; };
@@ -852,6 +855,8 @@
 				8AA7BC8B1B5DFA9D00ABB812 /* UserRelation.m */,
 				8AA7BC8D1B5DFCA300ABB812 /* User.h */,
 				8AA7BC8E1B5DFCA300ABB812 /* User.m */,
+				8A1138BA1B6F23CC0033B994 /* University.h */,
+				8A1138BB1B6F23CC0033B994 /* University.m */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -1041,6 +1046,7 @@
 				8A8303D81B58AC0900FB22A5 /* SOConversationViewController.m in Sources */,
 				8A14F6811B6B067D001AE83D /* SODataManager.m in Sources */,
 				8A14F6731B6595F6001AE83D /* SOPersonalInfoTableViewController.m in Sources */,
+				8A1138BC1B6F23CC0033B994 /* University.m in Sources */,
 				8AA7BC861B5DF8AF00ABB812 /* PlaygroundComment.m in Sources */,
 				4CA673CF1B541D9C00D5FDFA /* AFNetworkActivityIndicatorManager.m in Sources */,
 				8A14F6941B6B1945001AE83D /* FMDatabaseAdditions.m in Sources */,

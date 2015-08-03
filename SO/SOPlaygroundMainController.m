@@ -14,6 +14,7 @@
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
 #import "MTStatusBarOverlay.h"
+#import "User.h"
 
 @interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate,SOPlaygroundFeedCellDelegate, imageViewDelegate>
 @property (nonatomic) NSMutableDictionary* feedsCellCache;
@@ -95,6 +96,27 @@
 //    sampleFeed[@"text"] = @"这是一段超级长的文字。我就是想看看它能不能被正常显示出来。-- 并不能。";
 //    sampleFeed[@"images"] = @[image1,image2];
 //    [sampleFeed saveInBackground];
+    
+    
+    
+//    PFUser *user = [PFUser user];
+//    user.username = @"Shawn";
+//    user.password = @"12345678";
+//    user.email = @"shawn.shan@wisc.edu";
+//    
+//    UIImage* sampleImage2 = [UIImage imageNamed:@"sampleImage2.png"];
+//    NSData* imageData2 = UIImagePNGRepresentation(sampleImage2);
+//    PFFile* image2 = [PFFile fileWithName:@"sampleImage2.png" data:imageData2];
+//    
+//    // other fields can be set just like with PFObject
+//    user[@"portrait"] = image2;
+//    user[@"male"] = @YES;
+//    
+//    [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+//        if (!error) {   // Hooray! Let them use the app now.
+//        } else {   NSString *errorString = [error userInfo][@"error"];   // Show the errorString somewhere and let the user try again.
+//        }
+//    }];
 }
 
 #pragma mark - UITableViewDelegate

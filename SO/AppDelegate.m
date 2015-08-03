@@ -292,7 +292,7 @@
         [RCIM sharedRCIM].globalConversationPortraitSize = CGSizeMake(46, 46);
     }
     [[RCIM sharedRCIM] setUserInfoDataSource:SODataSource];
-    [RCIM sharedRCIM].groupInfoDataSource = SODataSource;
+    //[RCIM sharedRCIM].groupInfoDataSource = SODataSource;
     
     [[NSNotificationCenter defaultCenter]
      addObserver:self
@@ -397,12 +397,13 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         UIStoryboard *storyboard =
         [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UINavigationController *rootNavi = [storyboard instantiateViewControllerWithIdentifier:@"rootNavigation"];
+        UINavigationController *rootNavi = [storyboard instantiateViewControllerWithIdentifier:@"rootNavigationViewController"];
         self.window.rootViewController = rootNavi;
     });
 }
 
 - (void) initCustomizedDataModel{
+    [University registerSubclass];
     [User registerSubclass];
     [PlaygroundFeed registerSubclass];
     [PlaygroundComment registerSubclass];
