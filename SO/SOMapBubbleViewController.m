@@ -33,10 +33,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     _mapView.delegate = self;
     _mapView.showsUserLocation = YES;
     _mapView.mapType =MKMapTypeStandard;
-    
+    //cancelLocationRequest
     INTULocationManager *locMgr = [INTULocationManager sharedInstance];
     [locMgr requestLocationWithDesiredAccuracy:INTULocationAccuracyCity
                                        timeout:4.0
@@ -46,8 +47,7 @@
                                                  MKUserLocation *userLocation = _mapView.userLocation;
                                                  
                                                  MKCoordinateRegion region =
-                                                 MKCoordinateRegionMakeWithDistance (
-                                                                                     userLocation.location.coordinate, 5000, 5000);
+                                                 MKCoordinateRegionMakeWithDistance (userLocation.location.coordinate, 5000, 5000);
                                                  [_mapView setRegion:region animated:NO];
                                                  // Request succeeded, meaning achievedAccuracy is at least the requested accuracy, and
                                                  // currentLocation contains the device's current location.
@@ -61,11 +61,23 @@
                                                  // An error occurred, more info is available by looking at the specific status returned.
                                              }
                                          }];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
     [self joinChatRoom];
 }
 
-- (void) viewDidDisappear:(BOOL)animated {
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
     [self quitChatRoom];
+    //[self applyMapViewMemoryFix];
+}
+
+- (void)applyMapViewMemoryFix{
+    _mapView.showsUserLocation = NO;
+    _mapView.delegate = nil;
+    [_mapView removeFromSuperview];
+    self.mapView = nil;
 }
 
 - (void) joinChatRoom {
@@ -97,9 +109,7 @@
      removeObserver:self];
 }
 
-- (void)mapView:(MKMapView *)mapView
-didUpdateUserLocation:
-(MKUserLocation *)userLocation
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
     _mapView.centerCoordinate =
     userLocation.location.coordinate;

@@ -69,12 +69,13 @@
     RCUserInfo *userInfo=[[RCDataBaseManager shareInstance] getUserByUserId:userId];
     if (userInfo==nil) {
             PFQuery *query = [User query];
-            query.cachePolicy = kPFCachePolicyNetworkElseCache;
+//            query.cachePolicy = kPFCachePolicyNetworkElseCache;
             [query selectKeys:@[UserNameKey, UserPortraitUriKey]];
             [query getObjectInBackgroundWithId:userId block:^(PFObject *object, NSError *error) {
             if (object == nil) return;
             User* user = (User *)object;
-            RCUserInfo *person = [[RCUserInfo alloc] initWithUserId:[user objectId] name:[user objectForKey:UserNameKey] portrait:[user objectForKey:UserPortraitUriKey]];
+            PFFile* imageFile = [user objectForKey:UserPortraitUriKey];
+            RCUserInfo *person = [[RCUserInfo alloc] initWithUserId:[user objectId] name:[user objectForKey:UserNameKey] portrait:imageFile.url];
             [[RCDataBaseManager shareInstance] insertUserToDB:person];
             completion(person);
         }];
@@ -93,7 +94,8 @@
         if (!error) {
             [[RCDataBaseManager shareInstance] clearFriendsData];
             [users enumerateObjectsUsingBlock:^(User *user, NSUInteger idx, BOOL *stop) {
-                RCUserInfo *person = [[RCUserInfo alloc] initWithUserId:[user objectId] name:[user objectForKey:UserNameKey] portrait:[user objectForKey:UserPortraitUriKey]];
+                PFFile* imageFile = [user objectForKey:UserPortraitUriKey];
+                RCUserInfo *person = [[RCUserInfo alloc] initWithUserId:[user objectId] name:[user objectForKey:UserNameKey] portrait:imageFile.url];
                 [[RCDataBaseManager shareInstance] insertUserToDB:person];
             }];
             completion();
@@ -111,8 +113,9 @@
         if (!error) {
             [[RCDataBaseManager shareInstance] clearFriendsData];
             [users enumerateObjectsUsingBlock:^(User *user, NSUInteger idx, BOOL *stop) {
-                RCUserInfo *friend = [[RCUserInfo alloc] initWithUserId:[user objectId] name:[user objectForKey:UserNameKey] portrait:[user objectForKey:UserPortraitUriKey]];
-                [[RCDataBaseManager shareInstance] insertFriendToDB:friend];
+                PFFile* imageFile = [user objectForKey:UserPortraitUriKey];
+                RCUserInfo *person = [[RCUserInfo alloc] initWithUserId:[user objectId] name:[user objectForKey:UserNameKey] portrait:imageFile.url];
+                [[RCDataBaseManager shareInstance] insertFriendToDB:person];
             }];
             completion();
 

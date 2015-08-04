@@ -160,6 +160,15 @@ static NSString * const friendTableName = @"FRIENDTABLE";
     }];
 }
 
+-(void)clearUserData
+{
+    NSString *deleteSql = @"DELETE FROM USERTABLE";
+    FMDatabaseQueue *queue = [DBHelper getDatabaseQueue];
+    [queue inDatabase:^(FMDatabase *db) {
+        [db executeUpdate:deleteSql];
+    }];
+}
+
 ////存储群组信息
 //-(void)insertGroupToDB:(RCDGroupInfo *)group
 //{

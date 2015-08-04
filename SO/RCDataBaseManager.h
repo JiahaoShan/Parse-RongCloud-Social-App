@@ -42,6 +42,9 @@
 //清空好友缓存数据
 -(void)clearFriendsData;
 
+//清空用户缓存数据
+-(void)clearUserData;
+
 //从表中获取所有好友信息 //RCUserInfo
 -(NSArray *) getAllFriends;
 @end
