@@ -18,7 +18,8 @@
 @dynamic firstComment;
 @dynamic latestComment;
 @dynamic commentCount;
-
+@dynamic likeCount;
+@dynamic recentLikeUsers;
 + (void)load {
     [self registerSubclass];
 }
