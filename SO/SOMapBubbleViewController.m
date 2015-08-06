@@ -12,6 +12,7 @@
 #import <RongIMKit/RongIMKit.h>
 #import <ParseUI/ParseUI.h>
 #import "SOMapBubbleAnnotation.h"
+#import "SOMapBubbleAnnotationView.h"
 
 @interface SOMapBubbleViewController () <MKMapViewDelegate>
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -115,23 +116,80 @@
     userLocation.location.coordinate;
 }
 
-//-(MKAnnotationView *) mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
-//    MKPinAnnotationView *MyPin=[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current"];
-//    //MyPin.pinColor = MKPinAnnotationColorPurple;
-//    
-//    UIButton *advertButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-//    [advertButton addTarget:self action:@selector(button:) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    /*MyPin.rightCalloutAccessoryView = advertButton;
-//     MyPin.draggable = YES;
-//     
-//     MyPin.animatesDrop=TRUE;
-//     MyPin.canShowCallout = YES;*/
-//    MyPin.highlighted = NO;
-//    MyPin.image = [UIImage imageNamed:@"pin"];
-//    
-//    return MyPin;
-//}
+- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
+{
+    [mapView selectAnnotation:[[mapView annotations] lastObject] animated:YES];
+}
+
+MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords, NSUInteger coordCount) {
+    MKMapRect r = MKMapRectNull;
+    for (NSUInteger i=0; i < coordCount; ++i) {
+        MKMapPoint p = MKMapPointForCoordinate(coords[i]);
+        r = MKMapRectUnion(r, MKMapRectMake(p.x, p.y, 0, 0));
+    }
+    return MKCoordinateRegionForMapRect(r);
+}
+
+- (void)zoomToFitMapAnnotations:(MKMapView *)mapView {
+    if ([mapView.annotations count] == 0) return;
+    
+    CLLocationCoordinate2D topLeftCoord;
+    topLeftCoord.latitude = -90;
+    topLeftCoord.longitude = 180;
+    
+    CLLocationCoordinate2D bottomRightCoord;
+    bottomRightCoord.latitude = 90;
+    bottomRightCoord.longitude = -180;
+    
+    for(id<MKAnnotation> annotation in mapView.annotations) {
+        topLeftCoord.longitude = fmin(topLeftCoord.longitude, annotation.coordinate.longitude);
+        topLeftCoord.latitude = fmax(topLeftCoord.latitude, annotation.coordinate.latitude);
+        bottomRightCoord.longitude = fmax(bottomRightCoord.longitude, annotation.coordinate.longitude);
+        bottomRightCoord.latitude = fmin(bottomRightCoord.latitude, annotation.coordinate.latitude);
+    }
+    
+    MKCoordinateRegion region;
+    region.center.latitude = topLeftCoord.latitude - (topLeftCoord.latitude - bottomRightCoord.latitude) * 0.5;
+    region.center.longitude = topLeftCoord.longitude + (bottomRightCoord.longitude - topLeftCoord.longitude) * 0.5;
+    
+    // Add a little extra space on the sides
+    region.span.latitudeDelta = fabs(topLeftCoord.latitude - bottomRightCoord.latitude) * 1.1;
+    region.span.longitudeDelta = fabs(bottomRightCoord.longitude - topLeftCoord.longitude) * 1.1;
+    
+    region = [mapView regionThatFits:region];
+    [mapView setRegion:region animated:YES];
+}
+
+-(MKAnnotationView *) mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+    if ([annotation isKindOfClass:[MKUserLocation class]])
+        return nil;
+    
+    // Handle any custom annotations.
+    if ([annotation isKindOfClass:[SOMapBubbleAnnotation class]])
+    {
+        // Try to dequeue an existing annotation view first
+        SOMapBubbleAnnotationView *annotationView = (SOMapBubbleAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:@"REUSABLE_ANNOTATION_VIEW_IDENTIFIER"];
+        
+        if (!annotationView)
+        {
+            // If an existing pin view was not available, create one.
+            annotationView = [[SOMapBubbleAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"REUSABLE_ANNOTATION_VIEW_IDENTIFIER"];
+            annotationView.canShowCallout = YES;
+            
+            // set pin image
+            UIImage *pinImage = [UIImage imageNamed:@"pin.png"];
+            annotationView.image = pinImage;
+        }
+        else
+        {
+            annotationView.annotation = annotation;
+        }
+        
+        return annotationView;
+    }
+    
+    return nil;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -158,12 +216,15 @@
 
     // 暂时的测试
     
-    MKPointAnnotation *myAnnotation = [[MKPointAnnotation alloc] init];
+    SOMapBubbleAnnotation *myAnnotation = [[SOMapBubbleAnnotation alloc] init];
     MKUserLocation *userLocation = _mapView.userLocation;
     myAnnotation.coordinate = userLocation.coordinate;
-    myAnnotation.title = @"Me";
-    myAnnotation.subtitle = content;
-    [_mapView addAnnotation:myAnnotation];
+    myAnnotation.title = content;
+    //myAnnotation.subtitle = content;
+    dispatch_async (dispatch_get_main_queue(), ^
+    {
+        [_mapView addAnnotation:myAnnotation];
+    });
 
     
 //    SOMapBubbleAnnotation *ann = [[SOMapBubbleAnnotation alloc] init];
@@ -172,6 +233,19 @@
 //    MKUserLocation *userLocation = _mapView.userLocation;
 //    ann.coordinate = userLocation.coordinate;
 //    [_mapView addAnnotation:ann];
+}
+
+- (void) customizePinForAnnotation:(id<MKAnnotation>)annotation {
+    
+}
+
++ (UIImage *) imageWithView:(UIView *)view
+{
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0f);
+    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:NO];
+    UIImage * snapshotImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return snapshotImage;
 }
 
 /*

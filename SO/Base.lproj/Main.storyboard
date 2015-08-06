@@ -433,6 +433,18 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="szE-Xl-Sfb">
                                 <rect key="frame" x="0.0" y="65" width="600" height="486"/>
                             </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9bp-T6-124" customClass="SOMapBubbleButtonView">
+                                <rect key="frame" x="263" y="452" width="75" height="75"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                                        <color key="value" red="0.3411764705882353" green="0.85490196078431369" blue="0.83529411764705885" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAddButton" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -440,6 +452,7 @@
                             <constraint firstAttribute="trailing" secondItem="szE-Xl-Sfb" secondAttribute="trailing" id="TwU-ma-b4p"/>
                             <constraint firstItem="szE-Xl-Sfb" firstAttribute="leading" secondItem="TY5-vW-4Q6" secondAttribute="leading" id="e8d-XJ-PIx"/>
                             <constraint firstItem="szE-Xl-Sfb" firstAttribute="bottom" secondItem="6Ko-1c-JwN" secondAttribute="top" id="rzV-hr-yT2"/>
+                            <constraint firstItem="szE-Xl-Sfb" firstAttribute="centerX" secondItem="9bp-T6-124" secondAttribute="centerX" constant="-0.5" id="tod-jK-9Qc"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="jfE-Ih-JTu"/>

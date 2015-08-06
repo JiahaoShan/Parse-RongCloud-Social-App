@@ -73,6 +73,7 @@
 		8A14F6AD1B6B21B4001AE83D /* INTULocationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A14F6AA1B6B21B4001AE83D /* INTULocationRequest.m */; };
 		8A14F6B01B6B4C56001AE83D /* SOMapBubbleAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A14F6AF1B6B4C56001AE83D /* SOMapBubbleAnnotation.m */; };
 		8A14F6B21B6B5181001AE83D /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A14F6B11B6B5181001AE83D /* pin.png */; };
+		8A1980A01B72D6E300AC75B0 /* SOMapBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A19809F1B72D6E300AC75B0 /* SOMapBubbleView.m */; };
 		8A22DB2F1B52F8CA0032AB1E /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB2E1B52F8CA0032AB1E /* AssetsLibrary.framework */; };
 		8A22DB311B52F8DD0032AB1E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB301B52F8DD0032AB1E /* AVFoundation.framework */; };
 		8A22DB331B52F8EC0032AB1E /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB321B52F8EC0032AB1E /* CoreAudio.framework */; };
@@ -119,6 +120,8 @@
 		8A8303D81B58AC0900FB22A5 /* SOConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8303D71B58AC0900FB22A5 /* SOConversationViewController.m */; };
 		8A8303DC1B58B92100FB22A5 /* SOPeopleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8303DB1B58B92100FB22A5 /* SOPeopleTableViewController.m */; };
 		8A8303E81B58D0B200FB22A5 /* portrait_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A8303E71B58D0B200FB22A5 /* portrait_placeholder.png */; };
+		8A8E5CFA1B7264B2009CE09E /* SOMapBubbleButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8E5CF91B7264B2009CE09E /* SOMapBubbleButtonView.m */; };
+		8A8E5CFD1B727E2E009CE09E /* SOMapBubbleAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8E5CFC1B727E2E009CE09E /* SOMapBubbleAnnotationView.m */; };
 		8AA7BC801B5C929600ABB812 /* PlaygroundFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA7BC7F1B5C929600ABB812 /* PlaygroundFeed.m */; };
 		8AA7BC831B5DF77200ABB812 /* PlaygroundLike.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA7BC821B5DF77200ABB812 /* PlaygroundLike.m */; };
 		8AA7BC861B5DF8AF00ABB812 /* PlaygroundComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA7BC851B5DF8AF00ABB812 /* PlaygroundComment.m */; };
@@ -270,6 +273,8 @@
 		8A14F6AE1B6B4C56001AE83D /* SOMapBubbleAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMapBubbleAnnotation.h; sourceTree = "<group>"; };
 		8A14F6AF1B6B4C56001AE83D /* SOMapBubbleAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMapBubbleAnnotation.m; sourceTree = "<group>"; };
 		8A14F6B11B6B5181001AE83D /* pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin.png; sourceTree = "<group>"; };
+		8A19809E1B72D6E300AC75B0 /* SOMapBubbleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMapBubbleView.h; sourceTree = "<group>"; };
+		8A19809F1B72D6E300AC75B0 /* SOMapBubbleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMapBubbleView.m; sourceTree = "<group>"; };
 		8A22DB2E1B52F8CA0032AB1E /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		8A22DB301B52F8DD0032AB1E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		8A22DB321B52F8EC0032AB1E /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -326,6 +331,10 @@
 		8A8303DA1B58B92100FB22A5 /* SOPeopleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPeopleTableViewController.h; sourceTree = "<group>"; };
 		8A8303DB1B58B92100FB22A5 /* SOPeopleTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPeopleTableViewController.m; sourceTree = "<group>"; };
 		8A8303E71B58D0B200FB22A5 /* portrait_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = portrait_placeholder.png; path = SO/Resources/portrait_placeholder.png; sourceTree = "<group>"; };
+		8A8E5CF81B7264B2009CE09E /* SOMapBubbleButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMapBubbleButtonView.h; sourceTree = "<group>"; };
+		8A8E5CF91B7264B2009CE09E /* SOMapBubbleButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMapBubbleButtonView.m; sourceTree = "<group>"; };
+		8A8E5CFB1B727E2E009CE09E /* SOMapBubbleAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMapBubbleAnnotationView.h; sourceTree = "<group>"; };
+		8A8E5CFC1B727E2E009CE09E /* SOMapBubbleAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMapBubbleAnnotationView.m; sourceTree = "<group>"; };
 		8AA7BC7E1B5C929600ABB812 /* PlaygroundFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaygroundFeed.h; path = DataModel/PlaygroundFeed.h; sourceTree = "<group>"; };
 		8AA7BC7F1B5C929600ABB812 /* PlaygroundFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlaygroundFeed.m; path = DataModel/PlaygroundFeed.m; sourceTree = "<group>"; };
 		8AA7BC811B5DF77200ABB812 /* PlaygroundLike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaygroundLike.h; sourceTree = "<group>"; };
@@ -578,6 +587,7 @@
 		8A14F6821B6B0ABC001AE83D /* SOMapBubble */ = {
 			isa = PBXGroup;
 			children = (
+				8A8E5CF71B726464009CE09E /* Views */,
 				8A14F6A21B6B1BA3001AE83D /* SOMapBubbleViewController.h */,
 				8A14F6A31B6B1BA3001AE83D /* SOMapBubbleViewController.m */,
 				8A14F6AE1B6B4C56001AE83D /* SOMapBubbleAnnotation.h */,
@@ -840,6 +850,19 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
+		8A8E5CF71B726464009CE09E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8A8E5CF81B7264B2009CE09E /* SOMapBubbleButtonView.h */,
+				8A8E5CF91B7264B2009CE09E /* SOMapBubbleButtonView.m */,
+				8A8E5CFB1B727E2E009CE09E /* SOMapBubbleAnnotationView.h */,
+				8A8E5CFC1B727E2E009CE09E /* SOMapBubbleAnnotationView.m */,
+				8A19809E1B72D6E300AC75B0 /* SOMapBubbleView.h */,
+				8A19809F1B72D6E300AC75B0 /* SOMapBubbleView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		8AA7BC7D1B5C920600ABB812 /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1011,6 +1034,7 @@
 				8A14F6A01B6B1A74001AE83D /* RCDHttpTool.m in Sources */,
 				4CBCF6B01B524F7500EE2195 /* SOUICommons.m in Sources */,
 				8A8303D11B54BDCA00FB22A5 /* SOSignupViewController.m in Sources */,
+				8A8E5CFD1B727E2E009CE09E /* SOMapBubbleAnnotationView.m in Sources */,
 				4CB3B63E1B6E22E3009CE032 /* SOPlaygroundFeedLikeView.m in Sources */,
 				4CA1CB7C1B5B40BD00B21EEF /* SOActionSheetManager.m in Sources */,
 				4CA673D01B541D9C00D5FDFA /* UIActivityIndicatorView+AFNetworking.m in Sources */,
@@ -1019,6 +1043,7 @@
 				8A5800461B522F010032EC1C /* main.m in Sources */,
 				4CCD264B1B5E8FEE006CDAF5 /* SOPersonAvatarView.m in Sources */,
 				4CBCF6C61B52592F00EE2195 /* UIView+ActivityIndicator.m in Sources */,
+				8A1980A01B72D6E300AC75B0 /* SOMapBubbleView.m in Sources */,
 				4CBCF6BD1B5257A500EE2195 /* SOTableViewController.m in Sources */,
 				4CBCF6B31B52510F00EE2195 /* SOBaseViewController.m in Sources */,
 				4CA6739B1B52661A00D5FDFA /* SODownloadManager.m in Sources */,
@@ -1034,6 +1059,7 @@
 				8A14F6AC1B6B21B4001AE83D /* INTULocationManager.m in Sources */,
 				8A14F6B01B6B4C56001AE83D /* SOMapBubbleAnnotation.m in Sources */,
 				8A14F6931B6B1945001AE83D /* FMDatabase.m in Sources */,
+				8A8E5CFA1B7264B2009CE09E /* SOMapBubbleButtonView.m in Sources */,
 				4CBCF6D31B525CD700EE2195 /* SOPlaygroundFeedGenderView.m in Sources */,
 				8A14F69F1B6B1A74001AE83D /* RCDataBaseManager.m in Sources */,
 				8A14F6971B6B1945001AE83D /* FMResultSet.m in Sources */,
