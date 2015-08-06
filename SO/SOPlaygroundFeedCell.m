@@ -11,6 +11,7 @@
 #import "SOPlaygroundFeedGenderView.h"
 #import "SOPlaygroundFeedCommentPreviewView.h"
 #import "SOPlaygroundFeedLikeView.h"
+#import "SOPlaygroundFeedRecentLikeView.h"
 #import "SOUICommons.h"
 #import <ParseUI/ParseUI.h>
 #import "User.h"
@@ -24,6 +25,8 @@
 @property (weak, nonatomic) IBOutlet SOPlaygroundFeedLikeView *feedLikeView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *feedTextViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet UITextView *feedTextView;
+@property (weak, nonatomic) IBOutlet SOPlaygroundFeedRecentLikeView *recentLikeView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *recentLikeViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *commentPreviewViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet SOPlaygroundFeedCommentPreviewView *commentPreviewView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *feedImageViewHeightConstraint;
@@ -57,8 +60,13 @@
     [self.feedPostedTimeLabel setText:[SOUICommons descriptionForDate:data.createdAt]];
     
     [self.feedLikeView setLiked:false];
-    [self.feedLikeView setCount:8927];
+    //[self.feedLikeView setCount:8927];
     
+    //recent like view
+    CGFloat h2 = [self.recentLikeView setLikes:[data recentLikeUsers] totalCount:[[data likeCount] intValue] feed:data width:[SOUICommons screenWidth]-16];
+    self.recentLikeViewHeightConstraint.constant = h2;
+    
+    //commentPreviewView
     NSMutableArray* commentPreviewArr = [[NSMutableArray alloc] init];
     if (data.latestComment) {
         PlaygroundComment* c = data.latestComment;
@@ -70,8 +78,8 @@
         [c fetchIfNeeded];
         [commentPreviewArr addObject:@{kSOPlaygroundFeedCommentPreviewViewUserKey:c.commentOwner,kSOPlaygroundFeedCommentPreviewViewMessageKey:c.message}];
     }
-    CGFloat h2 = [self.commentPreviewView setComments:commentPreviewArr totalCount:[data.commentCount intValue] feed:data width:[SOUICommons screenWidth]];
-    self.commentPreviewViewHeightConstraint.constant = h2;
+    CGFloat h3 = [self.commentPreviewView setComments:commentPreviewArr totalCount:[data.commentCount intValue] feed:data width:[SOUICommons screenWidth]];
+    self.commentPreviewViewHeightConstraint.constant = h3;
 }
 
 -(void)didTapImageAtIndex:(NSUInteger)index{

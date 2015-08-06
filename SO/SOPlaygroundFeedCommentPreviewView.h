@@ -7,18 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SOPlaygroundFeedInteractionDelegate.h"
 #import "PlaygroundFeed.h"
 #import "User.h"
 #define kSOPlaygroundFeedCommentPreviewViewUserKey @"u"
 #define kSOPlaygroundFeedCommentPreviewViewMessageKey @"m"
 
-@protocol SOPlaygroundFeedCommentPreviewViewDelegate
--(void)userDidTapViewAllCommentForFeed:(PlaygroundFeed*)feed;
--(void)userDidTapNameOfUser:(User*)user;
-@end
-
 @interface SOPlaygroundFeedCommentPreviewView : UITextView
-@property (nonatomic,assign) id<SOPlaygroundFeedCommentPreviewViewDelegate> soDelegate;
+@property (nonatomic,assign) id<SOPlaygroundFeedInteractionDelegate> soDelegate;
 /*
  Array of NSDictionarys, like:
  @[ @{@"user":A, message:@"xxxx"}, @{@"user":A, message:@"xxxx"}];

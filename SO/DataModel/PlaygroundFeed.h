@@ -18,4 +18,7 @@
 @property PlaygroundComment* firstComment;
 @property PlaygroundComment* latestComment;
 @property NSNumber* commentCount;
+
+@property NSNumber* likeCount;
+@property NSArray* recentLikeUsers;
 @end
