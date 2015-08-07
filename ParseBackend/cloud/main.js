@@ -268,6 +268,47 @@ else {
  
 });
  
+Parse.Cloud.define("PlaygroundAddLike",function(request,response){
+    var feedId = request.params.feedId;
+    var userId = request.params.userId;
+    var feed = null;
+    var user = null;
+    query = new Parse.Query(Parse.User);
+    query.equalTo("objectId",userId);
+    query.find().then(function(results){
+        if(results.length!=1){
+            response.error("got "+results.length+" users with id: "+userId);
+        }
+        user = results[0];
+        query = new Parse.Query("PlaygroundFeed");
+        query.equalTo("objectId",feedId);
+        return query.find();
+    }).then(function(results){
+        if(results.length!=1){
+            response.error("got "+results.length+" feedss with id: "+feedId);
+        }
+        feed = results[0];
+        query = new Parse.Query("PlaygroundFeedLike");
+        query.equalTo("likedFeed",feed);
+        query.equalTo("liker",user);
+        return query.count();
+    }).then(function(count){
+        if(count>=1){
+            response.error("user has already liked the feed");
+        }
+        var PlaygroundLike = Parse.Object.extend("PlaygroundLike");
+        var like = new PlaygroundLike();
+        like.set("liker",user);
+        like.set("likedFeed",feed);
+        return like.save(null, {
+            useMasterKey: true
+        });
+    }).then(
+        function(result) {response.success();}, 
+        function(error) {response.error(error);}
+    );
+});
+ 
 Parse.Cloud.beforeSave("PlaygroundLike",function(request,response){
     query = new Parse.Query("PlaygroundFeed");
     query.get(request.object.get("likedFeed").id, {
@@ -294,22 +335,71 @@ Parse.Cloud.beforeSave("PlaygroundLike",function(request,response){
   });
 });
 
-Parse.Cloud.afterDelete("PlaygroundLike", function(request) {
+Parse.Cloud.define("PlaygroundRemoveLike",function(request,response){
+    var feedId = request.params.feedId;
+    var userId = request.params.userId;
+    var feed = null;
+    var user = null;
+    query = new Parse.Query(Parse.User);
+    query.equalTo("objectId",userId);
+    query.find().then(function(results){
+        console.log("log1");
+        if(results.length!=1){
+            response.error("got "+results.length+" users with id: "+userId);
+        }
+        user = results[0];
+        query = new Parse.Query("PlaygroundFeed");
+        query.equalTo("objectId",feedId);
+        console.log("log2");
+        return query.find();
+    }).then(function(results){
+        if(results.length!=1){
+            response.error("got "+results.length+" feeds with id: "+feedId);
+        }
+        feed = results[0]
+        query = new Parse.Query("PlaygroundLike");
+        query.equalTo("likedFeed",feed);
+        query.equalTo("liker",user);
+        console.log("log3");
+        return query.find();
+    }).then(function(results){
+        if(results.length<1){
+            response.error("user has not liked the feed");
+        }
+        var like = results[0];
+        console.log("log4");
+        console.log(results);
+        console.log(like);
+        return like.destroy();
+    }).then(
+        function(result) {response.success();}, 
+        function(error) {response.error("remove like failed: "+error);}
+    );
+});
+
+Parse.Cloud.beforeDelete("PlaygroundLike", function(request,response) {
+    console.log("log5");
         feedQuery = new Parse.Query("PlaygroundFeed");
         feedQuery.get(request.object.get("likedFeed").id, {
             success: function(feed) {
+                console.log("log6");
+                console.log(feed);
                 var likes  = feed.get("recentLikeUsers");
+                if(!likes){
+                    likes = [];
+                }
                 var likeCount  = feed.get("likeCount");
-                var ifRecentEight = false;
+                var isRecentEight = false;
 
-                for (var i = 0 ; i < like.length; i++) {
-                    if (likes[i].id == request.object.get("likedFeed").id) {
-                        ifRecentEight = true;
+                for (var i = 0 ; i < likes.length; i++) {
+                    if (likes[i].id == request.object.get("liker").id) {
+                        isRecentEight = true;
+                        console.log("log6.5: i="+i);
                         likes.splice(i,1);
                         break;
                     }
                 }
-
+                console.log("log7");
                 if (isRecentEight && likeCount > 8) {
                     likeQuery = new Parse.Query("PlaygroundLike");
                     likeQuery.equalTo("likedFeed", request.object.get("likedFeed").id);
@@ -319,30 +409,34 @@ Parse.Cloud.afterDelete("PlaygroundLike", function(request) {
                         success: function(oldLike) {
                             if (oldLike) {
                                 likes.push(oldLike);
-                                feed.decrement("likeCount");
+                                feed.increment("likeCount",-1);
                                 feed.set("recentLikeUsers", likes);
                                 feed.save(null, {useMasterKey: true}).then(function () {
+                                    response.success();
                                 }, function (error) {
-                                    console.error("Got an error " + error.code + " : " + error.message);
+                                    response.error("error when saving modified feed while deleting like, reason: "+error.message);
                                 });
                             }
                         },
                             error: function(error) {
-                                console.error("Got an error " + error.code + " : " + error.message);
+                                response.error("error when getting next like while deleting like, reason: "+error.message);
                             }
                         });
                 }
                 else {
-                    feed.decrement("likeCount");
+                    console.log("log8");
+                    feed.increment("likeCount",-1);
                     feed.set("recentLikeUsers",likes);
                     feed.save(null, { useMasterKey: true }).then(function() {
+                        console.log("log9");
+                        response.success();
                     }, function(error) {
-                        console.error("Got an error " + error.code + " : " + error.message);
+                        response.error("error when modifying feed while deleting like, reason: "+error.message);
                     });
                 };
     },
     error: function(error) {
-    console.error("Error finding related comments " + error.code + ": " + error.message);
-}
+    response.error("error when getting feed while deleting like, reason: "+error.message);
+    }
 });
 });

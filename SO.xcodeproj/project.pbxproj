@@ -503,6 +503,7 @@
 		4CBCF6C81B525B3200EE2195 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				4CB3B64B1B7269C6009CE032 /* SOPlaygroundFeedInteractionDelegate.h */,
 				4CBCF6BE1B5257D100EE2195 /* SOPlaygroundMainController.h */,
 				4CBCF6BF1B5257D100EE2195 /* SOPlaygroundMainController.m */,
 				4CBCF6D01B525C7900EE2195 /* SOPlaygroundFeedCell */,
@@ -522,7 +523,6 @@
 		4CBCF6D01B525C7900EE2195 /* SOPlaygroundFeedCell */ = {
 			isa = PBXGroup;
 			children = (
-				4CB3B64B1B7269C6009CE032 /* SOPlaygroundFeedInteractionDelegate.h */,
 				4CBCF6CB1B525BA300EE2195 /* SOPlaygroundFeedCell.h */,
 				4CBCF6CC1B525BA300EE2195 /* SOPlaygroundFeedCell.m */,
 				4CBCF6CE1B525BCD00EE2195 /* SOPlaygroundFeedCell.xib */,

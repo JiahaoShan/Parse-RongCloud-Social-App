@@ -65,21 +65,6 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     
-    MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
-    overlay.animation = MTStatusBarOverlayAnimationFallDown;  // MTStatusBarOverlayAnimationShrink
-    overlay.detailViewMode = MTDetailViewModeHistory;         // enable automatic history-tracking and show in detail-view
-    //overlay.delegate = self;
-    overlay.progress = 0.0;
-    [overlay postMessage:@"Following @myell0w on Twitter…"];
-    overlay.progress = 0.1;
-    // ...
-    [overlay postMessage:@"Following myell0w on Github…" animated:NO];
-    overlay.progress = 0.5;
-    // ...
-    [overlay postImmediateFinishMessage:@"Following was a good idea!" duration:2.0 animated:YES];
-    overlay.progress = 1.0;
-    
-    
     [self.tableView registerNib:[UINib nibWithNibName:@"SOPlaygroundFeedCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"feedCell"];
     
 //    UIImage* sampleImage = [UIImage imageNamed:@"sampleImage2.png"];
@@ -145,8 +130,9 @@
         return [tableView dequeueReusableCellWithIdentifier:@"loadMore"];
     }
     SOPlaygroundFeedCell* cell = [tableView dequeueReusableCellWithIdentifier:@"feedCell"];
-    [cell configureWithFeed:object];
     cell.delegate = self;
+    cell.mainController = self;
+    [cell configureWithFeed:object];
     return cell;
 }
 
@@ -228,6 +214,34 @@
                      }];
     blackOverlay = nil;
     imageView = nil;
+}
+
+#pragma mark SOPlaygroundFeedInteractionDelegate
+-(void)feed:(PlaygroundFeed *)feed didChangeLikeStatusTo:(BOOL)like{
+    MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
+    overlay.animation = MTStatusBarOverlayAnimationFallDown;  // MTStatusBarOverlayAnimationShrink
+    overlay.detailViewMode = MTDetailViewModeHistory;         // enable automatic history-tracking and
+    if (like) {
+        [PFCloud callFunctionInBackground:@"PlaygroundAddLike"
+                   withParameters:@{@"feedId": feed.objectId,@"userId":[PFUser currentUser].objectId}
+                            block:^(id response, NSError *error) {
+            if (error) {
+                [overlay postMessage:[NSString stringWithFormat:@"error:%@",error]];
+            }else{
+                [overlay postMessage:@"like success"];
+            }
+        }];
+    }else{
+        [PFCloud callFunctionInBackground:@"PlaygroundRemoveLike"
+                withParameters:@{@"feedId": feed.objectId,@"userId":[PFUser currentUser].objectId}
+                        block:^(id response, NSError *error) {
+            if (error) {
+                [overlay postMessage:[NSString stringWithFormat:@"error:%@",error]];
+            }else{
+                [overlay postMessage:@"delete like success"];
+            }
+        }];
+    }
 }
 
 #pragma mark - Segue

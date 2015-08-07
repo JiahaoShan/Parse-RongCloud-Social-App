@@ -43,6 +43,7 @@
 -(void)configureWithFeed:(PlaygroundFeed*)data{
     User* user = data.poster;
     [user fetchIfNeeded];
+    
     CGFloat h1 = [self.feedImageView setImagesWithFiles:data.images];
     self.feedImageView.delegate = self;
     [self.feedImageViewHeightConstraint setConstant:h1];
@@ -60,6 +61,8 @@
     [self.feedPostedTimeLabel setText:[SOUICommons descriptionForDate:data.createdAt]];
     
     [self.feedLikeView setLiked:false];
+    [self.feedLikeView setFeed:data];
+    [self.feedLikeView setDelegate:self.mainController];
     //[self.feedLikeView setCount:8927];
     
     //recent like view

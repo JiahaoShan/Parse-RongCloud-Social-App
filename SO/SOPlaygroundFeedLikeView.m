@@ -82,8 +82,8 @@
 
 -(void)toggleLike:(UIGestureRecognizer*)tap{
     [self setLiked:!_liked animated:true];
-    if ([(NSObject*)self.delegate respondsToSelector:@selector(feed:didChangeToLiked:)]) {
-        [self.delegate feed:self.feed didChangeToLiked:self.liked];
+    if ([(NSObject*)self.delegate respondsToSelector:@selector(feed:didChangeLikeStatusTo:)]) {
+        [self.delegate feed:self.feed didChangeLikeStatusTo:self.liked];
     }
 }
 

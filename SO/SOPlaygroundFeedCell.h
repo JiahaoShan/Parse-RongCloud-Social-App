@@ -10,6 +10,7 @@
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
 #import "SOPlaygroundFeedImageView.h"
+#import "SOPlaygroundMainController.h"
 #import "PlaygroundFeed.h"
 @class SOPlaygroundFeedCell;
 @protocol SOPlaygroundFeedCellDelegate
@@ -20,6 +21,7 @@
 @end
 
 @interface SOPlaygroundFeedCell : PFTableViewCell
+@property (weak,nonatomic) SOPlaygroundMainController* mainController;//also serve as delegate, consider merge with delegate
 @property (nonatomic,assign) id<SOPlaygroundFeedCellDelegate> delegate;
 -(void)configureWithFeed:(PlaygroundFeed*)feed;//returns height
 -(NSMutableArray*) getFeedImageViews;

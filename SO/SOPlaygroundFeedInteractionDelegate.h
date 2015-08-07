@@ -11,6 +11,9 @@
 @class User;
 @protocol SOPlaygroundFeedInteractionDelegate <NSObject>
 -(void)userDidTapViewAllCommentForFeed:(PlaygroundFeed*)feed;
+
 -(void)userDidTapViewAllLikeForFeed:(PlaygroundFeed *)feed;
+-(void)feed:(PlaygroundFeed*)feed didChangeLikeStatusTo:(BOOL)like;
+
 -(void)userDidTapNameOfUser:(User*)user;
 @end
