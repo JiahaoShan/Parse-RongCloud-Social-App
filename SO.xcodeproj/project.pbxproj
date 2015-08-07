@@ -75,6 +75,8 @@
 		8A14F6B01B6B4C56001AE83D /* SOMapBubbleAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A14F6AF1B6B4C56001AE83D /* SOMapBubbleAnnotation.m */; };
 		8A14F6B21B6B5181001AE83D /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A14F6B11B6B5181001AE83D /* pin.png */; };
 		8A1980A01B72D6E300AC75B0 /* SOMapBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A19809F1B72D6E300AC75B0 /* SOMapBubbleView.m */; };
+		8A1980A21B73241A00AC75B0 /* thumb.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A1980A11B73241A00AC75B0 /* thumb.jpg */; };
+		8A1980A41B73277000AC75B0 /* pinMask.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A1980A31B73277000AC75B0 /* pinMask.png */; };
 		8A22DB2F1B52F8CA0032AB1E /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB2E1B52F8CA0032AB1E /* AssetsLibrary.framework */; };
 		8A22DB311B52F8DD0032AB1E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB301B52F8DD0032AB1E /* AVFoundation.framework */; };
 		8A22DB331B52F8EC0032AB1E /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB321B52F8EC0032AB1E /* CoreAudio.framework */; };
@@ -279,6 +281,8 @@
 		8A14F6B11B6B5181001AE83D /* pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin.png; sourceTree = "<group>"; };
 		8A19809E1B72D6E300AC75B0 /* SOMapBubbleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMapBubbleView.h; sourceTree = "<group>"; };
 		8A19809F1B72D6E300AC75B0 /* SOMapBubbleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMapBubbleView.m; sourceTree = "<group>"; };
+		8A1980A11B73241A00AC75B0 /* thumb.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = thumb.jpg; path = SO/Resources/thumb.jpg; sourceTree = "<group>"; };
+		8A1980A31B73277000AC75B0 /* pinMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pinMask.png; path = SO/Resources/pinMask.png; sourceTree = "<group>"; };
 		8A22DB2E1B52F8CA0032AB1E /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		8A22DB301B52F8DD0032AB1E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		8A22DB321B52F8EC0032AB1E /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -662,6 +666,8 @@
 		8A22DB281B52F8790032AB1E /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				8A1980A31B73277000AC75B0 /* pinMask.png */,
+				8A1980A11B73241A00AC75B0 /* thumb.jpg */,
 				8A1138B81B6EC6720033B994 /* sampleImage3.png */,
 				8A1138B61B6E8EE70033B994 /* sampleImage2.png */,
 				8A14F6B11B6B5181001AE83D /* pin.png */,
@@ -982,8 +988,10 @@
 			files = (
 				8A14F67E1B69FA13001AE83D /* RongCloud.bundle in Resources */,
 				8A14F6B21B6B5181001AE83D /* pin.png in Resources */,
+				8A1980A21B73241A00AC75B0 /* thumb.jpg in Resources */,
 				4CBCF6CF1B525BCD00EE2195 /* SOPlaygroundFeedCell.xib in Resources */,
 				8A1138B91B6EC6720033B994 /* sampleImage3.png in Resources */,
+				8A1980A41B73277000AC75B0 /* pinMask.png in Resources */,
 				8A5800521B522F010032EC1C /* Main.storyboard in Resources */,
 				8A5800571B522F010032EC1C /* LaunchScreen.xib in Resources */,
 				8A14F67D1B69FA13001AE83D /* Emoji.plist in Resources */,

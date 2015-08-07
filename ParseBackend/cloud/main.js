@@ -3,7 +3,7 @@
 Parse.Cloud.define("hello", function(request, response) {
     response.success("Hello world!");
 });
-
+ 
 Parse.Cloud.define("getToken", function(request, response) {
     var HEADERS = {};
     var APPSECRET = 'zl5mkXn6NOr';
@@ -37,14 +37,13 @@ Parse.Cloud.define("getToken", function(request, response) {
         response.error('Request failed with response code ' + httpResponse.status);
     });
 });
-
+ 
 var Image = require("parse-image");
 var _ = require('underscore.js');
 Parse.Cloud.beforeSave("PlaygroundFeed", function(request, response) {
     var images = request.object.get("images");
-    if (!images || images.length == 0) {
+    if (!request.object.dirty("images") || !images || images.length == 0) {
         response.success();
-        //  response.error("you cannot give more than five stars");
     } else {
         var index;
         var convertedImages = [];
@@ -72,14 +71,14 @@ Parse.Cloud.beforeSave("PlaygroundFeed", function(request, response) {
                         width: size,
                         height: size
                     });
-
+ 
                 }).then(function(image) {
                     // Resize the image to 100x100.
                     return image.scale({
                         width: 100,
                         height: 100
                     });
-
+ 
                 }).then(function(image) {
                     // Make sure it's a JPEG to save disk space and bandwidth.
                     return image.setFormat("JPEG");
@@ -123,29 +122,29 @@ Parse.Cloud.beforeSave("PlaygroundFeed", function(request, response) {
         })
     }
 });
-
+ 
 Parse.Cloud.beforeSave(Parse.User, function(request, response) {
     Parse.Cloud.useMasterKey(); 
     var user = request.object;
-
+ 
     if(!user.get("email")){
         response.error("邮箱不能为空！");
     }
     else if(!user.get("username")){
         response.error("用户名不能为空！");
     }
-
+ 
 if (user.dirty("email")) {
     var email = user.get("email");
     var pos = email.indexOf("@");
     var domain = email.substr((pos+1));
-
+ 
     var university = Parse.Object.extend("University");
     var query = new Parse.Query(university);
     query.include("aliasPointer");
     query.equalTo("domain", domain);
                 console.log("+++Succes@@s");
-
+ 
     query.first({
         success: function(object) {
             console.log("+++Success");
@@ -157,14 +156,14 @@ if (user.dirty("email")) {
               }
                 else {
                                 console.log("+++Success2");
-
+ 
                 user.set("University", object.get("aliasPointer")); 
                 response.success();     
                 }
             }
             else {
                             console.log("+++Succ3ess");
-
+ 
                 console.error("Edu domain not found: " + domain);
                 if (domain.substr(domain.length - 4) == ".edu") {
                     response.success("版本内测ing...由于近期流量过大，为了防止宇宙被破坏，服务器突然被累死，您所在的学校正在被逐步挖掘中，将于近几日逐步开启校园，请关注您的邮件。"
@@ -172,7 +171,7 @@ if (user.dirty("email")) {
                 }
                 else response.success("这邮箱不对吧。。。");  
             }
-            
+             
     },
         error: function(error) {
                 console.error("Edu domain not found: " + domain);
@@ -242,7 +241,7 @@ else if (user.dirty("portrait")) {
                         url: image.url()
                     };
         portraitsArray.push(data);
-
+ 
         var thumbData = {
                         __type: 'File',
                         name: cropped.name(),
@@ -266,5 +265,84 @@ else if (user.dirty("portrait")) {
 else {
     response.success();
 }
+ 
+});
+ 
+Parse.Cloud.beforeSave("PlaygroundLike",function(request,response){
+    query = new Parse.Query("PlaygroundFeed");
+    query.get(request.object.get("likedFeed").id, {
+    success: function(feed) {
+      var likes  = feed.get("recentLikeUsers");
+    if(!likes){
+        likes = [];
+    }   
+        likes.unshift(request.object.get("liker"));
+    if(likes.length>8){
+        likes.pop();
+    }
+    feed.increment("likeCount");
+    feed.set("recentLikeUsers",likes);
+    feed.save(null, { useMasterKey: true }).then(function() {
+    response.success();
+  }, function(error) {
+    response.error(error);
+  });
+    },
+    error: function(error) {
+      console.error("Got an error " + error.code + " : " + error.message);
+    }
+  });
+});
 
+Parse.Cloud.afterDelete("PlaygroundLike", function(request) {
+        feedQuery = new Parse.Query("PlaygroundFeed");
+        feedQuery.get(request.object.get("likedFeed").id, {
+            success: function(feed) {
+                var likes  = feed.get("recentLikeUsers");
+                var likeCount  = feed.get("likeCount");
+                var ifRecentEight = false;
+
+                for (var i = 0 ; i < like.length; i++) {
+                    if (likes[i].id == request.object.get("likedFeed").id) {
+                        ifRecentEight = true;
+                        likes.splice(i,1);
+                        break;
+                    }
+                }
+
+                if (isRecentEight && likeCount > 8) {
+                    likeQuery = new Parse.Query("PlaygroundLike");
+                    likeQuery.equalTo("likedFeed", request.object.get("likedFeed").id);
+                    likeQuery.skip(7);
+                    likeQuery.descending("createdAt");
+                    likeQuery.first({
+                        success: function(oldLike) {
+                            if (oldLike) {
+                                likes.push(oldLike);
+                                feed.decrement("likeCount");
+                                feed.set("recentLikeUsers", likes);
+                                feed.save(null, {useMasterKey: true}).then(function () {
+                                }, function (error) {
+                                    console.error("Got an error " + error.code + " : " + error.message);
+                                });
+                            }
+                        },
+                            error: function(error) {
+                                console.error("Got an error " + error.code + " : " + error.message);
+                            }
+                        });
+                }
+                else {
+                    feed.decrement("likeCount");
+                    feed.set("recentLikeUsers",likes);
+                    feed.save(null, { useMasterKey: true }).then(function() {
+                    }, function(error) {
+                        console.error("Got an error " + error.code + " : " + error.message);
+                    });
+                };
+    },
+    error: function(error) {
+    console.error("Error finding related comments " + error.code + ": " + error.message);
+}
+});
 });

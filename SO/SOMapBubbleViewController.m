@@ -168,16 +168,16 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
     if ([annotation isKindOfClass:[SOMapBubbleAnnotation class]])
     {
         // Try to dequeue an existing annotation view first
-        SOMapBubbleAnnotationView *annotationView = (SOMapBubbleAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:@"REUSABLE_ANNOTATION_VIEW_IDENTIFIER"];
+        MKAnnotationView *annotationView = (MKAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:@"REUSABLE_ANNOTATION_VIEW_IDENTIFIER"];
         
         if (!annotationView)
         {
             // If an existing pin view was not available, create one.
-            annotationView = [[SOMapBubbleAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"REUSABLE_ANNOTATION_VIEW_IDENTIFIER"];
+            annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"REUSABLE_ANNOTATION_VIEW_IDENTIFIER"];
             annotationView.canShowCallout = YES;
             
             // set pin image
-            UIImage *pinImage = [UIImage imageNamed:@"pin.png"];
+            UIImage *pinImage = [self customizePinForAnnotation:annotation];
             annotationView.image = pinImage;
         }
         else
@@ -235,8 +235,15 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
 //    [_mapView addAnnotation:ann];
 }
 
-- (void) customizePinForAnnotation:(id<MKAnnotation>)annotation {
-    
+- (UIImage*) customizePinForAnnotation:(id<MKAnnotation>)annotation {
+    UIImageView* view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"thumb.jpg"]];
+    view.frame = CGRectMake(100, 100, 100, 100);
+    UIImage *_maskingImage = [UIImage imageNamed:@"pinMask.png"];
+    CALayer *_maskingLayer = [CALayer layer];
+    _maskingLayer.frame = view.bounds;
+    [_maskingLayer setContents:(id)[_maskingImage CGImage]];
+    [view.layer setMask:_maskingLayer];
+    return [SOMapBubbleViewController imageWithView:view];
 }
 
 + (UIImage *) imageWithView:(UIView *)view
