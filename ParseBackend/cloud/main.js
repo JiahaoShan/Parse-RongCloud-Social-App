@@ -278,7 +278,14 @@ Parse.Cloud.define("PlaygroundGetLikeHistory",function(request,response){
     query.equalTo("liker",userPointer);
     query.include("likedFeed");
     query.find().then(function(results){
-        response.success(JSON.stringify(results));
+        var IDs = [];
+        console.log("00*00");
+        console.log(results);
+        for(var i=0;i<results.length;i++){
+            console.log(results[i].get("likedFeed").id);
+            IDs.push(results[i].get("likedFeed").id);
+        }
+        response.success(JSON.stringify(IDs));
     },
     function(error){
         response.error("error when getting like info for user: "+ error);

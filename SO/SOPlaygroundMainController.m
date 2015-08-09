@@ -19,7 +19,7 @@
 @interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate,SOPlaygroundFeedCellDelegate, imageViewDelegate>
 @property (nonatomic) BOOL initialized;
 
-@property (nonatomic) NSMutableDictionary* likeHistory;
+@property (nonatomic) NSMutableArray* likeHistory;
 @end
 
 @implementation SOPlaygroundMainController
@@ -65,9 +65,9 @@
     [super viewDidLoad];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"SOPlaygroundFeedCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"feedCell"];
-    
-    NSString* response = [PFCloud callFunction:@"PlaygroundGetLikeHistory" withParameters:@{@"userId":[[PFUser currentUser] objectId]}];//will block
-    self.likeHistory = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:nil];
+    NSError* e;
+    NSString* response = [PFCloud callFunction:@"PlaygroundGetLikeHistory" withParameters:@{@"userId":[[PFUser currentUser] objectId]} error:&e];
+    self.likeHistory = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
     
 //    UIImage* sampleImage = [UIImage imageNamed:@"sampleImage2.png"];
 //    NSData* imageData = UIImagePNGRepresentation(sampleImage);
@@ -134,14 +134,7 @@
     SOPlaygroundFeedCell* cell = [tableView dequeueReusableCellWithIdentifier:@"feedCell"];
     cell.delegate = self;
     cell.mainController = self;
-    for (NSDictionary* likeDic in self.likeHistory) {
-    NSDictionary* likedFeed = likeDic[@"likedFeed"];
-    NSString* feedId = likedFeed[@"objectId"];
-    if([feedId isEqualToString:[object objectId]]){
-        [object setLiked:true];
-        break;
-    }
-}
+    [object setLiked:[self likedForFeed:object]];
     [cell configureWithFeed:object];
     return cell;
 }
@@ -297,17 +290,16 @@
 
 #pragma mark - Caching
 -(void)cacheFeed:(PlaygroundFeed*)feed liked:(BOOL)liked{
-    
+    if (liked) {
+        if (![self likedForFeed:feed]) {
+            [self.likeHistory addObject:feed.objectId];
+        }
+    }else{
+        [self.likeHistory removeObject:feed.objectId];
+    }
 }
 -(BOOL)likedForFeed:(PlaygroundFeed*)feed{
-    for (NSDictionary* likeDic in self.likeHistory) {
-    NSDictionary* likedFeed = likeDic[@"likedFeed"];
-    NSString* feedId = likedFeed[@"objectId"];
-    if([feedId isEqualToString:[feed objectId]]){
-        return true;
-    }
-    }
-    return false;
+    return [self.likeHistory containsObject:[feed objectId]];
 }
 
 @end

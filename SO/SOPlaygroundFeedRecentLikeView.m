@@ -50,6 +50,7 @@
     int count = (int)likes.count;
     for (int i=0; i<count; i++) {
         User* user = likes[i];
+        [user fetchIfNeeded];
         NSString* name = [user username];
         
         UITextPosition *beginning = self.beginningOfDocument;
