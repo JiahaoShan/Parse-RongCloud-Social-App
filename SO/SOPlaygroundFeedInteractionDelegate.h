@@ -7,13 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SOFailableAction.h"
 @class PlaygroundFeed;
 @class User;
 @protocol SOPlaygroundFeedInteractionDelegate <NSObject>
 -(void)userDidTapViewAllCommentForFeed:(PlaygroundFeed*)feed;
 
 -(void)userDidTapViewAllLikeForFeed:(PlaygroundFeed *)feed;
--(void)feed:(PlaygroundFeed*)feed didChangeLikeStatusTo:(BOOL)like;
+-(void)feed:(PlaygroundFeed*)feed didChangeLikeStatusTo:(BOOL)like action:(SOFailableAction*)action;
 
 -(void)userDidTapNameOfUser:(User*)user;
 @end

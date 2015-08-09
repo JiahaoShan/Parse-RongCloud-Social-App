@@ -268,38 +268,50 @@ else {
  
 });
  
+Parse.Cloud.define("PlaygroundGetLikeHistory",function(request,response){
+    var userPointer = {
+        __type: "Pointer",
+        className: "_User",
+        objectId: request.params.userId
+    };
+    query = new Parse.Query("PlaygroundLike");
+    query.equalTo("liker",userPointer);
+    query.include("likedFeed");
+    query.find().then(function(results){
+        response.success(JSON.stringify(results));
+    },
+    function(error){
+        response.error("error when getting like info for user: "+ error);
+    });
+});
+ 
 Parse.Cloud.define("PlaygroundAddLike",function(request,response){
     var feedId = request.params.feedId;
     var userId = request.params.userId;
-    var feed = null;
-    var user = null;
-    query = new Parse.Query(Parse.User);
-    query.equalTo("objectId",userId);
-    query.find().then(function(results){
-        if(results.length!=1){
-            response.error("got "+results.length+" users with id: "+userId);
-        }
-        user = results[0];
-        query = new Parse.Query("PlaygroundFeed");
-        query.equalTo("objectId",feedId);
-        return query.find();
-    }).then(function(results){
-        if(results.length!=1){
-            response.error("got "+results.length+" feedss with id: "+feedId);
-        }
-        feed = results[0];
-        query = new Parse.Query("PlaygroundFeedLike");
-        query.equalTo("likedFeed",feed);
-        query.equalTo("liker",user);
-        return query.count();
-    }).then(function(count){
+    var feedPointer = {
+        __type: "Pointer",
+        className: "PlaygroundFeed",
+        objectId: feedId
+    };
+    var userPointer = {
+        __type: "Pointer",
+        className: "_User",
+        objectId: userId
+    };
+    query = new Parse.Query("PlaygroundLike");
+        console.log("00*00");
+        query.equalTo("likedFeed",feedPointer);
+        query.equalTo("liker",userPointer);
+    query.count().then(function(count){
+        console.log("00*00");
+        console.log(count);
         if(count>=1){
             response.error("user has already liked the feed");
         }
         var PlaygroundLike = Parse.Object.extend("PlaygroundLike");
         var like = new PlaygroundLike();
-        like.set("liker",user);
-        like.set("likedFeed",feed);
+        like.set("liker",userPointer);
+        like.set("likedFeed",feedPointer);
         return like.save(null, {
             useMasterKey: true
         });
@@ -330,7 +342,7 @@ Parse.Cloud.beforeSave("PlaygroundLike",function(request,response){
   });
     },
     error: function(error) {
-      console.error("Got an error " + error.code + " : " + error.message);
+      response.error(error);
     }
   });
 });
@@ -338,33 +350,24 @@ Parse.Cloud.beforeSave("PlaygroundLike",function(request,response){
 Parse.Cloud.define("PlaygroundRemoveLike",function(request,response){
     var feedId = request.params.feedId;
     var userId = request.params.userId;
-    var feed = null;
-    var user = null;
-    query = new Parse.Query(Parse.User);
-    query.equalTo("objectId",userId);
-    query.find().then(function(results){
-        console.log("log1");
-        if(results.length!=1){
-            response.error("got "+results.length+" users with id: "+userId);
-        }
-        user = results[0];
-        query = new Parse.Query("PlaygroundFeed");
-        query.equalTo("objectId",feedId);
-        console.log("log2");
-        return query.find();
-    }).then(function(results){
-        if(results.length!=1){
-            response.error("got "+results.length+" feeds with id: "+feedId);
-        }
-        feed = results[0]
+    var feedPointer = {
+        __type: "Pointer",
+        className: "PlaygroundFeed",
+        objectId: feedId
+    };
+    var userPointer = {
+        __type: "Pointer",
+        className: "_User",
+        objectId: userId
+    };
         query = new Parse.Query("PlaygroundLike");
-        query.equalTo("likedFeed",feed);
-        query.equalTo("liker",user);
+        query.equalTo("likedFeed",feedPointer);
+        query.equalTo("liker",userPointer);
         console.log("log3");
-        return query.find();
-    }).then(function(results){
+        query.find().then(function(results){
         if(results.length<1){
-            response.error("user has not liked the feed");
+            response.success();//special logic maybe?
+            //response.error("user has not liked the feed");
         }
         var like = results[0];
         console.log("log4");

@@ -39,6 +39,14 @@
     });
     return activeButtonColor;
 }
++(UIColor*)descriptiveTextColor{
+    static dispatch_once_t onceToken;
+    static UIColor* descriptiveTextColor = nil;
+    dispatch_once(&onceToken,^{
+        descriptiveTextColor = [UIColor grayColor];
+    });
+    return descriptiveTextColor;
+}
 +(CGFloat)screenHeight{
     return [[UIScreen mainScreen] bounds].size.height;
 }

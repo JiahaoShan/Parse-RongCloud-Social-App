@@ -81,9 +81,14 @@
 }
 
 -(void)toggleLike:(UIGestureRecognizer*)tap{
-    [self setLiked:!_liked animated:true];
-    if ([(NSObject*)self.delegate respondsToSelector:@selector(feed:didChangeLikeStatusTo:)]) {
-        [self.delegate feed:self.feed didChangeLikeStatusTo:self.liked];
+    BOOL oldValue = self.liked;
+    [self setLiked:!oldValue animated:true];
+    
+    SOFailableAction* action = [[SOFailableAction alloc] initWithSucceed:NULL failed:^{
+        [self setLiked:oldValue animated:false];
+    }];
+    if ([(NSObject*)self.delegate respondsToSelector:@selector(feed:didChangeLikeStatusTo:action:)]) {
+        [self.delegate feed:self.feed didChangeLikeStatusTo:self.liked action:action];
     }
 }
 
