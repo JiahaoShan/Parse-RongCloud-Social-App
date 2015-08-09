@@ -13,6 +13,7 @@
 #import <ParseUI/ParseUI.h>
 #import "SOMapBubbleAnnotation.h"
 #import "SOMapBubbleAnnotationView.h"
+#import "SOMapBubbleTextLabel.h"
 
 @interface SOMapBubbleViewController () <MKMapViewDelegate>
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -23,6 +24,11 @@
 @implementation SOMapBubbleViewController
 
 @synthesize messageList = _messageList;
+
+const CGFloat messageFrameWidth = 100.0f;
+const CGFloat messageTextPaddingWidth = 5.0f;
+const CGFloat messageTextWidth = messageFrameWidth - 2 * messageTextPaddingWidth;
+const CGFloat imageWidth = 40.0f;
 
 - (NSMutableArray*) messageList
 {
@@ -116,10 +122,10 @@
     userLocation.location.coordinate;
 }
 
-- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
-{
-    [mapView selectAnnotation:[[mapView annotations] lastObject] animated:YES];
-}
+//- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
+//{
+//    [mapView selectAnnotation:[[mapView annotations] lastObject] animated:YES];
+//}
 
 MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords, NSUInteger coordCount) {
     MKMapRect r = MKMapRectNull;
@@ -236,20 +242,74 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
 }
 
 - (UIImage*) customizePinForAnnotation:(id<MKAnnotation>)annotation {
-    UIImageView* view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"thumb.jpg"]];
-    view.frame = CGRectMake(100, 100, 100, 100);
+    UIView* messageView = [[UIView alloc] init];
+    messageView.opaque = NO;
+    messageView.backgroundColor = [UIColor clearColor];
+    NSString* message = ((SOMapBubbleAnnotation*)annotation).title;
+    CGFloat heightForText = [self calculateTextHeightForMessageView:message];
+    CGRect frame = messageView.frame;
+    frame.size = CGSizeMake(messageFrameWidth, heightForText + imageWidth + messageTextPaddingWidth);
+    messageView.frame = frame;
+    
+    UIFont *font = [UIFont fontWithName:@"Helvetica-Bold" size:13.0];
+    SOMapBubbleTextLabel* messageLabel = [[SOMapBubbleTextLabel alloc] initWithFrame:CGRectMake(0, 0, messageFrameWidth, heightForText + messageTextPaddingWidth + messageTextPaddingWidth)];
+    messageLabel.text = message;
+    messageLabel.textColor = [UIColor whiteColor];
+    messageLabel.font = font;
+    messageLabel.numberOfLines = 0;
+    messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    messageLabel.backgroundColor = [UIColor colorWithRed:245.0f/255.0f green:124.0f/255.0f blue:0.0f/255.0f alpha:0.8f]; // Orange
+//    messageLabel.backgroundColor = [UIColor colorWithRed:102.0f/255.0f green:187.0f/255.0f blue:106.0f/255.0f alpha:0.8f]; // Green
+    messageLabel.layer.cornerRadius = 6.0f;
+    messageLabel.clipsToBounds = YES;
+    messageLabel.textAlignment = NSTextAlignmentCenter;
+
+//    NSDictionary *userAttributes = @{NSFontAttributeName: font,
+//                                     NSForegroundColorAttributeName: [UIColor blackColor]};
+//    const CGSize textSize = [message sizeWithAttributes: userAttributes];
+//    if (textSize.width < messageTextWidth) {
+//        messageLabel.center = CGPointMake(messageFrameWidth/2, (heightForText + messageTextPaddingWidth)/2);
+//    }
+    
+    [messageView addSubview:messageLabel];
+    
+    UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"thumb.jpg"]];
+    imageView.frame = CGRectMake((messageFrameWidth - imageWidth)/2, heightForText + messageTextPaddingWidth, imageWidth, imageWidth);
     UIImage *_maskingImage = [UIImage imageNamed:@"pinMask.png"];
     CALayer *_maskingLayer = [CALayer layer];
-    _maskingLayer.frame = view.bounds;
+    _maskingLayer.frame = imageView.bounds;
     [_maskingLayer setContents:(id)[_maskingImage CGImage]];
-    [view.layer setMask:_maskingLayer];
-    return [SOMapBubbleViewController imageWithView:view];
+    [imageView.layer setMask:_maskingLayer];
+    [messageView addSubview:imageView];
+
+    return [self imageWithView:messageView];
 }
 
-+ (UIImage *) imageWithView:(UIView *)view
+- (CGFloat) calculateTextHeightForMessageView:(NSString*) messageText {
+    CGSize constrainedSize = CGSizeMake(messageTextWidth,9999);
+    
+    NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                          [UIFont fontWithName:@"Helvetica-Bold" size:13.0], NSFontAttributeName,
+                                          nil];
+    
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:messageText attributes:attributesDictionary];
+    
+    CGRect requiredRect = [string boundingRectWithSize:constrainedSize options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+    
+    if (requiredRect.size.width > messageFrameWidth) {
+        requiredRect = CGRectMake(0,0, messageTextWidth, requiredRect.size.height);
+    }
+//    CGRect newFrame = self.resizableLable.frame;
+//    newFrame.size.height = requiredHeight.size.height;
+//    self.resizableLable.frame = newFrame;
+    
+    return requiredRect.size.height;
+}
+
+- (UIImage *) imageWithView:(UIView *)view
 {
     UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0f);
-    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:NO];
+    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:YES];
     UIImage * snapshotImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return snapshotImage;
