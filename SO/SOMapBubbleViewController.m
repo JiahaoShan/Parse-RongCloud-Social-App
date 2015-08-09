@@ -248,7 +248,7 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
     NSString* message = ((SOMapBubbleAnnotation*)annotation).title;
     CGFloat heightForText = [self calculateTextHeightForMessageView:message];
     CGRect frame = messageView.frame;
-    frame.size = CGSizeMake(messageFrameWidth, heightForText + imageWidth + messageTextPaddingWidth);
+    frame.size = CGSizeMake(messageFrameWidth, (heightForText + imageWidth + 2 * messageTextPaddingWidth) * 2);
     messageView.frame = frame;
     
     UIFont *font = [UIFont fontWithName:@"Helvetica-Bold" size:13.0];
@@ -274,7 +274,7 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
     [messageView addSubview:messageLabel];
     
     UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"thumb.jpg"]];
-    imageView.frame = CGRectMake((messageFrameWidth - imageWidth)/2, heightForText + messageTextPaddingWidth, imageWidth, imageWidth);
+    imageView.frame = CGRectMake((messageFrameWidth - imageWidth)/2, heightForText + messageTextPaddingWidth * 2, imageWidth, imageWidth);
     UIImage *_maskingImage = [UIImage imageNamed:@"pinMask.png"];
     CALayer *_maskingLayer = [CALayer layer];
     _maskingLayer.frame = imageView.bounds;
