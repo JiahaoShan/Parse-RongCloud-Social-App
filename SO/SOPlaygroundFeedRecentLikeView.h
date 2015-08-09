@@ -14,8 +14,9 @@
 
 @interface SOPlaygroundFeedRecentLikeView : UITextView
 @property (nonatomic,assign) id<SOPlaygroundFeedInteractionDelegate> soDelegate;
+@property (nonatomic,weak) NSLayoutConstraint* heightConstraint;
 /*
  Array of recently liked users, maximum 8
  */
--(CGFloat)setLikes:(NSArray*)likes totalCount:(int)totalCount feed:(PlaygroundFeed*)feed width:(CGFloat)width;//returns height, takes container width as parameter only pass in the comments that you want to be visible;
+-(void)setLikes:(NSArray*)likes totalCount:(int)totalCount feed:(PlaygroundFeed*)feed width:(CGFloat)width;//returns height, takes container width as parameter only pass in the comments that you want to be visible; automatically sets height constraint as well
 @end

@@ -20,6 +20,7 @@
 @dynamic commentCount;
 @dynamic likeCount;
 @dynamic recentLikeUsers;
+@synthesize liked = _liked;
 + (void)load {
     [self registerSubclass];
 }

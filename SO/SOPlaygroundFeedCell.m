@@ -48,7 +48,11 @@
     self.feedImageView.delegate = self;
     [self.feedImageViewHeightConstraint setConstant:h1];
     
-    [self.feedGenderView setGender:kSOGenderNotSpecified];
+    if ([user male]) {
+        [self.feedGenderView setGender:kSOGenderMale];
+    }else{
+        [self.feedGenderView setGender:kSOGenderFemale];
+    }
     
     [self.feedPosterNameView setText:user.username];
     
@@ -60,14 +64,14 @@
     [self.feedTextViewHeightConstraint setConstant:size.height+1];//ios bug
     [self.feedPostedTimeLabel setText:[SOUICommons descriptionForDate:data.createdAt]];
     
-    [self.feedLikeView setLiked:false];
+    [self.feedLikeView setLiked:[data liked]];
     [self.feedLikeView setFeed:data];
     [self.feedLikeView setDelegate:self.mainController];
-    //[self.feedLikeView setCount:8927];
+    [self.feedLikeView setRecentLikeView:self.recentLikeView];
     
     //recent like view
-    CGFloat h2 = [self.recentLikeView setLikes:[data recentLikeUsers] totalCount:[[data likeCount] intValue] feed:data width:[SOUICommons screenWidth]-16];
-    self.recentLikeViewHeightConstraint.constant = h2;
+    [self.recentLikeView setHeightConstraint:self.recentLikeViewHeightConstraint];
+    [self.recentLikeView setLikes:[data recentLikeUsers] totalCount:[[data likeCount] intValue] feed:data width:[SOUICommons screenWidth]-16];
     
     //commentPreviewView
     NSMutableArray* commentPreviewArr = [[NSMutableArray alloc] init];

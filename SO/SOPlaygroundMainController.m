@@ -17,9 +17,9 @@
 #import "User.h"
 
 @interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate,SOPlaygroundFeedCellDelegate, imageViewDelegate>
-@property (nonatomic) NSMutableDictionary* feedsCellCache;
-@property (nonatomic) NSArray* feedsData;
 @property (nonatomic) BOOL initialized;
+
+@property (nonatomic) NSMutableDictionary* likeHistory;
 @end
 
 @implementation SOPlaygroundMainController
@@ -44,7 +44,6 @@
         self.pullToRefreshEnabled = YES;
         self.paginationEnabled = YES;
         self.objectsPerPage = 10;
-        self.feedsCellCache = [[NSMutableDictionary alloc] init];
     }
 }
 
@@ -66,6 +65,9 @@
     [super viewDidLoad];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"SOPlaygroundFeedCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"feedCell"];
+    
+    NSString* response = [PFCloud callFunction:@"PlaygroundGetLikeHistory" withParameters:@{@"userId":[[PFUser currentUser] objectId]}];//will block
+    self.likeHistory = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:nil];
     
 //    UIImage* sampleImage = [UIImage imageNamed:@"sampleImage2.png"];
 //    NSData* imageData = UIImagePNGRepresentation(sampleImage);
@@ -125,13 +127,21 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
-                        object:(PFObject *)object {
+                        object:(PlaygroundFeed *)object {
     if (indexPath.row>=self.objects.count) {
         return [tableView dequeueReusableCellWithIdentifier:@"loadMore"];
     }
     SOPlaygroundFeedCell* cell = [tableView dequeueReusableCellWithIdentifier:@"feedCell"];
     cell.delegate = self;
     cell.mainController = self;
+    for (NSDictionary* likeDic in self.likeHistory) {
+    NSDictionary* likedFeed = likeDic[@"likedFeed"];
+    NSString* feedId = likedFeed[@"objectId"];
+    if([feedId isEqualToString:[object objectId]]){
+        [object setLiked:true];
+        break;
+    }
+}
     [cell configureWithFeed:object];
     return cell;
 }
@@ -217,7 +227,37 @@
 }
 
 #pragma mark SOPlaygroundFeedInteractionDelegate
--(void)feed:(PlaygroundFeed *)feed didChangeLikeStatusTo:(BOOL)like{
+-(void)feed:(PlaygroundFeed *)feed didChangeLikeStatusTo:(BOOL)like action:(SOFailableAction *)action{
+    [feed setLiked:like];
+    [self cacheFeed:feed liked:like];
+    if (![feed.recentLikeUsers isKindOfClass:[NSMutableArray class]]) {
+        feed.recentLikeUsers = [NSMutableArray arrayWithArray:feed.recentLikeUsers];
+    }
+    if (like) {
+        [(NSMutableArray*)feed.recentLikeUsers insertObject:[PFUser currentUser] atIndex:0];
+        int count = feed.likeCount.intValue;
+        feed.likeCount = @(++count);
+    }else{
+        [(NSMutableArray*)feed.recentLikeUsers removeObject:[PFUser currentUser]];
+        int count = feed.likeCount.intValue;
+        feed.likeCount = @(--count);
+    }
+    [action addFailHandler:^{
+        if (like) {
+        [(NSMutableArray*)feed.recentLikeUsers removeObjectAtIndex:0];
+        int count = feed.likeCount.intValue;
+        feed.likeCount = @(--count);
+    }else{
+        [(NSMutableArray*)feed.recentLikeUsers insertObject:[PFUser currentUser] atIndex:0];
+        int count = feed.likeCount.intValue;
+        feed.likeCount = @(++count);
+    }
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.objects indexOfObject:feed] inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
+    
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.objects indexOfObject:feed] inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    //[self.tableView reloadData];//maybe too much? optimizaiton needed//hides animation! bad
     MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
     overlay.animation = MTStatusBarOverlayAnimationFallDown;  // MTStatusBarOverlayAnimationShrink
     overlay.detailViewMode = MTDetailViewModeHistory;         // enable automatic history-tracking and
@@ -226,9 +266,11 @@
                    withParameters:@{@"feedId": feed.objectId,@"userId":[PFUser currentUser].objectId}
                             block:^(id response, NSError *error) {
             if (error) {
-                [overlay postMessage:[NSString stringWithFormat:@"error:%@",error]];
+                [overlay postImmediateMessage:[NSString stringWithFormat:@"error:%@",error] duration:2];
+                [action failed];
             }else{
-                [overlay postMessage:@"like success"];
+                [overlay postImmediateMessage:@"like success" duration:2];
+                [action succeed];
             }
         }];
     }else{
@@ -236,9 +278,11 @@
                 withParameters:@{@"feedId": feed.objectId,@"userId":[PFUser currentUser].objectId}
                         block:^(id response, NSError *error) {
             if (error) {
-                [overlay postMessage:[NSString stringWithFormat:@"error:%@",error]];
+                [overlay postImmediateMessage:[NSString stringWithFormat:@"error:%@",error] duration:2];
+                [action failed];
             }else{
-                [overlay postMessage:@"delete like success"];
+                [overlay postImmediateMessage:@"delete like success" duration:2];
+                [action succeed];
             }
         }];
     }
@@ -251,5 +295,19 @@
     }
 }
 
+#pragma mark - Caching
+-(void)cacheFeed:(PlaygroundFeed*)feed liked:(BOOL)liked{
+    
+}
+-(BOOL)likedForFeed:(PlaygroundFeed*)feed{
+    for (NSDictionary* likeDic in self.likeHistory) {
+    NSDictionary* likedFeed = likeDic[@"likedFeed"];
+    NSString* feedId = likedFeed[@"objectId"];
+    if([feedId isEqualToString:[feed objectId]]){
+        return true;
+    }
+    }
+    return false;
+}
 
 @end

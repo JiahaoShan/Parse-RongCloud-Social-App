@@ -8,12 +8,13 @@
 
 #import "SOPlaygroundFeedRecentLikeView.h"
 @interface SOPlaygroundFeedRecentLikeView()
-@property (nonatomic,strong) NSArray* _likes;//array of recently liked users
+@property (nonatomic,strong) NSMutableArray* _likes;//array of recently liked users
 @property (nonatomic) int likeCount;//total count
 @property (nonatomic,strong) UITextRange* promptRange;
 @property (nonatomic,strong) NSMutableArray* nameRanges;
 @property (nonatomic,strong) UITapGestureRecognizer* tap;
 @property (nonatomic,strong) PlaygroundFeed* feed;
+@property (nonatomic) CGFloat width; //saves the width that is passed in
 @end
 
 @implementation SOPlaygroundFeedRecentLikeView
@@ -27,13 +28,21 @@
     self.nameRanges = [[NSMutableArray alloc] init];
 }
 
--(CGFloat)setLikes:(NSArray*)likes totalCount:(int)totalCount feed:(PlaygroundFeed*)feed width:(CGFloat)width{
+-(void)setLikes:(NSArray*)likes totalCount:(int)totalCount feed:(PlaygroundFeed*)feed width:(CGFloat)width{
     NSAssert(feed, @"feed is nil");
-    NSAssert(likes.count<=totalCount, @"count eror");
+    NSAssert(likes.count<=totalCount, @"count more than total");
+    
+    if (likes!=self._likes) {
+        self._likes = [NSMutableArray arrayWithArray:likes];
+    }
+    self.likeCount = totalCount;
     self.feed = feed;
+    self.width = width;
+    [self.nameRanges removeAllObjects];
     
     if (likes.count==0) {
-        return 0;
+        [self.heightConstraint setConstant:0];
+        return;
     }
     
     NSMutableAttributedString* likeString = [[NSMutableAttributedString alloc] init];
@@ -67,12 +76,12 @@
     }else{
         prompt = @"觉得这个挺牛逼的";
     }
-    [likeString appendAttributedString:[[NSAttributedString alloc] initWithString:prompt attributes:@{NSForegroundColorAttributeName:[SOUICommons activeButtonColor]}]];
+    [likeString appendAttributedString:[[NSAttributedString alloc] initWithString:prompt attributes:@{NSForegroundColorAttributeName:[SOUICommons descriptiveTextColor]}]];
     UITextPosition *end = [self positionFromPosition:start offset:prompt.length];
     self.promptRange = [self textRangeFromPosition:start toPosition:end];
     self.attributedText = likeString;
     CGSize size = [self sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-    return size.height;
+    [self.heightConstraint setConstant:size.height];
 }
 
 -(void)didTap:(UITapGestureRecognizer*)tap{

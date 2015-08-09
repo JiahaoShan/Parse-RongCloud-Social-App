@@ -13,6 +13,7 @@
 +(UIColor*)primaryTintColor;
 +(UIColor*)textColor;
 +(UIColor*)activeButtonColor;//indicated tappable text
++(UIColor*)descriptiveTextColor;
 +(CGFloat)screenHeight;
 +(CGFloat)screenWidth;
 +(NSString*)descriptionForDate:(NSDate*)date;

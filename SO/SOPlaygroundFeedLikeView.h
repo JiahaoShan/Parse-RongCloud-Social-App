@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "PlaygroundFeed.h"
 #import "SOPlaygroundFeedInteractionDelegate.h"
+#import "SOPlaygroundFeedRecentLikeView.h"
 //size should be set to 24*80
 @interface SOPlaygroundFeedLikeView : UIView
 @property (nonatomic) PlaygroundFeed* feed;
@@ -16,4 +17,5 @@
 -(void)setLiked:(BOOL)liked animated:(BOOL)animated;
 @property (nonatomic) int count; //like count
 @property (nonatomic,assign) id<SOPlaygroundFeedInteractionDelegate> delegate;
+@property (nonatomic,weak) SOPlaygroundFeedRecentLikeView* recentLikeView;//when likes or cancles like, update recentlikeview immediately, and wait for server response to cancle it or not.
 @end
