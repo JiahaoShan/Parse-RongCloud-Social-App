@@ -15,6 +15,7 @@
 #import "SOMapBubbleAnnotationView.h"
 #import "SOLabelView.h"
 #import "CSGrowingTextView.h"
+#import "SODataManager.h"
 
 @interface SOMapBubbleViewController () <MKMapViewDelegate, CSGrowingTextViewDelegate>
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -66,13 +67,26 @@ const NSInteger displayDistanceMeters = 5000;
                                                  [_mapView setRegion:region animated:NO];                                                 if (_waitForLocation) {
                                                      _waitForLocation = NO;
                                                      [self hideMessage];
+                                                     [self.addButton.layer removeAllAnimations];
                                                      [self addButtonTapped:_addButton];
                                                  }
                                              }
                                              else if (status == INTULocationStatusTimedOut) {
-                                                 // Wasn't able to locate the user with the requested accuracy within the timeout interval.
-                                                 // However, currentLocation contains the best location available (if any) as of right now,
-                                                 // and achievedAccuracy has info on the accuracy/recency of the location in currentLocation.
+                                                 if (achievedAccuracy == INTULocationAccuracyBlock) {
+                                                     _ifLocatedUser = YES;
+                                                     MKUserLocation *userLocation = _mapView.userLocation;
+                                                     MKCoordinateRegion region =
+                                                     MKCoordinateRegionMakeWithDistance (userLocation.location.coordinate, 5000, 5000);
+                                                     [_mapView setRegion:region animated:NO];                                                 if (_waitForLocation) {
+                                                         _waitForLocation = NO;
+                                                         [self hideMessage];
+                                                         [self.addButton.layer removeAllAnimations];
+                                                         [self addButtonTapped:_addButton];
+                                                     }
+                                                 }
+                                                 else {
+                                                     // TODO: WHAT IF NO GOOD LOCATION?
+                                                 }
                                              }
                                              else {
                                                  // An error occurred, more info is available by looking at the specific status returned.
@@ -129,7 +143,29 @@ const NSInteger displayDistanceMeters = 5000;
 - (void) sendMessage {
     RCTextMessage* content = [RCTextMessage messageWithContent:_textView.internalTextView.text];
     content.senderUserInfo = [RCIMClient sharedRCIMClient].currentUserInfo;
-    [[RCIMClient sharedRCIMClient] sendMessage:ConversationType_CHATROOM targetId:@"go" content:content pushContent:@"extraInfo"success:^(long messageId){
+    
+    NSDictionary *extraInfo = @{@"Latitude" : [NSString stringWithFormat:@"%f",_mapView.userLocation.coordinate.latitude],
+                           @"Longitude" : [NSString stringWithFormat:@"%f",_mapView.userLocation.coordinate.longitude],
+                           };
+    
+    NSError *error = nil;
+    NSData *json;
+    
+    // Dictionary convertable to JSON ?
+    if ([NSJSONSerialization isValidJSONObject:extraInfo])
+    {
+        // Serialize the dictionary
+        json = [NSJSONSerialization dataWithJSONObject:extraInfo options:NSJSONWritingPrettyPrinted error:&error];
+        
+        // If no errors, let's view the JSON
+        if (json != nil && error == nil)
+        {
+            NSString *jsonString = [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
+            content.extra = jsonString;
+        }
+    }
+    
+    [[RCIMClient sharedRCIMClient] sendMessage:ConversationType_CHATROOM targetId:@"id" content:content pushContent:@"extraInfo"success:^(long messageId){
         NSLog(@"send successfully");
     } error:^(RCErrorCode nErrorCode, long messageId) {
         NSLog(@"send error");
@@ -246,12 +282,19 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
         [self.messageList insertObject:textMessage atIndex:0];
     }
     NSString* content = textMessage.content;
-
-    // 暂时的测试
+    
+    NSError *jsonError;
+    NSData *objectData = [textMessage.extra dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *extraInfo = [NSJSONSerialization JSONObjectWithData:objectData
+                                                         options:NSJSONReadingMutableContainers
+                                                           error:&jsonError];
+    double latitude = [[extraInfo objectForKey:@"Latitude"] doubleValue];
+    double longitude = [[extraInfo objectForKey:@"Longitude"] doubleValue];
+    // TODO: Calculate Difference to make sure it is within school.
+    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(latitude, longitude);
     
     SOMapBubbleAnnotation *myAnnotation = [[SOMapBubbleAnnotation alloc] init];
-    MKUserLocation *userLocation = _mapView.userLocation;
-    myAnnotation.coordinate = userLocation.coordinate;
+    myAnnotation.coordinate = location;
     myAnnotation.title = content;
     //myAnnotation.subtitle = content;
     dispatch_async (dispatch_get_main_queue(), ^
@@ -323,6 +366,7 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:messageText attributes:attributesDictionary];
     
     CGRect requiredRect = [string boundingRectWithSize:constrainedSize options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+    
     
     if (requiredRect.size.width > messageFrameWidth) {
         requiredRect = CGRectMake(0,0, messageTextWidth, requiredRect.size.height);
@@ -460,15 +504,16 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
     [view.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
 }
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+//-(NSString*) getUserImageUrl: (NSString*) userId {
+//    if (userId == nil) {
+//        RCUserInfo* userInfo = [RCIMClient sharedRCIMClient].currentUserInfo;
+//        return userInfo.portraitUri;
+//    }
+//    else {
+//        [[SODataManager sharedInstance] getUserInfoWithUserId:userId completion:^(RCUserInfo *userInfo) {
+//            
+//        }];
+//    }
+//}
 
 @end
