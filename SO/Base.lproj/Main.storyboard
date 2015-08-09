@@ -433,8 +433,13 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="szE-Xl-Sfb">
                                 <rect key="frame" x="0.0" y="65" width="600" height="486"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9bp-T6-124" customClass="SOMapBubbleButtonView">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9bp-T6-124" customClass="SOMapBubbleButtonView">
                                 <rect key="frame" x="263" y="452" width="75" height="75"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="75" id="DVX-5X-Jp9"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="UCd-d3-uPb"/>
+                                    <constraint firstAttribute="width" constant="75" id="oUM-hK-sEA"/>
+                                </constraints>
                                 <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -444,19 +449,24 @@
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isAddButton" value="YES"/>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="addButtonTapped:" destination="t9u-1s-BBI" eventType="touchUpInside" id="hWx-CS-ywA"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="szE-Xl-Sfb" firstAttribute="top" secondItem="QoU-0d-ZvZ" secondAttribute="bottom" constant="1" id="S91-gp-gba"/>
-                            <constraint firstAttribute="trailing" secondItem="szE-Xl-Sfb" secondAttribute="trailing" id="TwU-ma-b4p"/>
-                            <constraint firstItem="szE-Xl-Sfb" firstAttribute="leading" secondItem="TY5-vW-4Q6" secondAttribute="leading" id="e8d-XJ-PIx"/>
-                            <constraint firstItem="szE-Xl-Sfb" firstAttribute="bottom" secondItem="6Ko-1c-JwN" secondAttribute="top" id="rzV-hr-yT2"/>
-                            <constraint firstItem="szE-Xl-Sfb" firstAttribute="centerX" secondItem="9bp-T6-124" secondAttribute="centerX" constant="-0.5" id="tod-jK-9Qc"/>
+                            <constraint firstItem="szE-Xl-Sfb" firstAttribute="centerX" secondItem="9bp-T6-124" secondAttribute="centerX" id="WdD-3i-cr7"/>
+                            <constraint firstItem="6Ko-1c-JwN" firstAttribute="top" secondItem="9bp-T6-124" secondAttribute="bottom" constant="24" id="X15-dk-5hr"/>
+                            <constraint firstItem="szE-Xl-Sfb" firstAttribute="top" secondItem="QoU-0d-ZvZ" secondAttribute="bottom" constant="1" id="Xgp-ca-EbK"/>
+                            <constraint firstAttribute="centerX" secondItem="9bp-T6-124" secondAttribute="centerX" constant="-0.5" id="pNP-8f-031"/>
+                            <constraint firstItem="szE-Xl-Sfb" firstAttribute="bottom" secondItem="6Ko-1c-JwN" secondAttribute="top" id="tcL-mf-iSc"/>
+                            <constraint firstItem="szE-Xl-Sfb" firstAttribute="leading" secondItem="TY5-vW-4Q6" secondAttribute="leading" id="w9C-Gm-zhn"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="jfE-Ih-JTu"/>
                     <connections>
+                        <outlet property="addButton" destination="9bp-T6-124" id="tkP-WA-ErH"/>
                         <outlet property="mapView" destination="szE-Xl-Sfb" id="uUP-tY-beX"/>
                     </connections>
                 </viewController>

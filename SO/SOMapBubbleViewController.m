@@ -13,11 +13,16 @@
 #import <ParseUI/ParseUI.h>
 #import "SOMapBubbleAnnotation.h"
 #import "SOMapBubbleAnnotationView.h"
-#import "SOMapBubbleTextLabel.h"
+#import "SOLabelView.h"
+#import "CSGrowingTextView.h"
 
-@interface SOMapBubbleViewController () <MKMapViewDelegate>
+@interface SOMapBubbleViewController () <MKMapViewDelegate, CSGrowingTextViewDelegate>
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) NSMutableArray *messageList;
+@property (nonatomic) BOOL ifLocatedUser;
+@property (nonatomic) BOOL waitForLocation;
+@property (nonatomic, strong) CSGrowingTextView* textView;
+@property (nonatomic, strong) UIView* inputMessageView;
 @end
 
 
@@ -29,6 +34,7 @@ const CGFloat messageFrameWidth = 100.0f;
 const CGFloat messageTextPaddingWidth = 5.0f;
 const CGFloat messageTextWidth = messageFrameWidth - 2 * messageTextPaddingWidth;
 const CGFloat imageWidth = 40.0f;
+const NSInteger displayDistanceMeters = 5000;
 
 - (NSMutableArray*) messageList
 {
@@ -46,18 +52,22 @@ const CGFloat imageWidth = 40.0f;
     _mapView.mapType =MKMapTypeStandard;
     //cancelLocationRequest
     INTULocationManager *locMgr = [INTULocationManager sharedInstance];
-    [locMgr requestLocationWithDesiredAccuracy:INTULocationAccuracyCity
-                                       timeout:4.0
-                          delayUntilAuthorized:YES  // This parameter is optional, defaults to NO if omitted
+    [locMgr requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse
+                                       timeout:10.0
+                          delayUntilAuthorized:YES
                                          block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+                                             NSLog(@"");
                                              if (status == INTULocationStatusSuccess) {
+                                                 //TODO: 这里是不是会被访问很多次 根据不同的成功定位level
+                                                 _ifLocatedUser = YES;
                                                  MKUserLocation *userLocation = _mapView.userLocation;
-                                                 
                                                  MKCoordinateRegion region =
                                                  MKCoordinateRegionMakeWithDistance (userLocation.location.coordinate, 5000, 5000);
-                                                 [_mapView setRegion:region animated:NO];
-                                                 // Request succeeded, meaning achievedAccuracy is at least the requested accuracy, and
-                                                 // currentLocation contains the device's current location.
+                                                 [_mapView setRegion:region animated:NO];                                                 if (_waitForLocation) {
+                                                     _waitForLocation = NO;
+                                                     [self hideMessage];
+                                                     [self addButtonTapped:_addButton];
+                                                 }
                                              }
                                              else if (status == INTULocationStatusTimedOut) {
                                                  // Wasn't able to locate the user with the requested accuracy within the timeout interval.
@@ -114,6 +124,23 @@ const CGFloat imageWidth = 40.0f;
     
     [[NSNotificationCenter defaultCenter]
      removeObserver:self];
+}
+
+- (void) sendMessage {
+    RCTextMessage* content = [RCTextMessage messageWithContent:_textView.internalTextView.text];
+    content.senderUserInfo = [RCIMClient sharedRCIMClient].currentUserInfo;
+    [[RCIMClient sharedRCIMClient] sendMessage:ConversationType_CHATROOM targetId:@"go" content:content pushContent:@"extraInfo"success:^(long messageId){
+        NSLog(@"send successfully");
+    } error:^(RCErrorCode nErrorCode, long messageId) {
+        NSLog(@"send error");
+    }];
+    //    - (RCMessage *)sendMessage:(RCConversationType)conversationType
+    //targetId:(NSString *)targetId
+    //content:(RCMessageContent *)content
+    //pushContent:(NSString *)pushContent
+    //pushData:(NSString *)pushData
+    //success:(void (^)(long messageId))successBlock
+    //error:(void (^)(RCErrorCode nErrorCode, long messageId))errorBlock;
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
@@ -205,10 +232,10 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
 - (void)didReceiveMessageNotification:(NSNotification *)notification {
     if ([notification.object isKindOfClass:[RCMessage class]]) {
         RCMessage* message = (RCMessage*)notification.object;
-       // if (message.conversationType == ConversationType_CHATROOM) {
+        if (message.conversationType == ConversationType_CHATROOM) {
             RCTextMessage* textMessage = (RCTextMessage*)message.content;
             [self addNewMessage:textMessage];
-        //}
+        }
         }
     NSLog(notification.description);
 }
@@ -252,7 +279,8 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
     messageView.frame = frame;
     
     UIFont *font = [UIFont fontWithName:@"Helvetica-Bold" size:13.0];
-    SOMapBubbleTextLabel* messageLabel = [[SOMapBubbleTextLabel alloc] initWithFrame:CGRectMake(0, 0, messageFrameWidth, heightForText + messageTextPaddingWidth + messageTextPaddingWidth)];
+    UIEdgeInsets insets = {messageTextPaddingWidth,messageTextPaddingWidth,messageTextPaddingWidth,messageTextPaddingWidth};
+    SOLabelView* messageLabel = [[SOLabelView alloc] initWithFrame:CGRectMake(0, 0, messageFrameWidth, heightForText + messageTextPaddingWidth + messageTextPaddingWidth) AndUIEdgeInsets:insets];
     messageLabel.text = message;
     messageLabel.textColor = [UIColor whiteColor];
     messageLabel.font = font;
@@ -314,6 +342,124 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
     UIGraphicsEndImageContext();
     return snapshotImage;
 }
+
+- (IBAction)addButtonTapped:(SOMapBubbleButtonView *)sender {
+    if (_waitForLocation) return;
+    if ([sender isKindOfClass:[SOMapBubbleButtonView class]]) {
+        if (sender.isAddButton && !_ifLocatedUser) {
+            [self runSpinAnimationOnView:sender duration:1.0f rotations:0.5f repeat:999.0f];
+            [self showMesssage:@"定位中..."];
+            _waitForLocation = YES;
+            return;
+        }
+        _waitForLocation = NO;
+        [self runSpinAnimationOnView:sender duration:1.0f rotations:0.5f repeat:1.0f];
+        if (sender.isAddButton) {
+            sender.isAddButton = NO;
+            sender.fillColor = [UIColor colorWithRed:238.0f/255.0f green:77.0f/255.0f blue:77.0f/255.0f alpha:1];
+            [self startInputMode];
+        }
+        else {
+            sender.isAddButton = YES;
+            sender.fillColor = [UIColor colorWithRed:87.0f/255.0f green:218.0f/255.0f blue:213.0f/255.0f alpha:1];
+            [self endInputMode];
+        }
+        [sender setNeedsDisplay];
+    }
+//    [UIView animateWithDuration:1.0
+//                     animations:^{
+//                         theView.frame = newFrame;    // move
+//                     }
+//                     completion:^(BOOL finished){
+//                         // code to run when animation completes
+//                         // (in this case, another animation:)
+//                         [UIView animateWithDuration:1.0
+//                                          animations:^{
+//                                              theView.alpha = 0.0;   // fade out
+//                                          }
+//                                          completion:^(BOOL finished){  
+//                                              [theView removeFromSuperview];           
+//                                          }];
+//                     }];
+}
+
+- (void) startInputMode {
+    if (_ifLocatedUser) {
+        MKCoordinateRegion region = _mapView.region;
+        region.center = _mapView.userLocation.location.coordinate;
+        [_mapView setRegion:region animated:YES];
+        _mapView.scrollEnabled = NO;
+        _mapView.zoomEnabled = NO;
+        _mapView.showsUserLocation = NO;
+        [self addTextField];
+    }
+}
+
+- (void) endInputMode {
+    _mapView.scrollEnabled = YES;
+    _mapView.zoomEnabled = YES;
+    _mapView.showsUserLocation = YES;
+    [_textView removeFromSuperview];
+    [_inputMessageView removeFromSuperview];
+    _textView = nil;
+    _inputMessageView = nil;
+}
+
+- (void) addTextField{
+    _inputMessageView = [[UIView alloc] init];
+    _inputMessageView.opaque = NO;
+    _inputMessageView.backgroundColor = [UIColor clearColor];
+
+    CGRect frame = _inputMessageView.frame;
+    frame.size = CGSizeMake(messageFrameWidth, (15 + imageWidth + 2 * messageTextPaddingWidth) * 2);
+    _inputMessageView.frame = frame;
+    _inputMessageView.center = _mapView.center;
+    
+    _textView = [[CSGrowingTextView alloc] initWithFrame:CGRectMake(0, 0, messageFrameWidth, 15 + messageTextPaddingWidth + messageTextPaddingWidth)];
+    _textView.maximumNumberOfLines = 3;
+    _textView.minimumNumberOfLines = 1;
+    _textView.growDirection = CSGrowDirectionUp;
+    _textView.backgroundColor = [UIColor colorWithRed:245.0f/255.0f green:124.0f/255.0f blue:0.0f/255.0f alpha:0.8f]; // Orange
+    _textView.layer.cornerRadius = 6.0f;
+    _textView.clipsToBounds = YES;
+    _textView.delegate = self;
+    [_textView becomeFirstResponder];
+
+    
+    [_inputMessageView addSubview:_textView];
+    
+    UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"thumb.jpg"]];
+    imageView.frame = CGRectMake((messageFrameWidth - imageWidth)/2, 15 + messageTextPaddingWidth * 2, imageWidth, imageWidth);
+    UIImage *_maskingImage = [UIImage imageNamed:@"pinMask.png"];
+    CALayer *_maskingLayer = [CALayer layer];
+    _maskingLayer.frame = imageView.bounds;
+    [_maskingLayer setContents:(id)[_maskingImage CGImage]];
+    [imageView.layer setMask:_maskingLayer];
+    [_inputMessageView addSubview:imageView];
+    
+    [self.view addSubview:_inputMessageView];
+}
+
+- (BOOL)growingTextViewShouldReturn:(CSGrowingTextView *)textView {
+    [textView resignFirstResponder];
+    [self sendMessage];
+    [self addButtonTapped:_addButton];
+    return YES;
+}
+
+- (void) runSpinAnimationOnView:(UIView*)view duration:(CGFloat)duration rotations:(CGFloat)rotations repeat:(float)repeat;
+{
+    CABasicAnimation* rotationAnimation;
+    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 /* full rotation*/ * rotations * duration];
+    //rotationAnimation.duration = duration;
+    rotationAnimation.duration = 0.5;
+    rotationAnimation.cumulative = YES;
+    rotationAnimation.repeatCount = repeat;
+    
+    [view.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
+}
+
 
 /*
 #pragma mark - Navigation

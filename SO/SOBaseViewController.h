@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SOLabelView.h"
 
 @interface SOBaseViewController : UIViewController
-
+@property (nonatomic,strong) SOLabelView* messageOverlay;
+-(void) hideMessage;
+-(void) showMesssage: (NSString*) message;
 @end

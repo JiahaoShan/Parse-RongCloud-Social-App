@@ -7,7 +7,9 @@
 //
 
 #import "SOBaseViewController.h"
+#import "SOMapBubbleButtonView.h"
 
 @interface SOMapBubbleViewController : SOBaseViewController 
+@property (weak, nonatomic) IBOutlet SOMapBubbleButtonView *addButton;
 
 @end
