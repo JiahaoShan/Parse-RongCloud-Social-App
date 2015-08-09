@@ -45,6 +45,7 @@
 		4CBCF6CF1B525BCD00EE2195 /* SOPlaygroundFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CBCF6CE1B525BCD00EE2195 /* SOPlaygroundFeedCell.xib */; };
 		4CBCF6D31B525CD700EE2195 /* SOPlaygroundFeedGenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6D21B525CD700EE2195 /* SOPlaygroundFeedGenderView.m */; };
 		4CBD58D31B76F13000F1F3C7 /* SOFailableAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBD58D21B76F13000F1F3C7 /* SOFailableAction.m */; };
+		4CBD58D61B77603600F1F3C7 /* SOPlaygroundFeedCommentPreviewViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBD58D51B77603600F1F3C7 /* SOPlaygroundFeedCommentPreviewViewCell.m */; };
 		4CCD26481B5E8EDA006CDAF5 /* SOCommunityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD26471B5E8EDA006CDAF5 /* SOCommunityViewController.m */; };
 		4CCD264B1B5E8FEE006CDAF5 /* SOPersonAvatarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD264A1B5E8FEE006CDAF5 /* SOPersonAvatarView.m */; };
 		4CCD26501B5E9FA9006CDAF5 /* SOCommunityContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD264F1B5E9FA9006CDAF5 /* SOCommunityContentView.m */; };
@@ -225,6 +226,8 @@
 		4CBCF6D21B525CD700EE2195 /* SOPlaygroundFeedGenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedGenderView.m; sourceTree = "<group>"; };
 		4CBD58D11B76F13000F1F3C7 /* SOFailableAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOFailableAction.h; sourceTree = "<group>"; };
 		4CBD58D21B76F13000F1F3C7 /* SOFailableAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOFailableAction.m; sourceTree = "<group>"; };
+		4CBD58D41B77603600F1F3C7 /* SOPlaygroundFeedCommentPreviewViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPlaygroundFeedCommentPreviewViewCell.h; sourceTree = "<group>"; };
+		4CBD58D51B77603600F1F3C7 /* SOPlaygroundFeedCommentPreviewViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedCommentPreviewViewCell.m; sourceTree = "<group>"; };
 		4CCD26461B5E8EDA006CDAF5 /* SOCommunityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCommunityViewController.h; sourceTree = "<group>"; };
 		4CCD26471B5E8EDA006CDAF5 /* SOCommunityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCommunityViewController.m; sourceTree = "<group>"; };
 		4CCD26491B5E8FEE006CDAF5 /* SOPersonAvatarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPersonAvatarView.h; sourceTree = "<group>"; };
@@ -542,6 +545,8 @@
 				4CB3B6491B726905009CE032 /* SOPlaygroundFeedRecentLikeView.m */,
 				4CB3B63F1B6E2737009CE032 /* SOPlaygroundFeedCommentPreviewView.h */,
 				4CB3B6401B6E2737009CE032 /* SOPlaygroundFeedCommentPreviewView.m */,
+				4CBD58D41B77603600F1F3C7 /* SOPlaygroundFeedCommentPreviewViewCell.h */,
+				4CBD58D51B77603600F1F3C7 /* SOPlaygroundFeedCommentPreviewViewCell.m */,
 				4CA673931B52615C00D5FDFA /* SOPlaygroundFeedImageView.h */,
 				4CA673941B52615C00D5FDFA /* SOPlaygroundFeedImageView.m */,
 			);
@@ -1072,6 +1077,7 @@
 				4CCD264B1B5E8FEE006CDAF5 /* SOPersonAvatarView.m in Sources */,
 				4CBCF6C61B52592F00EE2195 /* UIView+ActivityIndicator.m in Sources */,
 				8A1980A01B72D6E300AC75B0 /* SOMapBubbleView.m in Sources */,
+				4CBD58D61B77603600F1F3C7 /* SOPlaygroundFeedCommentPreviewViewCell.m in Sources */,
 				4CBCF6BD1B5257A500EE2195 /* SOTableViewController.m in Sources */,
 				4CBCF6B31B52510F00EE2195 /* SOBaseViewController.m in Sources */,
 				4CBCF6C31B5258BC00EE2195 /* SOPlaygroundDetailController.m in Sources */,
