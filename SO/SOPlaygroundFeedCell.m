@@ -72,20 +72,21 @@
     //recent like view
     [self.recentLikeView setHeightConstraint:self.recentLikeViewHeightConstraint];
     [self.recentLikeView setLikes:[data recentLikeUsers] totalCount:[[data likeCount] intValue] feed:data width:[SOUICommons screenWidth]-16];
+    [self.recentLikeView setSoDelegate:self.mainController];
     
     //commentPreviewView
     NSMutableArray* commentPreviewArr = [[NSMutableArray alloc] init];
     if (data.latestComment) {
         PlaygroundComment* c = data.latestComment;
         [c fetchIfNeeded];
-        [commentPreviewArr addObject:@{kSOPlaygroundFeedCommentPreviewViewUserKey:c.commentOwner,kSOPlaygroundFeedCommentPreviewViewMessageKey:c.message}];
+        [commentPreviewArr addObject:c];
     }
     if (data.firstComment) {
         PlaygroundComment* c = data.firstComment;
         [c fetchIfNeeded];
-        [commentPreviewArr addObject:@{kSOPlaygroundFeedCommentPreviewViewUserKey:c.commentOwner,kSOPlaygroundFeedCommentPreviewViewMessageKey:c.message}];
+        [commentPreviewArr addObject:c];
     }
-    CGFloat h3 = [self.commentPreviewView setComments:commentPreviewArr totalCount:[data.commentCount intValue] feed:data width:[SOUICommons screenWidth]];
+    CGFloat h3 = [self.commentPreviewView setComments:commentPreviewArr totalCount:[data.commentCount intValue] feed:data width:[SOUICommons screenWidth] soDelegate:self.mainController];
     self.commentPreviewViewHeightConstraint.constant = h3;
 }
 

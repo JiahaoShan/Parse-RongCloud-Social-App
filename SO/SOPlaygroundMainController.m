@@ -131,6 +131,7 @@
     if (indexPath.row>=self.objects.count) {
         return [tableView dequeueReusableCellWithIdentifier:@"loadMore"];
     }
+    [object pinInBackground];
     SOPlaygroundFeedCell* cell = [tableView dequeueReusableCellWithIdentifier:@"feedCell"];
     cell.delegate = self;
     cell.mainController = self;
@@ -279,6 +280,15 @@
             }
         }];
     }
+}
+
+-(void)userDidTapDeleteComment:(PlaygroundComment *)comment{
+
+}
+
+-(void)userDidTapNameOfUser:(User *)user{
+    UIViewController* c = [self.storyboard instantiateViewControllerWithIdentifier:@"userDetail"];
+    [self.navigationController pushViewController:c animated:true];
 }
 
 #pragma mark - Segue

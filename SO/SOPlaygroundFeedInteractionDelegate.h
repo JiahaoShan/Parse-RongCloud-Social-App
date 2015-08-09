@@ -10,8 +10,11 @@
 #import "SOFailableAction.h"
 @class PlaygroundFeed;
 @class User;
+@class PlaygroundComment;
 @protocol SOPlaygroundFeedInteractionDelegate <NSObject>
+
 -(void)userDidTapViewAllCommentForFeed:(PlaygroundFeed*)feed;
+-(void)userDidTapDeleteComment:(PlaygroundComment*)comment;
 
 -(void)userDidTapViewAllLikeForFeed:(PlaygroundFeed *)feed;
 -(void)feed:(PlaygroundFeed*)feed didChangeLikeStatusTo:(BOOL)like action:(SOFailableAction*)action;

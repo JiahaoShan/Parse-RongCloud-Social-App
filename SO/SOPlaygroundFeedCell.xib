@@ -91,16 +91,7 @@
                             </mask>
                         </variation>
                     </imageView>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="AAA：好炫酷" translatesAutoresizingMaskIntoConstraints="NO" id="vVp-G6-gxc" customClass="SOPlaygroundFeedCommentPreviewView">
-                        <rect key="frame" x="8" y="616" width="489" height="112"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="112" id="kSE-fD-eWP"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                    </textView>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="AAA, BBB, CCC 喜欢这个" translatesAutoresizingMaskIntoConstraints="NO" id="HS9-Kg-s1h" userLabel="recent like" customClass="SOPlaygroundFeedRecentLikeView">
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HS9-Kg-s1h" userLabel="recent like" customClass="SOPlaygroundFeedRecentLikeView">
                         <rect key="frame" x="8" y="516" width="481" height="100"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -109,37 +100,44 @@
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
+                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="RzI-bY-uVE" customClass="SOPlaygroundFeedCommentPreviewView">
+                        <rect key="frame" x="8" y="624" width="481" height="104"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="104" id="bUY-BG-ZiN"/>
+                        </constraints>
+                    </tableView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="kXl-EH-6cx" firstAttribute="leading" secondItem="lPF-LX-8h9" secondAttribute="leading" constant="8" id="0jh-bx-DXK"/>
                     <constraint firstItem="yTb-b3-xAv" firstAttribute="leading" secondItem="lPF-LX-8h9" secondAttribute="leading" id="1st-VB-EYq"/>
                     <constraint firstItem="HS9-Kg-s1h" firstAttribute="top" secondItem="V64-7q-5ls" secondAttribute="bottom" id="2d4-jq-drK"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="RzI-bY-uVE" secondAttribute="bottom" id="5fH-zc-8ro"/>
                     <constraint firstItem="yTb-b3-xAv" firstAttribute="centerY" secondItem="ldf-Ne-RfG" secondAttribute="centerY" constant="0.5" id="7CW-qh-gko"/>
                     <constraint firstItem="ldf-Ne-RfG" firstAttribute="leading" secondItem="yTb-b3-xAv" secondAttribute="trailing" constant="8" id="80Y-5w-syb"/>
                     <constraint firstItem="kXl-EH-6cx" firstAttribute="top" secondItem="lPF-LX-8h9" secondAttribute="bottom" id="ALL-Mh-XXZ"/>
                     <constraint firstItem="5yg-H5-c18" firstAttribute="leading" secondItem="ldf-Ne-RfG" secondAttribute="leading" id="Enh-dT-ES4"/>
                     <constraint firstItem="HS9-Kg-s1h" firstAttribute="leading" secondItem="XdJ-Jm-LTf" secondAttribute="leadingMargin" id="JLi-CY-b9w"/>
+                    <constraint firstItem="RzI-bY-uVE" firstAttribute="leading" secondItem="XdJ-Jm-LTf" secondAttribute="leadingMargin" id="JoI-Xj-SLa"/>
                     <constraint firstItem="HS9-Kg-s1h" firstAttribute="trailing" secondItem="XdJ-Jm-LTf" secondAttribute="trailingMargin" id="Jot-gI-aMW"/>
                     <constraint firstItem="6u0-Nz-lJI" firstAttribute="leading" secondItem="lPF-LX-8h9" secondAttribute="leading" constant="8" id="Jpp-28-Nwc"/>
                     <constraint firstItem="HS9-Kg-s1h" firstAttribute="top" secondItem="6u0-Nz-lJI" secondAttribute="bottom" id="MJM-bD-El0"/>
-                    <constraint firstItem="vVp-G6-gxc" firstAttribute="trailing" secondItem="XdJ-Jm-LTf" secondAttribute="trailingMargin" constant="8" id="R1m-p1-Shj"/>
                     <constraint firstItem="yTb-b3-xAv" firstAttribute="top" secondItem="XdJ-Jm-LTf" secondAttribute="topMargin" id="R7v-TW-FjA"/>
+                    <constraint firstItem="RzI-bY-uVE" firstAttribute="leading" secondItem="HS9-Kg-s1h" secondAttribute="leading" id="T9V-Mm-Fmg"/>
                     <constraint firstItem="kXl-EH-6cx" firstAttribute="trailing" secondItem="lPF-LX-8h9" secondAttribute="trailing" id="UA1-cf-Hyx"/>
-                    <constraint firstItem="vVp-G6-gxc" firstAttribute="top" secondItem="V64-7q-5ls" secondAttribute="bottom" id="bqL-os-83N"/>
                     <constraint firstItem="V64-7q-5ls" firstAttribute="top" secondItem="kXl-EH-6cx" secondAttribute="bottom" constant="8" id="e3u-f9-llH"/>
                     <constraint firstItem="6u0-Nz-lJI" firstAttribute="top" secondItem="kXl-EH-6cx" secondAttribute="bottom" constant="8" id="eQG-tC-nRa"/>
                     <constraint firstItem="6u0-Nz-lJI" firstAttribute="leading" secondItem="kXl-EH-6cx" secondAttribute="leading" constant="6" id="eUH-eK-uFT"/>
                     <constraint firstItem="lPF-LX-8h9" firstAttribute="trailing" secondItem="XdJ-Jm-LTf" secondAttribute="trailingMargin" constant="8" id="j1u-nz-tcA"/>
                     <constraint firstItem="V64-7q-5ls" firstAttribute="trailing" secondItem="kXl-EH-6cx" secondAttribute="trailing" id="lbR-sb-2Ne"/>
-                    <constraint firstItem="vVp-G6-gxc" firstAttribute="bottom" secondItem="XdJ-Jm-LTf" secondAttribute="bottomMargin" id="nqb-Xd-0E6"/>
-                    <constraint firstItem="vVp-G6-gxc" firstAttribute="leading" secondItem="XdJ-Jm-LTf" secondAttribute="leadingMargin" id="oqN-ia-Id8"/>
                     <constraint firstItem="5yg-H5-c18" firstAttribute="centerY" secondItem="ldf-Ne-RfG" secondAttribute="centerY" id="pKF-GN-k48"/>
-                    <constraint firstItem="vVp-G6-gxc" firstAttribute="top" secondItem="HS9-Kg-s1h" secondAttribute="bottom" id="pv7-tT-jyS"/>
                     <constraint firstItem="lPF-LX-8h9" firstAttribute="top" secondItem="yTb-b3-xAv" secondAttribute="bottom" id="qDF-PW-YBS"/>
                     <constraint firstItem="5yg-H5-c18" firstAttribute="leading" secondItem="ldf-Ne-RfG" secondAttribute="trailing" constant="8" id="v6H-xe-SIV"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="RzI-bY-uVE" secondAttribute="trailing" id="wFI-Rf-Hgn"/>
                     <constraint firstItem="lPF-LX-8h9" firstAttribute="top" secondItem="5yg-H5-c18" secondAttribute="bottom" constant="8" symbolic="YES" id="wX8-aI-81C"/>
                     <constraint firstItem="yTb-b3-xAv" firstAttribute="leading" secondItem="XdJ-Jm-LTf" secondAttribute="leadingMargin" id="y72-ns-1JP"/>
                     <constraint firstItem="5yg-H5-c18" firstAttribute="top" secondItem="ldf-Ne-RfG" secondAttribute="bottom" constant="8" symbolic="YES" id="yNA-ue-Uo0"/>
+                    <constraint firstItem="RzI-bY-uVE" firstAttribute="top" secondItem="HS9-Kg-s1h" secondAttribute="bottom" constant="8" id="zIq-BC-xWg"/>
                     <constraint firstItem="ldf-Ne-RfG" firstAttribute="top" secondItem="XdJ-Jm-LTf" secondAttribute="topMargin" id="zno-P7-viT"/>
                 </constraints>
                 <variation key="default">
@@ -149,13 +147,13 @@
                         <exclude reference="Enh-dT-ES4"/>
                         <exclude reference="yNA-ue-Uo0"/>
                         <exclude reference="eUH-eK-uFT"/>
-                        <exclude reference="bqL-os-83N"/>
+                        <exclude reference="JoI-Xj-SLa"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>
             <connections>
-                <outlet property="commentPreviewView" destination="vVp-G6-gxc" id="zmr-vO-uUh"/>
-                <outlet property="commentPreviewViewHeightConstraint" destination="kSE-fD-eWP" id="ICE-9A-uUc"/>
+                <outlet property="commentPreviewView" destination="RzI-bY-uVE" id="a6w-Nq-wqu"/>
+                <outlet property="commentPreviewViewHeightConstraint" destination="bUY-BG-ZiN" id="NO6-HH-p2E"/>
                 <outlet property="feedGenderView" destination="5yg-H5-c18" id="Z3X-Zg-7H0"/>
                 <outlet property="feedImageView" destination="kXl-EH-6cx" id="RXJ-sX-pmk"/>
                 <outlet property="feedImageViewHeightConstraint" destination="K3c-hE-3Np" id="08a-Db-GJf"/>

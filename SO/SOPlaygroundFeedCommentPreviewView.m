@@ -8,91 +8,59 @@
 
 #import "SOPlaygroundFeedCommentPreviewView.h"
 #import "SOUICommons.h"
+#import "SOPlaygroundFeedCommentPreviewViewCell.h"
 
-@interface SOPlaygroundFeedCommentPreviewView()
-@property (nonatomic,strong) NSArray* _comments;//visible comments
+@interface SOPlaygroundFeedCommentPreviewView()<UITableViewDataSource,UITableViewDelegate>
+@property (nonatomic,strong) NSArray* comments;//visible comments
 @property (nonatomic) int commentCount;//total count
-@property (nonatomic,strong) UITextRange* promptRange;
-@property (nonatomic,strong) NSMutableArray* nameRanges;
-@property (nonatomic,strong) UITapGestureRecognizer* tap;
 @property (nonatomic,strong) PlaygroundFeed* feed;
+@property (nonatomic) CGFloat width;
+@property (nonatomic) CGFloat height;
+@property (nonatomic,strong) NSMutableArray* cells;
 @end
 
 @implementation SOPlaygroundFeedCommentPreviewView
 -(void)awakeFromNib{
     [super awakeFromNib];
     [self setScrollEnabled:false];
-    [self setEditable:false];
-    [self setSelectable:false];
-    self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
-    [self addGestureRecognizer:self.tap];
-    self.nameRanges = [[NSMutableArray alloc] init];
+    [self setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    self.cells = [NSMutableArray array];
+    self.delegate = self;
+    self.dataSource = self;
 }
 
--(CGFloat)setComments:(NSArray*)comments totalCount:(int)totalCount feed:(PlaygroundFeed*)feed width:(CGFloat)width{
+-(CGFloat)setComments:(NSArray*)comments totalCount:(int)totalCount feed:(PlaygroundFeed*)feed width:(CGFloat)width soDelegate:(id<SOPlaygroundFeedInteractionDelegate>)soDelegate{
     NSAssert(feed, @"feed is nil");
+    self.comments = comments;
+    self.commentCount = totalCount;
     self.feed = feed;
-    
-    if (comments.count==0) {
-        return 0;
-    }
-    
-    NSMutableAttributedString* commentString = [[NSMutableAttributedString alloc] init];
-    if (totalCount>comments.count) {
-        UITextPosition *beginning = self.beginningOfDocument;
-        UITextPosition *start = [self positionFromPosition:beginning offset:commentString.length];
-        NSString* prompt = [NSString stringWithFormat:@"查看全部%d条评论>>>\n",totalCount];
-        [commentString appendAttributedString:[[NSAttributedString alloc] initWithString:prompt attributes:@{NSForegroundColorAttributeName:[SOUICommons activeButtonColor]}]];
-        UITextPosition *end = [self positionFromPosition:start offset:prompt.length];
-        self.promptRange = [self textRangeFromPosition:start toPosition:end];
-    }
-    
-    int count = (int)comments.count;
-    for (int i=0; i<count; i++) {
-        NSDictionary* dic = comments[i];
-        User* user = dic[kSOPlaygroundFeedCommentPreviewViewUserKey];
-        NSString* message = dic[kSOPlaygroundFeedCommentPreviewViewMessageKey];
-        
-        UITextPosition *beginning = self.beginningOfDocument;
-        UITextPosition *start = [self positionFromPosition:beginning offset:commentString.length];
-        
-        [commentString appendAttributedString:[[NSAttributedString alloc] initWithString:user.username attributes:@{NSForegroundColorAttributeName:[SOUICommons activeButtonColor]}]];
-        
-        UITextPosition *end = [self positionFromPosition:start offset:user.username.length];
-        UITextRange *textRange = [self textRangeFromPosition:start toPosition:end];
-        [self.nameRanges addObject:textRange];
-        
-        [commentString appendAttributedString:[[NSAttributedString alloc] initWithString:@": "]];
-        [commentString appendAttributedString:[[NSAttributedString alloc] initWithString:message]];
-        if (i!=count-1) {
-            [commentString appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
-        }
-    }
-    self.attributedText = commentString;
-    CGSize size = [self sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-    return size.height;
+    self.width = width;
+    self.soDelegate = soDelegate;
+    [self createCells];
+    return self.height;
 }
 
--(void)didTap:(UITapGestureRecognizer*)tap{
-    CGPoint p = [tap locationInView:self];
-    
-    CGRect promptRect = [self firstRectForRange:self.promptRange];
-    if (CGRectContainsPoint(promptRect, p)) {
-        if ([(NSObject*)self.soDelegate respondsToSelector:@selector(userDidTapViewAllCommentForFeed:)]) {
-            [self.soDelegate userDidTapViewAllCommentForFeed:self.feed];
-        }
-        return;
-    }
-    
-    for (int i=0;i<self.nameRanges.count;i++) {
-        UITextRange* range = self.nameRanges[i];
-        CGRect rect = [self firstRectForRange:range];
-        if (CGRectContainsPoint(rect, p)) {
-            if ([(NSObject*)self.soDelegate respondsToSelector:@selector(userDidTapNameOfUser:)]) {
-                [self.soDelegate userDidTapNameOfUser:self._comments[i][kSOPlaygroundFeedCommentPreviewViewUserKey]];
-            }
-            return;
-        }
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return [self.cells[indexPath.row] frame].size.height;
+}
+
+-(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return self.cells[indexPath.row];
+}
+-(NSInteger)numberOfRowsInSection:(NSInteger)section{
+    return 1;
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.comments.count;
+}
+-(void)createCells{
+    [self.cells removeAllObjects];
+    self.height = 0;
+    for (int i=0; i<self.comments.count; i++) {
+        SOPlaygroundFeedCommentPreviewViewCell* c = [[SOPlaygroundFeedCommentPreviewViewCell alloc] initWithComment:self.comments[i] deletable:YES width:[SOUICommons screenWidth]];
+        [c setDelegate:self.soDelegate];
+        [self.cells addObject:c];
+        self.height+=c.frame.size.height;
     }
 }
 
