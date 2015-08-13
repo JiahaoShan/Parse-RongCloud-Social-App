@@ -50,6 +50,7 @@
             }];
         }
         else{
+            
             self.grayView.alpha = 0;
             [UIView animateWithDuration:0.2 animations:^{
                 [self addSubview:self.grayView];
