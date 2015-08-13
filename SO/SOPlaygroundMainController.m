@@ -67,7 +67,9 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"SOPlaygroundFeedCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"feedCell"];
     NSError* e;
     NSString* response = [PFCloud callFunction:@"PlaygroundGetLikeHistory" withParameters:@{@"userId":[[PFUser currentUser] objectId]} error:&e];
-    self.likeHistory = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
+    if (response) {
+        self.likeHistory = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
+    }
     
 //    UIImage* sampleImage = [UIImage imageNamed:@"sampleImage2.png"];
 //    NSData* imageData = UIImagePNGRepresentation(sampleImage);
