@@ -16,6 +16,8 @@
 #import "SOLabelView.h"
 #import "CSGrowingTextView.h"
 #import "SODataManager.h"
+#import "UIImageView+AFNetworking.h"
+
 
 @interface SOMapBubbleViewController () <MKMapViewDelegate, CSGrowingTextViewDelegate>
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -24,6 +26,7 @@
 @property (nonatomic) BOOL waitForLocation;
 @property (nonatomic, strong) CSGrowingTextView* textView;
 @property (nonatomic, strong) UIView* inputMessageView;
+@property (strong, nonatomic) NSMutableDictionary *userMessageDict;
 @end
 
 
@@ -45,6 +48,14 @@ const NSInteger displayDistanceMeters = 5000;
     return _messageList;
 }
 
+- (NSMutableDictionary*) userMessageDict
+{
+    if (!_userMessageDict){
+        _userMessageDict = [[NSMutableDictionary alloc] init];
+    }
+    return _userMessageDict;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -53,13 +64,12 @@ const NSInteger displayDistanceMeters = 5000;
     _mapView.mapType =MKMapTypeStandard;
     //cancelLocationRequest
     INTULocationManager *locMgr = [INTULocationManager sharedInstance];
-    [locMgr requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse
-                                       timeout:10.0
+    [locMgr requestLocationWithDesiredAccuracy:INTULocationAccuracyNeighborhood
+                                       timeout:5.0
                           delayUntilAuthorized:YES
                                          block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
                                              NSLog(@"");
                                              if (status == INTULocationStatusSuccess) {
-                                                 //TODO: 这里是不是会被访问很多次 根据不同的成功定位level
                                                  _ifLocatedUser = YES;
                                                  MKUserLocation *userLocation = _mapView.userLocation;
                                                  MKCoordinateRegion region =
@@ -72,7 +82,7 @@ const NSInteger displayDistanceMeters = 5000;
                                                  }
                                              }
                                              else if (status == INTULocationStatusTimedOut) {
-                                                 if (achievedAccuracy == INTULocationAccuracyBlock) {
+                                                 if (achievedAccuracy == INTULocationAccuracyBlock || achievedAccuracy == INTULocationAccuracyNeighborhood) {
                                                      _ifLocatedUser = YES;
                                                      MKUserLocation *userLocation = _mapView.userLocation;
                                                      MKCoordinateRegion region =
@@ -86,6 +96,16 @@ const NSInteger displayDistanceMeters = 5000;
                                                  }
                                                  else {
                                                      // TODO: WHAT IF NO GOOD LOCATION?
+                                                     _ifLocatedUser = YES;
+                                                     MKUserLocation *userLocation = _mapView.userLocation;
+                                                     MKCoordinateRegion region =
+                                                     MKCoordinateRegionMakeWithDistance (userLocation.location.coordinate, 5000, 5000);
+                                                     [_mapView setRegion:region animated:NO];                                                 if (_waitForLocation) {
+                                                         _waitForLocation = NO;
+                                                         [self hideMessage];
+                                                         [self.addButton.layer removeAllAnimations];
+                                                         [self addButtonTapped:_addButton];
+                                                     }
                                                  }
                                              }
                                              else {
@@ -114,7 +134,7 @@ const NSInteger displayDistanceMeters = 5000;
 - (void) joinChatRoom {
     void (^errorBlock)(RCErrorCode) = ^void(RCErrorCode status) {
         NSLog(@"BAD Join");
-
+        
     };
     void (^successBlock)(void) = ^void() {
         NSLog(@"Good to go");
@@ -145,8 +165,8 @@ const NSInteger displayDistanceMeters = 5000;
     content.senderUserInfo = [RCIMClient sharedRCIMClient].currentUserInfo;
     
     NSDictionary *extraInfo = @{@"Latitude" : [NSString stringWithFormat:@"%f",_mapView.userLocation.coordinate.latitude],
-                           @"Longitude" : [NSString stringWithFormat:@"%f",_mapView.userLocation.coordinate.longitude],
-                           };
+                                @"Longitude" : [NSString stringWithFormat:@"%f",_mapView.userLocation.coordinate.longitude],
+                                };
     
     NSError *error = nil;
     NSData *json;
@@ -237,23 +257,55 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
     if ([annotation isKindOfClass:[SOMapBubbleAnnotation class]])
     {
         // Try to dequeue an existing annotation view first
-        MKAnnotationView *annotationView = (MKAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:@"REUSABLE_ANNOTATION_VIEW_IDENTIFIER"];
+        MKAnnotationView *annotationView  = [[MKAnnotationView alloc] init];
+        annotationView.annotation = annotation;
+        annotationView.canShowCallout = YES;
         
-        if (!annotationView)
-        {
-            // If an existing pin view was not available, create one.
-            annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"REUSABLE_ANNOTATION_VIEW_IDENTIFIER"];
-            annotationView.canShowCallout = YES;
-            
-            // set pin image
-            UIImage *pinImage = [self customizePinForAnnotation:annotation];
-            annotationView.image = pinImage;
-        }
-        else
-        {
-            annotationView.annotation = annotation;
-        }
+        // set pin image
+        SOMapBubbleAnnotation *mapAnnotation = (SOMapBubbleAnnotation*) annotation;
+        NSMutableDictionary* annotaionInfo = [self.userMessageDict objectForKey:mapAnnotation.subtitle];
         
+        UIView* messageView = [[UIView alloc] init];
+        messageView.opaque = NO;
+        messageView.backgroundColor = [UIColor clearColor];
+        NSString* message = mapAnnotation.title;
+        CGFloat heightForText = [self calculateTextHeightForMessageView:message];
+        CGRect frame = messageView.frame;
+        frame.size = CGSizeMake(messageFrameWidth, (heightForText + imageWidth + 2 * messageTextPaddingWidth) * 2);
+        messageView.frame = frame;
+        
+        UIFont *font = [UIFont fontWithName:@"Helvetica-Bold" size:13.0];
+        UIEdgeInsets insets = {messageTextPaddingWidth,messageTextPaddingWidth,messageTextPaddingWidth,messageTextPaddingWidth};
+        SOLabelView* messageLabel = [[SOLabelView alloc] initWithFrame:CGRectMake(0, 0, messageFrameWidth, heightForText + messageTextPaddingWidth + messageTextPaddingWidth) AndUIEdgeInsets:insets];
+        messageLabel.text = message;
+        messageLabel.textColor = [UIColor whiteColor];
+        messageLabel.font = font;
+        messageLabel.numberOfLines = 0;
+        messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        messageLabel.backgroundColor = [UIColor colorWithRed:245.0f/255.0f green:124.0f/255.0f blue:0.0f/255.0f alpha:0.8f]; // Orange
+        messageLabel.layer.cornerRadius = 6.0f;
+        messageLabel.clipsToBounds = YES;
+        messageLabel.textAlignment = NSTextAlignmentCenter;
+        [messageView addSubview:messageLabel];
+        
+        UIImageView* imageView = [[UIImageView alloc] initWithImage:[annotaionInfo objectForKey:@"image"]];
+        
+        imageView.frame = CGRectMake((messageFrameWidth - imageWidth)/2, heightForText + messageTextPaddingWidth * 2, imageWidth, imageWidth);
+        UIImage *_maskingImage = [UIImage imageNamed:@"pinMask.png"];
+        CALayer *_maskingLayer = [CALayer layer];
+        _maskingLayer.frame = imageView.bounds;
+        [_maskingLayer setContents:(id)[_maskingImage CGImage]];
+        [imageView.layer setMask:_maskingLayer];
+        [messageView addSubview:imageView];
+        
+        UIImage* messageImage = [self imageWithView:messageView];
+        
+        UIImage *pinImage = messageImage;
+        annotationView.image = pinImage;
+        
+        [annotaionInfo setObject:annotation forKey:@"annotation"];
+        [annotaionInfo setObject:annotationView forKey:@"annotationView"];
+        [self.userMessageDict setObject:annotaionInfo forKey:mapAnnotation.subtitle];
         return annotationView;
     }
     
@@ -272,7 +324,7 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
             RCTextMessage* textMessage = (RCTextMessage*)message.content;
             [self addNewMessage:textMessage];
         }
-        }
+    }
     NSLog(notification.description);
 }
 
@@ -286,8 +338,8 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
     NSError *jsonError;
     NSData *objectData = [textMessage.extra dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *extraInfo = [NSJSONSerialization JSONObjectWithData:objectData
-                                                         options:NSJSONReadingMutableContainers
-                                                           error:&jsonError];
+                                                              options:NSJSONReadingMutableContainers
+                                                                error:&jsonError];
     double latitude = [[extraInfo objectForKey:@"Latitude"] doubleValue];
     double longitude = [[extraInfo objectForKey:@"Longitude"] doubleValue];
     // TODO: Calculate Difference to make sure it is within school.
@@ -296,64 +348,40 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
     SOMapBubbleAnnotation *myAnnotation = [[SOMapBubbleAnnotation alloc] init];
     myAnnotation.coordinate = location;
     myAnnotation.title = content;
-    //myAnnotation.subtitle = content;
-    dispatch_async (dispatch_get_main_queue(), ^
-    {
-        [_mapView addAnnotation:myAnnotation];
-    });
-
+    myAnnotation.subtitle = textMessage.senderUserInfo.userId;
     
-//    SOMapBubbleAnnotation *ann = [[SOMapBubbleAnnotation alloc] init];
-//    ann.title = @"Me";
-//    ann.subtitle = content;
-//    MKUserLocation *userLocation = _mapView.userLocation;
-//    ann.coordinate = userLocation.coordinate;
-//    [_mapView addAnnotation:ann];
+    [[SODataManager sharedInstance] getUserInfoWithUserId:textMessage.senderUserInfo.userId completion:^(RCUserInfo *userInfo) {
+        [self setMessageView:userInfo withAnnotation:myAnnotation];
+    }];
 }
 
-- (UIImage*) customizePinForAnnotation:(id<MKAnnotation>)annotation {
-    UIView* messageView = [[UIView alloc] init];
-    messageView.opaque = NO;
-    messageView.backgroundColor = [UIColor clearColor];
-    NSString* message = ((SOMapBubbleAnnotation*)annotation).title;
-    CGFloat heightForText = [self calculateTextHeightForMessageView:message];
-    CGRect frame = messageView.frame;
-    frame.size = CGSizeMake(messageFrameWidth, (heightForText + imageWidth + 2 * messageTextPaddingWidth) * 2);
-    messageView.frame = frame;
-    
-    UIFont *font = [UIFont fontWithName:@"Helvetica-Bold" size:13.0];
-    UIEdgeInsets insets = {messageTextPaddingWidth,messageTextPaddingWidth,messageTextPaddingWidth,messageTextPaddingWidth};
-    SOLabelView* messageLabel = [[SOLabelView alloc] initWithFrame:CGRectMake(0, 0, messageFrameWidth, heightForText + messageTextPaddingWidth + messageTextPaddingWidth) AndUIEdgeInsets:insets];
-    messageLabel.text = message;
-    messageLabel.textColor = [UIColor whiteColor];
-    messageLabel.font = font;
-    messageLabel.numberOfLines = 0;
-    messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    messageLabel.backgroundColor = [UIColor colorWithRed:245.0f/255.0f green:124.0f/255.0f blue:0.0f/255.0f alpha:0.8f]; // Orange
-//    messageLabel.backgroundColor = [UIColor colorWithRed:102.0f/255.0f green:187.0f/255.0f blue:106.0f/255.0f alpha:0.8f]; // Green
-    messageLabel.layer.cornerRadius = 6.0f;
-    messageLabel.clipsToBounds = YES;
-    messageLabel.textAlignment = NSTextAlignmentCenter;
-
-//    NSDictionary *userAttributes = @{NSFontAttributeName: font,
-//                                     NSForegroundColorAttributeName: [UIColor blackColor]};
-//    const CGSize textSize = [message sizeWithAttributes: userAttributes];
-//    if (textSize.width < messageTextWidth) {
-//        messageLabel.center = CGPointMake(messageFrameWidth/2, (heightForText + messageTextPaddingWidth)/2);
-//    }
-    
-    [messageView addSubview:messageLabel];
-    
-    UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"thumb.jpg"]];
-    imageView.frame = CGRectMake((messageFrameWidth - imageWidth)/2, heightForText + messageTextPaddingWidth * 2, imageWidth, imageWidth);
-    UIImage *_maskingImage = [UIImage imageNamed:@"pinMask.png"];
-    CALayer *_maskingLayer = [CALayer layer];
-    _maskingLayer.frame = imageView.bounds;
-    [_maskingLayer setContents:(id)[_maskingImage CGImage]];
-    [imageView.layer setMask:_maskingLayer];
-    [messageView addSubview:imageView];
-
-    return [self imageWithView:messageView];
+- (void) setMessageView: (RCUserInfo*)userInfo withAnnotation:(SOMapBubbleAnnotation*)annotation{
+    if ([_userMessageDict objectForKey:userInfo.userId]) {
+        NSMutableDictionary* existedAnnotaionInfo = [_userMessageDict objectForKey:userInfo.userId];
+        id existedAnnotation = [existedAnnotaionInfo objectForKey:@"annotation"];
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            [_mapView removeAnnotation:existedAnnotation];
+            [_mapView addAnnotation:annotation];
+        });
+    }
+    else {
+        NSMutableDictionary* annotaionInfo = [[NSMutableDictionary alloc] init];
+        UIImageView* loadingView = [[UIImageView alloc] init];
+        [annotaionInfo setObject:loadingView forKey:@"loadingImageView"];
+        
+        NSURLRequest *imageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:userInfo.portraitUri] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60];
+        [loadingView setImageWithURLRequest:imageRequest placeholderImage:nil success:^void(NSURLRequest * request, NSHTTPURLResponse * response, UIImage * image) {
+            NSMutableDictionary* annotaionInfo = [self.userMessageDict objectForKey:userInfo.userId];
+            [annotaionInfo setObject:image forKey:@"image"];
+            [self.userMessageDict setObject:annotaionInfo forKey:userInfo.userId];
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [_mapView addAnnotation:annotation];
+            });
+        } failure:^void(NSURLRequest * request, NSHTTPURLResponse * response, NSError * error) {
+            NSLog(@"error");
+        }];;
+        [self.userMessageDict setObject:annotaionInfo forKey:userInfo.userId];
+    }
 }
 
 - (CGFloat) calculateTextHeightForMessageView:(NSString*) messageText {
@@ -371,9 +399,9 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
     if (requiredRect.size.width > messageFrameWidth) {
         requiredRect = CGRectMake(0,0, messageTextWidth, requiredRect.size.height);
     }
-//    CGRect newFrame = self.resizableLable.frame;
-//    newFrame.size.height = requiredHeight.size.height;
-//    self.resizableLable.frame = newFrame;
+    //    CGRect newFrame = self.resizableLable.frame;
+    //    newFrame.size.height = requiredHeight.size.height;
+    //    self.resizableLable.frame = newFrame;
     
     return requiredRect.size.height;
 }
@@ -410,21 +438,21 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
         }
         [sender setNeedsDisplay];
     }
-//    [UIView animateWithDuration:1.0
-//                     animations:^{
-//                         theView.frame = newFrame;    // move
-//                     }
-//                     completion:^(BOOL finished){
-//                         // code to run when animation completes
-//                         // (in this case, another animation:)
-//                         [UIView animateWithDuration:1.0
-//                                          animations:^{
-//                                              theView.alpha = 0.0;   // fade out
-//                                          }
-//                                          completion:^(BOOL finished){  
-//                                              [theView removeFromSuperview];           
-//                                          }];
-//                     }];
+    //    [UIView animateWithDuration:1.0
+    //                     animations:^{
+    //                         theView.frame = newFrame;    // move
+    //                     }
+    //                     completion:^(BOOL finished){
+    //                         // code to run when animation completes
+    //                         // (in this case, another animation:)
+    //                         [UIView animateWithDuration:1.0
+    //                                          animations:^{
+    //                                              theView.alpha = 0.0;   // fade out
+    //                                          }
+    //                                          completion:^(BOOL finished){
+    //                                              [theView removeFromSuperview];
+    //                                          }];
+    //                     }];
 }
 
 - (void) startInputMode {
@@ -453,7 +481,7 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
     _inputMessageView = [[UIView alloc] init];
     _inputMessageView.opaque = NO;
     _inputMessageView.backgroundColor = [UIColor clearColor];
-
+    
     CGRect frame = _inputMessageView.frame;
     frame.size = CGSizeMake(messageFrameWidth, (15 + imageWidth + 2 * messageTextPaddingWidth) * 2);
     _inputMessageView.frame = frame;
@@ -468,7 +496,7 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
     _textView.clipsToBounds = YES;
     _textView.delegate = self;
     [_textView becomeFirstResponder];
-
+    
     
     [_inputMessageView addSubview:_textView];
     
@@ -511,7 +539,7 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
 //    }
 //    else {
 //        [[SODataManager sharedInstance] getUserInfoWithUserId:userId completion:^(RCUserInfo *userInfo) {
-//            
+//
 //        }];
 //    }
 //}
