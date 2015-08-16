@@ -15,11 +15,16 @@
 #import <ParseUI/ParseUI.h>
 #import "MTStatusBarOverlay.h"
 #import "User.h"
+#import "SOUICommons.h"
+#import "PlaygroundComment.h"
 
-@interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate,SOPlaygroundFeedCellDelegate, imageViewDelegate>
+@interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate,SOPlaygroundFeedCellDelegate, imageViewDelegate,UITextViewDelegate>
 @property (nonatomic) BOOL initialized;
-
 @property (nonatomic) NSMutableArray* likeHistory;
+
+@property (nonatomic,weak) PlaygroundFeed* currentCommentingFeed;
+@property (nonatomic) UITextView* dummyComment;
+@property (nonatomic) UIView* commentAccessory;
 @end
 
 @implementation SOPlaygroundMainController
@@ -55,7 +60,9 @@
     if (self.objects.count == 0) {
         //query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     }
-    
+    [query includeKey:@"poster"];
+    [query includeKey:@"images"];
+    [query includeKey:@"thumbnails"];
     [query orderByDescending:@"createdAt"];
     return query;
 }
@@ -248,10 +255,10 @@
         int count = feed.likeCount.intValue;
         feed.likeCount = @(++count);
     }
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.objects indexOfObject:feed] inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.objects indexOfObject:feed] inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     }];
     
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.objects indexOfObject:feed] inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.objects indexOfObject:feed] inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     
     //[self.tableView reloadData];//maybe too much? optimizaiton needed//hides animation! bad
     MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
@@ -284,6 +291,26 @@
     }
 }
 
+-(void)userDidWishComment:(PlaygroundFeed *)feed{
+    if (!self.dummyComment) {
+        self.dummyComment = [[UITextView alloc] init];
+        self.dummyComment.hidden = true;
+        [self.view addSubview:self.dummyComment];
+    }
+    if (!self.commentAccessory) {
+        self.commentAccessory = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [SOUICommons screenWidth], 44)];
+        UITextView* input = [[UITextView alloc] initWithFrame:self.commentAccessory.bounds];
+        [input setTag:1];
+        [input setDelegate:self];
+        [input setReturnKeyType:UIReturnKeySend];
+        [self.commentAccessory addSubview:input];
+    }
+    [self.dummyComment setInputAccessoryView:self.commentAccessory];
+    [self.dummyComment becomeFirstResponder];
+    [[self.commentAccessory viewWithTag:1] becomeFirstResponder];
+    self.currentCommentingFeed = feed;
+}
+
 -(void)userDidTapDeleteComment:(PlaygroundComment *)comment{
 
 }
@@ -293,12 +320,51 @@
     [self.navigationController pushViewController:c animated:true];
 }
 
-#pragma mark - Segue
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@""])
-    {
-    }
+#pragma mark - UITextViewDelegate
+-(void)textViewDidChange:(UITextView *)textView{
+    NSLog(textView.text);
 }
+
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        [self.dummyComment resignFirstResponder];
+        return false;
+    }
+    return true;
+}
+
+-(void)textViewDidEndEditing:(UITextView *)textView{
+    PlaygroundComment* comment = [PFObject objectWithClassName:@"PlaygroundComment"];
+    comment.playgroundFeedId = self.currentCommentingFeed.objectId;
+    comment.commentOwner = (User*)[PFUser currentUser];
+    comment.message = textView.text;
+    if (![self.currentCommentingFeed.recentComments isKindOfClass:[NSMutableArray class]]) {
+        self.currentCommentingFeed.recentComments = [NSMutableArray arrayWithArray:self.currentCommentingFeed.recentComments];
+    }
+    [(NSMutableArray*)self.currentCommentingFeed.recentComments insertObject:comment atIndex:0];
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.objects indexOfObject:self.currentCommentingFeed] inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    [comment saveInBackgroundWithBlock:^(BOOL succeeded, NSError * error){
+        MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
+        overlay.animation = MTStatusBarOverlayAnimationFallDown;  // MTStatusBarOverlayAnimationShrink
+        overlay.detailViewMode = MTDetailViewModeHistory;         // enable automatic
+        if (error) {
+            [overlay postImmediateMessage:[error localizedDescription] duration:2];
+            [(NSMutableArray*)self.currentCommentingFeed.recentComments removeObject:comment];
+            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.objects indexOfObject:self.currentCommentingFeed] inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        }
+        else{
+            [overlay postImmediateMessage:@"post comment success" duration:2];
+        }
+    }];
+}
+
+#pragma mark - Segue
+//- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+//    if ([[segue identifier] isEqualToString:@""])
+//    {
+//    }
+//}
 
 #pragma mark - Caching
 -(void)cacheFeed:(PlaygroundFeed*)feed liked:(BOOL)liked{

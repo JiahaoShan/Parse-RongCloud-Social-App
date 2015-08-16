@@ -67,7 +67,7 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V64-7q-5ls" userLabel="likeView" customClass="SOPlaygroundFeedLikeView">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V64-7q-5ls" userLabel="actionGroup" customClass="SOPlaygroundFeedActionGroupView">
                         <rect key="frame" x="417" y="492" width="80" height="24"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="24" id="RKP-Ia-n5V"/>
@@ -152,12 +152,12 @@
                 </variation>
             </tableViewCellContentView>
             <connections>
+                <outlet property="actionGroupView" destination="V64-7q-5ls" id="Toe-yC-Poz"/>
                 <outlet property="commentPreviewView" destination="RzI-bY-uVE" id="a6w-Nq-wqu"/>
                 <outlet property="commentPreviewViewHeightConstraint" destination="bUY-BG-ZiN" id="NO6-HH-p2E"/>
                 <outlet property="feedGenderView" destination="5yg-H5-c18" id="Z3X-Zg-7H0"/>
                 <outlet property="feedImageView" destination="kXl-EH-6cx" id="RXJ-sX-pmk"/>
                 <outlet property="feedImageViewHeightConstraint" destination="K3c-hE-3Np" id="08a-Db-GJf"/>
-                <outlet property="feedLikeView" destination="V64-7q-5ls" id="UKA-mu-Eog"/>
                 <outlet property="feedPostedTimeLabel" destination="6u0-Nz-lJI" id="ChA-Kv-WfS"/>
                 <outlet property="feedPosterAvatartView" destination="yTb-b3-xAv" id="bbO-pE-b3U"/>
                 <outlet property="feedPosterNameView" destination="ldf-Ne-RfG" id="Nh7-T4-Lms"/>

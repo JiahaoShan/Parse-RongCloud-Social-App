@@ -18,6 +18,7 @@
 
 -(void)userDidTapViewAllLikeForFeed:(PlaygroundFeed *)feed;
 -(void)feed:(PlaygroundFeed*)feed didChangeLikeStatusTo:(BOOL)like action:(SOFailableAction*)action;
+-(void)userDidWishComment:(PlaygroundFeed*)feed;
 
 -(void)userDidTapNameOfUser:(User*)user;
 @end

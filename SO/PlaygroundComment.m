@@ -11,7 +11,7 @@
 
 @implementation PlaygroundComment
 
-@dynamic playgroudFeed;
+@dynamic playgroundFeedId;
 @dynamic message;
 @dynamic commentOwner;
 @dynamic targetUser;

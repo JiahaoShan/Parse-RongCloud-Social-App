@@ -57,7 +57,7 @@
     [self.cells removeAllObjects];
     self.height = 0;
     for (int i=0; i<self.comments.count; i++) {
-        SOPlaygroundFeedCommentPreviewViewCell* c = [[SOPlaygroundFeedCommentPreviewViewCell alloc] initWithComment:self.comments[i] deletable:YES width:[SOUICommons screenWidth]];
+        SOPlaygroundFeedCommentPreviewViewCell* c = [[SOPlaygroundFeedCommentPreviewViewCell alloc] initWithComment:self.comments[i] deletable:YES width:self.width];
         [c setDelegate:self.soDelegate];
         [self.cells addObject:c];
         self.height+=c.frame.size.height;

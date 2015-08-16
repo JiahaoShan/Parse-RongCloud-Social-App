@@ -11,7 +11,7 @@
 @class User;
 @interface PlaygroundComment : PFObject <PFSubclassing>
 + (NSString *)parseClassName;
-@property PlaygroundFeed* playgroudFeed;
+@property NSString* playgroundFeedId;
 @property NSString* message;
 @property User* commentOwner;
 @property User* targetUser;

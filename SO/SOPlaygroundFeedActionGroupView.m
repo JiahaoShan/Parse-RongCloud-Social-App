@@ -6,27 +6,27 @@
 //  Copyright (c) 2015 Guanqing Shan. All rights reserved.
 //
 
-#import "SOPlaygroundFeedLikeView.h"
-@interface SOPlaygroundFeedLikeView()
+#import "SOPlaygroundFeedActionGroupView.h"
+@interface SOPlaygroundFeedActionGroupView()
 @property (nonatomic,strong) UIImageView* redView; //red heart
 @property (nonatomic,strong) UIImageView* grayView; //gray heart
-@property (nonatomic,strong) UILabel* countLabel;
 @property (nonatomic,strong) UITapGestureRecognizer* tap;
+@property (nonatomic,strong) UIButton* comment;
 @end
 
-@implementation SOPlaygroundFeedLikeView
+@implementation SOPlaygroundFeedActionGroupView
 
 -(void)awakeFromNib{
     self.redView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
     [self.redView setImage:[UIImage imageNamed:@"like"]];
     self.grayView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
     [self.grayView setImage:[UIImage imageNamed:@"like_gray"]];
-    self.countLabel = [[UILabel alloc] initWithFrame:CGRectMake(24, 0, 56, 24)];
-    [self.countLabel setAdjustsFontSizeToFitWidth:true];
-    [self.countLabel setMinimumScaleFactor:0.5];
-    [self addSubview:self.countLabel];
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleLike:)];
     [self addGestureRecognizer:self.tap];
+    self.comment = [[UIButton alloc] initWithFrame:CGRectMake(24, 0, 24, 24)];
+    [self.comment setBackgroundImage:[UIImage imageNamed:@"comment"] forState:UIControlStateNormal];
+    [self.comment addTarget:self action:@selector(commentTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.comment];
 }
 
 -(void)setLiked:(BOOL)liked{
@@ -76,11 +76,6 @@
     }
 }
 
--(void)setCount:(int)count{
-    _count = count;
-    [self.countLabel setText:[NSString stringWithFormat:@" %d",count]];
-}
-
 -(void)toggleLike:(UIGestureRecognizer*)tap{
     BOOL oldValue = self.liked;
     [self setLiked:!oldValue animated:true];
@@ -90,6 +85,12 @@
     }];
     if ([(NSObject*)self.delegate respondsToSelector:@selector(feed:didChangeLikeStatusTo:action:)]) {
         [self.delegate feed:self.feed didChangeLikeStatusTo:self.liked action:action];
+    }
+}
+
+-(void)commentTapped:(UIButton*)b{
+    if ([(NSObject*)self.delegate respondsToSelector:@selector(userDidWishComment:)]) {
+        [self.delegate userDidWishComment:self.feed];
     }
 }
 

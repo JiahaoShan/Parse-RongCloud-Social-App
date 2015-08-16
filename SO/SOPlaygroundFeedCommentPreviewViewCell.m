@@ -9,6 +9,7 @@
 #import "SOPlaygroundFeedCommentPreviewViewCell.h"
 #import "SOPlaygroundFeedCommentPreviewView.h"
 #import "SOUICommons.h"
+#import "User.h"
 @interface SOPlaygroundFeedCommentPreviewViewCell()
 @property (nonatomic,strong) PlaygroundComment* comment;
 @property (nonatomic,strong) UILabel* commentLabel;
@@ -20,16 +21,21 @@
 -(instancetype)initWithComment:(PlaygroundComment*)comment deletable:(BOOL)deletable width:(CGFloat)width{
     self = [super init];
     self.comment = comment;
+    [self.comment fetchIfNeeded];
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
     [self addGestureRecognizer:self.tap];
     
     self.commentLabel = [[UILabel alloc] init];
     [self.commentLabel setFont:[UIFont systemFontOfSize:12]];
+    [self.commentLabel setNumberOfLines:0];
     NSMutableAttributedString* str = [[NSMutableAttributedString alloc] init];
-    [str appendAttributedString:[[NSAttributedString alloc] initWithString:[[self.comment commentOwner] username] attributes:@{NSForegroundColorAttributeName:[SOUICommons activeButtonColor]}]];
+    User* commentOwner = [self.comment commentOwner];
+    [commentOwner fetchIfNeeded];
+    [str appendAttributedString:[[NSAttributedString alloc] initWithString:[commentOwner username] attributes:@{NSForegroundColorAttributeName:[SOUICommons activeButtonColor]}]];
     [str appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@": %@",[comment message]]]];
     [self.commentLabel setAttributedText:str];
-    [self.commentLabel sizeToFit];
+    CGSize fitSize = [self.commentLabel textRectForBounds:CGRectMake(0, 0, width-16, CGFLOAT_MAX) limitedToNumberOfLines:0].size;
+    [self.commentLabel setFrame:CGRectMake(0, 0, fitSize.width+1, fitSize.height+1)];
     [self.contentView addSubview:self.commentLabel];
     CGRect frame = self.frame;
     NSRange lastRange = NSMakeRange(self.commentLabel.text.length-1,1);
@@ -44,7 +50,7 @@
     CGSize deleteButtonSize = [self.deleteLabel frame].size;
     if (width-trailing>deleteButtonSize.width) {
         //delete button in same line
-        [self.deleteLabel setFrame:CGRectMake(self.bounds.size.width - deleteButtonSize.width, CGRectGetMinY(lastRect), deleteButtonSize.width, deleteButtonSize.height)];
+        [self.deleteLabel setFrame:CGRectMake(width -16 - deleteButtonSize.width, CGRectGetMinY(lastRect), deleteButtonSize.width, deleteButtonSize.height)];
     }else{
         [self.deleteLabel setFrame:CGRectMake(0, CGRectGetMaxY(self.commentLabel.frame), deleteButtonSize.width, deleteButtonSize.height)];
     }

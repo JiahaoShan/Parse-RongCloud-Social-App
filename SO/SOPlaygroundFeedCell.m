@@ -10,7 +10,7 @@
 #import "SOPlaygroundFeedImageView.h"
 #import "SOPlaygroundFeedGenderView.h"
 #import "SOPlaygroundFeedCommentPreviewView.h"
-#import "SOPlaygroundFeedLikeView.h"
+#import "SOPlaygroundFeedActionGroupView.h"
 #import "SOPlaygroundFeedRecentLikeView.h"
 #import "SOUICommons.h"
 #import <ParseUI/ParseUI.h>
@@ -22,7 +22,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *feedPosterNameView;
 @property (weak, nonatomic) IBOutlet UILabel *feedPostedTimeLabel;
 @property (weak, nonatomic) IBOutlet PFImageView* feedPosterAvatartView;
-@property (weak, nonatomic) IBOutlet SOPlaygroundFeedLikeView *feedLikeView;
+@property (weak, nonatomic) IBOutlet SOPlaygroundFeedActionGroupView *actionGroupView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *feedTextViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet UITextView *feedTextView;
 @property (weak, nonatomic) IBOutlet SOPlaygroundFeedRecentLikeView *recentLikeView;
@@ -64,10 +64,9 @@
     [self.feedTextViewHeightConstraint setConstant:size.height+1];//ios bug
     [self.feedPostedTimeLabel setText:[SOUICommons descriptionForDate:data.createdAt]];
     
-    [self.feedLikeView setLiked:[data liked]];
-    [self.feedLikeView setFeed:data];
-    [self.feedLikeView setDelegate:self.mainController];
-    [self.feedLikeView setRecentLikeView:self.recentLikeView];
+    [self.actionGroupView setLiked:[data liked]];
+    [self.actionGroupView setFeed:data];
+    [self.actionGroupView setDelegate:self.mainController];
     
     //recent like view
     [self.recentLikeView setHeightConstraint:self.recentLikeViewHeightConstraint];
@@ -75,18 +74,7 @@
     [self.recentLikeView setSoDelegate:self.mainController];
     
     //commentPreviewView
-    NSMutableArray* commentPreviewArr = [[NSMutableArray alloc] init];
-    if (data.latestComment) {
-        PlaygroundComment* c = data.latestComment;
-        [c fetchIfNeeded];
-        [commentPreviewArr addObject:c];
-    }
-    if (data.firstComment) {
-        PlaygroundComment* c = data.firstComment;
-        [c fetchIfNeeded];
-        [commentPreviewArr addObject:c];
-    }
-    CGFloat h3 = [self.commentPreviewView setComments:commentPreviewArr totalCount:[data.commentCount intValue] feed:data width:[SOUICommons screenWidth] soDelegate:self.mainController];
+    CGFloat h3 = [self.commentPreviewView setComments:data.recentComments totalCount:[data.commentCount intValue] feed:data width:[SOUICommons screenWidth]-16 soDelegate:self.mainController];
     self.commentPreviewViewHeightConstraint.constant = h3;
 }
 

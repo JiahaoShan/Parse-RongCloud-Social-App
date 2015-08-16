@@ -29,7 +29,7 @@
 		4CA673D41B541D9C00D5FDFA /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA673CA1B541D9C00D5FDFA /* UIProgressView+AFNetworking.m */; };
 		4CA673D51B541D9C00D5FDFA /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA673CC1B541D9C00D5FDFA /* UIRefreshControl+AFNetworking.m */; };
 		4CA673D61B541D9C00D5FDFA /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA673CE1B541D9C00D5FDFA /* UIWebView+AFNetworking.m */; };
-		4CB3B63E1B6E22E3009CE032 /* SOPlaygroundFeedLikeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB3B63D1B6E22E3009CE032 /* SOPlaygroundFeedLikeView.m */; };
+		4CB3B63E1B6E22E3009CE032 /* SOPlaygroundFeedActionGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB3B63D1B6E22E3009CE032 /* SOPlaygroundFeedActionGroupView.m */; };
 		4CB3B6411B6E2737009CE032 /* SOPlaygroundFeedCommentPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB3B6401B6E2737009CE032 /* SOPlaygroundFeedCommentPreviewView.m */; };
 		4CB3B6471B6E5FD2009CE032 /* MTStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB3B6461B6E5FD2009CE032 /* MTStatusBarOverlay.m */; };
 		4CB3B64A1B726905009CE032 /* SOPlaygroundFeedRecentLikeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB3B6491B726905009CE032 /* SOPlaygroundFeedRecentLikeView.m */; };
@@ -194,8 +194,8 @@
 		4CA673CC1B541D9C00D5FDFA /* UIRefreshControl+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIRefreshControl+AFNetworking.m"; sourceTree = "<group>"; };
 		4CA673CD1B541D9C00D5FDFA /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
 		4CA673CE1B541D9C00D5FDFA /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
-		4CB3B63C1B6E22E3009CE032 /* SOPlaygroundFeedLikeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPlaygroundFeedLikeView.h; sourceTree = "<group>"; };
-		4CB3B63D1B6E22E3009CE032 /* SOPlaygroundFeedLikeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedLikeView.m; sourceTree = "<group>"; };
+		4CB3B63C1B6E22E3009CE032 /* SOPlaygroundFeedActionGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPlaygroundFeedActionGroupView.h; sourceTree = "<group>"; };
+		4CB3B63D1B6E22E3009CE032 /* SOPlaygroundFeedActionGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedActionGroupView.m; sourceTree = "<group>"; };
 		4CB3B63F1B6E2737009CE032 /* SOPlaygroundFeedCommentPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPlaygroundFeedCommentPreviewView.h; sourceTree = "<group>"; };
 		4CB3B6401B6E2737009CE032 /* SOPlaygroundFeedCommentPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedCommentPreviewView.m; sourceTree = "<group>"; };
 		4CB3B6451B6E5FD2009CE032 /* MTStatusBarOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTStatusBarOverlay.h; sourceTree = "<group>"; };
@@ -539,8 +539,8 @@
 				4CBCF6CE1B525BCD00EE2195 /* SOPlaygroundFeedCell.xib */,
 				4CBCF6D11B525CD700EE2195 /* SOPlaygroundFeedGenderView.h */,
 				4CBCF6D21B525CD700EE2195 /* SOPlaygroundFeedGenderView.m */,
-				4CB3B63C1B6E22E3009CE032 /* SOPlaygroundFeedLikeView.h */,
-				4CB3B63D1B6E22E3009CE032 /* SOPlaygroundFeedLikeView.m */,
+				4CB3B63C1B6E22E3009CE032 /* SOPlaygroundFeedActionGroupView.h */,
+				4CB3B63D1B6E22E3009CE032 /* SOPlaygroundFeedActionGroupView.m */,
 				4CB3B6481B726905009CE032 /* SOPlaygroundFeedRecentLikeView.h */,
 				4CB3B6491B726905009CE032 /* SOPlaygroundFeedRecentLikeView.m */,
 				4CB3B63F1B6E2737009CE032 /* SOPlaygroundFeedCommentPreviewView.h */,
@@ -1067,7 +1067,7 @@
 				8A8303D11B54BDCA00FB22A5 /* SOSignupViewController.m in Sources */,
 				8A8E5CFD1B727E2E009CE09E /* SOMapBubbleAnnotationView.m in Sources */,
 				4CBD58D31B76F13000F1F3C7 /* SOFailableAction.m in Sources */,
-				4CB3B63E1B6E22E3009CE032 /* SOPlaygroundFeedLikeView.m in Sources */,
+				4CB3B63E1B6E22E3009CE032 /* SOPlaygroundFeedActionGroupView.m in Sources */,
 				4CA1CB7C1B5B40BD00B21EEF /* SOActionSheetManager.m in Sources */,
 				4CA673D01B541D9C00D5FDFA /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				8AA7BC8C1B5DFA9D00ABB812 /* UserRelation.m in Sources */,

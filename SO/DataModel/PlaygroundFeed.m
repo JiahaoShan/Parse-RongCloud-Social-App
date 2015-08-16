@@ -15,8 +15,7 @@
 @dynamic text;
 @dynamic images;
 @dynamic thumbnails;
-@dynamic firstComment;
-@dynamic latestComment;
+@dynamic recentComments;
 @dynamic commentCount;
 @dynamic likeCount;
 @dynamic recentLikeUsers;

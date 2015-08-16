@@ -15,10 +15,10 @@
 @property NSString* text;
 @property NSArray* images;
 @property NSArray* thumbnails;
-@property PlaygroundComment* firstComment;
-@property PlaygroundComment* latestComment;
+@property NSArray* recentComments;
 @property NSNumber* commentCount;
 @property NSNumber* likeCount;
 @property NSArray* recentLikeUsers;
+
 @property BOOL liked;
 @end

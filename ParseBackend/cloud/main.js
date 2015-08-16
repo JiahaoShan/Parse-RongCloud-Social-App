@@ -1,3 +1,5 @@
+require('cloud/PlaygroundLike.js')
+require('cloud/PlaygroundComment.js')
 // Use Parse.Cloud.define to define as many cloud functions as you want.
 // For example:
 Parse.Cloud.define("hello", function(request, response) {
@@ -41,6 +43,7 @@ Parse.Cloud.define("getToken", function(request, response) {
 var Image = require("parse-image");
 var _ = require('underscore.js');
 Parse.Cloud.beforeSave("PlaygroundFeed", function(request, response) {
+    console.log("before save pfeed:"+request.object.id);
     var images = request.object.get("images");
     if (!request.object.dirty("images") || !images || images.length == 0) {
         response.success();
