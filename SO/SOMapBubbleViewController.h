@@ -11,5 +11,4 @@
 
 @interface SOMapBubbleViewController : SOBaseViewController 
 @property (weak, nonatomic) IBOutlet SOMapBubbleButtonView *addButton;
-
 @end

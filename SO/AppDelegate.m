@@ -29,6 +29,8 @@
 #import "SOCommonStrings.h"
 #import "SOTabBarController.h"
 
+#import "SOUserDefaultManager.h"
+
 #import "PlaygroundFeed.h"
 #import "PlaygroundImage.h"
 #import "PlaygroundComment.h"
@@ -117,7 +119,7 @@
     [self registerNotificationCenter];
     [self initRongCloudService];
     //登录
-    NSString *token =[[NSUserDefaults standardUserDefaults] objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
+    NSString *token = [[SOUserDefaultManager sharedInstance] getRongCloudToken];
     if (token.length && [User currentUser]) {
         [self connectToRongCloud];
     } else {
@@ -317,7 +319,7 @@
                                                               options:kNilOptions
                                                               error:&error];
                                         NSString* token = [json objectForKey:@"token"];
-                                        [[NSUserDefaults standardUserDefaults] setObject:token forKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
+                                        [[SOUserDefaultManager sharedInstance] setRongCloudToken:token];
                                         [self connectToRongCloud];
                                     }
                                     else {
@@ -332,7 +334,7 @@
     [[RCUserInfo alloc] initWithUserId:user.objectId
                                   name:[user objectForKey:UserNameKey]
                               portrait:nil];
-    NSString* token = [[NSUserDefaults standardUserDefaults] objectForKey:DEFAULTS_RONG_DEVICE_TOKEN_KEY];
+    NSString* token = [[SOUserDefaultManager sharedInstance] getRongCloudToken];
     [RCIMClient sharedRCIMClient].currentUserInfo = _currentUserInfo;
     [[RCIM sharedRCIM] connectWithToken:token
                                 success:^(NSString *userId) {

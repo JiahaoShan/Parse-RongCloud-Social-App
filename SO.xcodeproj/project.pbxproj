@@ -135,6 +135,8 @@
 		8AA7BC8C1B5DFA9D00ABB812 /* UserRelation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA7BC8B1B5DFA9D00ABB812 /* UserRelation.m */; };
 		8AA7BC8F1B5DFCA300ABB812 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA7BC8E1B5DFCA300ABB812 /* User.m */; };
 		8AA7BC921B5E07CE00ABB812 /* SOImagePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA7BC911B5E07CE00ABB812 /* SOImagePageViewController.m */; };
+		8AB4BCCC1B82FA500058D8DA /* pinMask2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AB4BCCB1B82FA500058D8DA /* pinMask2.png */; };
+		8AB4BCCF1B8300700058D8DA /* SOUserDefaultManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AB4BCCE1B8300700058D8DA /* SOUserDefaultManager.m */; };
 		8AF8FA7E1B54A20300401474 /* SOCommonStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF8FA7D1B54A20300401474 /* SOCommonStrings.m */; };
 /* End PBXBuildFile section */
 
@@ -366,6 +368,9 @@
 		8AA7BC8E1B5DFCA300ABB812 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		8AA7BC901B5E07CE00ABB812 /* SOImagePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOImagePageViewController.h; sourceTree = "<group>"; };
 		8AA7BC911B5E07CE00ABB812 /* SOImagePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOImagePageViewController.m; sourceTree = "<group>"; };
+		8AB4BCCB1B82FA500058D8DA /* pinMask2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pinMask2.png; path = SO/Resources/pinMask2.png; sourceTree = "<group>"; };
+		8AB4BCCD1B8300700058D8DA /* SOUserDefaultManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOUserDefaultManager.h; sourceTree = "<group>"; };
+		8AB4BCCE1B8300700058D8DA /* SOUserDefaultManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOUserDefaultManager.m; sourceTree = "<group>"; };
 		8AF8FA7C1B54A20300401474 /* SOCommonStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCommonStrings.h; sourceTree = "<group>"; };
 		8AF8FA7D1B54A20300401474 /* SOCommonStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCommonStrings.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -663,6 +668,8 @@
 				8A14F69C1B6B1A74001AE83D /* RCDHttpTool.m */,
 				8A14F69D1B6B1A74001AE83D /* AFHttpTool.h */,
 				8A14F69E1B6B1A74001AE83D /* AFHttpTool.m */,
+				8AB4BCCD1B8300700058D8DA /* SOUserDefaultManager.h */,
+				8AB4BCCE1B8300700058D8DA /* SOUserDefaultManager.m */,
 			);
 			name = DataSource;
 			sourceTree = "<group>";
@@ -683,6 +690,7 @@
 		8A22DB281B52F8790032AB1E /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				8AB4BCCB1B82FA500058D8DA /* pinMask2.png */,
 				8A1980A31B73277000AC75B0 /* pinMask.png */,
 				8A1980A11B73241A00AC75B0 /* thumb.jpg */,
 				8A1138B81B6EC6720033B994 /* sampleImage3.png */,
@@ -1012,6 +1020,7 @@
 				8A14F67D1B69FA13001AE83D /* Emoji.plist in Resources */,
 				8A8303E81B58D0B200FB22A5 /* portrait_placeholder.png in Resources */,
 				8A5800541B522F010032EC1C /* Images.xcassets in Resources */,
+				8AB4BCCC1B82FA500058D8DA /* pinMask2.png in Resources */,
 				8A1138B71B6E8EE70033B994 /* sampleImage2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1105,6 +1114,7 @@
 				8A8303D81B58AC0900FB22A5 /* SOConversationViewController.m in Sources */,
 				8A14F6811B6B067D001AE83D /* SODataManager.m in Sources */,
 				8A14F6731B6595F6001AE83D /* SOPersonalInfoTableViewController.m in Sources */,
+				8AB4BCCF1B8300700058D8DA /* SOUserDefaultManager.m in Sources */,
 				8A1138BC1B6F23CC0033B994 /* University.m in Sources */,
 				8AA7BC861B5DF8AF00ABB812 /* PlaygroundComment.m in Sources */,
 				8A0E3E7C1B77A9F7007E5E65 /* SOLabelView.m in Sources */,
@@ -1237,8 +1247,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Guanqing Yan (5B64ZBUDQ4)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Guanqing Yan (5B64ZBUDQ4)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/SO/ParseFramework",
@@ -1258,7 +1268,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Guanqing Yan (5B64ZBUDQ4)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

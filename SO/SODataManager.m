@@ -40,31 +40,6 @@
 
 - (void)getUserInfoWithUserId:(NSString *)userId completion:(void(^)(RCUserInfo* userInfo))completion
 {
-//    RCUserInfo *user = nil;
-//    PFQuery *query = [User query];
-//    [query fromLocalDatastore];
-//    User* targetUser = (User *)[query getObjectWithId:userId];
-//    if (!targetUser) {
-//        // Error, Fetch???
-//        PFQuery *query = [User query];
-//        //        query.cachePolicy = kPFCachePolicyNetworkElseCache;
-//        User* targetUser = (User *)[query getObjectWithId:userId];
-//        if (!targetUser) {
-//            // User does not even exist online, must be an Error, Fetch???
-//            NSLog(@"userId not even existed online.");
-//        }
-//        else {
-//            user = [[RCUserInfo alloc] initWithUserId:targetUser.objectId
-//                                                 name:[targetUser objectForKey:UserNameKey]
-//                                             portrait:@"http://img.135q.com/2015-06/20/14348061890006.jpg"];
-//        }
-//    }
-//    else {
-//        user = [[RCUserInfo alloc] initWithUserId:targetUser.objectId
-//                                             name:[targetUser objectForKey:UserNameKey]
-//                                         portrait:@"http://img.135q.com/2015-06/20/14348061890006.jpg"];
-//    }
-//    return completion(user);
     if ([userId length] == 0) return;
     RCUserInfo *userInfo=[[RCDataBaseManager shareInstance] getUserByUserId:userId];
     if (userInfo==nil) {

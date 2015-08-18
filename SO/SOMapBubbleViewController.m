@@ -17,9 +17,12 @@
 #import "CSGrowingTextView.h"
 #import "SODataManager.h"
 #import "UIImageView+AFNetworking.h"
+#import "SOUserDefaultManager.h"
 
 
-@interface SOMapBubbleViewController () <MKMapViewDelegate, CSGrowingTextViewDelegate>
+@interface SOMapBubbleViewController () <MKMapViewDelegate, CSGrowingTextViewDelegate> {
+    int locationTryCounter;
+}
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) NSMutableArray *messageList;
 @property (nonatomic) BOOL ifLocatedUser;
@@ -27,6 +30,8 @@
 @property (nonatomic, strong) CSGrowingTextView* textView;
 @property (nonatomic, strong) UIView* inputMessageView;
 @property (strong, nonatomic) NSMutableDictionary *userMessageDict;
+@property (nonatomic, strong) UIImageView* userPotraitImageView;
+@property (nonatomic, strong) UIImage* userPotraitImage;
 @end
 
 
@@ -56,56 +61,79 @@ const NSInteger displayDistanceMeters = 5000;
     return _userMessageDict;
 }
 
+- (UIImageView*) userPotraitImageView
+{
+    if (!_userPotraitImageView){
+        _userPotraitImageView = [[UIImageView alloc] init];
+    }
+    return _userPotraitImageView;
+}
+
+- (UIImage*) userPotraitImage
+{
+    if (!_userPotraitImage){
+        _userPotraitImage = [UIImage imageNamed:@"pinMask"];
+    }
+    return _userPotraitImage;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     _mapView.delegate = self;
     _mapView.showsUserLocation = YES;
-    _mapView.mapType =MKMapTypeStandard;
+    _mapView.mapType = MKMapTypeStandard;
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance (CLLocationCoordinate2DMake(43.076592, -89.4124875), 5000, 5000);
+    [_mapView setRegion:region animated:NO];
+    locationTryCounter = 0;
+    
+    [self requestForUserPotraitImage];
+    [self requestForMoreAccurateLocation: INTULocationAccuracyCity];
     //cancelLocationRequest
+}
+
+- (void) requestForUserPotraitImage {
+    RCUserInfo* userInfo = [RCIMClient sharedRCIMClient].currentUserInfo;
+    [[SODataManager sharedInstance] getUserInfoWithUserId:userInfo.userId completion:^(RCUserInfo *userInfo) {
+        NSString* userPotraitUrl = userInfo.portraitUri;
+        NSURLRequest *imageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:userPotraitUrl] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60];
+        [self.userPotraitImageView setImageWithURLRequest:imageRequest placeholderImage:nil success:^void(NSURLRequest * request, NSHTTPURLResponse * response, UIImage * image) {
+            _userPotraitImage = image;
+        } failure:^void(NSURLRequest * request, NSHTTPURLResponse * response, NSError * error) {
+            //TODO: LOAD FAILED;
+            _userPotraitImage = [UIImage imageNamed:@"pinMask"];
+            NSLog(@"error");
+        }];
+    }];
+}
+
+- (void) requestForMoreAccurateLocation:(INTULocationAccuracy) accuracy {
     INTULocationManager *locMgr = [INTULocationManager sharedInstance];
-    [locMgr requestLocationWithDesiredAccuracy:INTULocationAccuracyNeighborhood
-                                       timeout:5.0
+    [locMgr requestLocationWithDesiredAccuracy:accuracy
+                                       timeout:accuracy + 3
                           delayUntilAuthorized:YES
                                          block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
-                                             NSLog(@"");
                                              if (status == INTULocationStatusSuccess) {
-                                                 _ifLocatedUser = YES;
-                                                 MKUserLocation *userLocation = _mapView.userLocation;
-                                                 MKCoordinateRegion region =
-                                                 MKCoordinateRegionMakeWithDistance (userLocation.location.coordinate, 5000, 5000);
-                                                 [_mapView setRegion:region animated:NO];                                                 if (_waitForLocation) {
-                                                     _waitForLocation = NO;
-                                                     [self hideMessage];
-                                                     [self.addButton.layer removeAllAnimations];
-                                                     [self addButtonTapped:_addButton];
+                                                 NSLog([NSString stringWithFormat:@"Success, %ld",(long)achievedAccuracy]);
+                                                 locationTryCounter = 0;
+                                                 if (achievedAccuracy >= INTULocationAccuracyNeighborhood) {
+                                                     _ifLocatedUser = YES;
+                                                     if (_waitForLocation) {
+                                                         _waitForLocation = NO;
+                                                         [self hideMessage];
+                                                         [self.addButton.layer removeAllAnimations];
+                                                         [self addButtonTapped:_addButton];
+                                                     }
+                                                 }
+                                                 if (achievedAccuracy < INTULocationAccuracyHouse) {
+                                                     NSLog([NSString stringWithFormat:@"Success < House! Move on!, %ld",(long)achievedAccuracy]);
+                                                     [self requestForMoreAccurateLocation:achievedAccuracy + 1];
                                                  }
                                              }
                                              else if (status == INTULocationStatusTimedOut) {
-                                                 if (achievedAccuracy == INTULocationAccuracyBlock || achievedAccuracy == INTULocationAccuracyNeighborhood) {
-                                                     _ifLocatedUser = YES;
-                                                     MKUserLocation *userLocation = _mapView.userLocation;
-                                                     MKCoordinateRegion region =
-                                                     MKCoordinateRegionMakeWithDistance (userLocation.location.coordinate, 5000, 5000);
-                                                     [_mapView setRegion:region animated:NO];                                                 if (_waitForLocation) {
-                                                         _waitForLocation = NO;
-                                                         [self hideMessage];
-                                                         [self.addButton.layer removeAllAnimations];
-                                                         [self addButtonTapped:_addButton];
-                                                     }
-                                                 }
-                                                 else {
-                                                     // TODO: WHAT IF NO GOOD LOCATION?
-                                                     _ifLocatedUser = YES;
-                                                     MKUserLocation *userLocation = _mapView.userLocation;
-                                                     MKCoordinateRegion region =
-                                                     MKCoordinateRegionMakeWithDistance (userLocation.location.coordinate, 5000, 5000);
-                                                     [_mapView setRegion:region animated:NO];                                                 if (_waitForLocation) {
-                                                         _waitForLocation = NO;
-                                                         [self hideMessage];
-                                                         [self.addButton.layer removeAllAnimations];
-                                                         [self addButtonTapped:_addButton];
-                                                     }
+                                                 NSLog([NSString stringWithFormat:@"Fail < House! Counter: %ld, Achieved Accuracy:%ld",locationTryCounter, (long)achievedAccuracy]);
+                                                 if (locationTryCounter < 3) {
+                                                     locationTryCounter++;
+                                                     [self requestForMoreAccurateLocation:achievedAccuracy + 1];
                                                  }
                                              }
                                              else {
@@ -190,68 +218,18 @@ const NSInteger displayDistanceMeters = 5000;
     } error:^(RCErrorCode nErrorCode, long messageId) {
         NSLog(@"send error");
     }];
-    //    - (RCMessage *)sendMessage:(RCConversationType)conversationType
-    //targetId:(NSString *)targetId
-    //content:(RCMessageContent *)content
-    //pushContent:(NSString *)pushContent
-    //pushData:(NSString *)pushData
-    //success:(void (^)(long messageId))successBlock
-    //error:(void (^)(RCErrorCode nErrorCode, long messageId))errorBlock;
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-    _mapView.centerCoordinate =
-    userLocation.location.coordinate;
-}
-
-//- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
-//{
-//    [mapView selectAnnotation:[[mapView annotations] lastObject] animated:YES];
-//}
-
-MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords, NSUInteger coordCount) {
-    MKMapRect r = MKMapRectNull;
-    for (NSUInteger i=0; i < coordCount; ++i) {
-        MKMapPoint p = MKMapPointForCoordinate(coords[i]);
-        r = MKMapRectUnion(r, MKMapRectMake(p.x, p.y, 0, 0));
-    }
-    return MKCoordinateRegionForMapRect(r);
-}
-
-- (void)zoomToFitMapAnnotations:(MKMapView *)mapView {
-    if ([mapView.annotations count] == 0) return;
     
-    CLLocationCoordinate2D topLeftCoord;
-    topLeftCoord.latitude = -90;
-    topLeftCoord.longitude = 180;
-    
-    CLLocationCoordinate2D bottomRightCoord;
-    bottomRightCoord.latitude = 90;
-    bottomRightCoord.longitude = -180;
-    
-    for(id<MKAnnotation> annotation in mapView.annotations) {
-        topLeftCoord.longitude = fmin(topLeftCoord.longitude, annotation.coordinate.longitude);
-        topLeftCoord.latitude = fmax(topLeftCoord.latitude, annotation.coordinate.latitude);
-        bottomRightCoord.longitude = fmax(bottomRightCoord.longitude, annotation.coordinate.longitude);
-        bottomRightCoord.latitude = fmin(bottomRightCoord.latitude, annotation.coordinate.latitude);
-    }
-    
-    MKCoordinateRegion region;
-    region.center.latitude = topLeftCoord.latitude - (topLeftCoord.latitude - bottomRightCoord.latitude) * 0.5;
-    region.center.longitude = topLeftCoord.longitude + (bottomRightCoord.longitude - topLeftCoord.longitude) * 0.5;
-    
-    // Add a little extra space on the sides
-    region.span.latitudeDelta = fabs(topLeftCoord.latitude - bottomRightCoord.latitude) * 1.1;
-    region.span.longitudeDelta = fabs(bottomRightCoord.longitude - topLeftCoord.longitude) * 1.1;
-    
-    region = [mapView regionThatFits:region];
-    [mapView setRegion:region animated:YES];
 }
 
 -(MKAnnotationView *) mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
-    if ([annotation isKindOfClass:[MKUserLocation class]])
+    if ([annotation isKindOfClass:[MKUserLocation class]]) {
+        
         return nil;
+    }
     
     // Handle any custom annotations.
     if ([annotation isKindOfClass:[SOMapBubbleAnnotation class]])
@@ -306,6 +284,7 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
         [annotaionInfo setObject:annotation forKey:@"annotation"];
         [annotaionInfo setObject:annotationView forKey:@"annotationView"];
         [self.userMessageDict setObject:annotaionInfo forKey:mapAnnotation.subtitle];
+        
         return annotationView;
     }
     
@@ -379,7 +358,7 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
             });
         } failure:^void(NSURLRequest * request, NSHTTPURLResponse * response, NSError * error) {
             NSLog(@"error");
-        }];;
+        }];
         [self.userMessageDict setObject:annotaionInfo forKey:userInfo.userId];
     }
 }
@@ -500,7 +479,7 @@ MKCoordinateRegion coordinateRegionForCoordinates(CLLocationCoordinate2D *coords
     
     [_inputMessageView addSubview:_textView];
     
-    UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"thumb.jpg"]];
+    UIImageView* imageView = [[UIImageView alloc] initWithImage:_userPotraitImage];
     imageView.frame = CGRectMake((messageFrameWidth - imageWidth)/2, 15 + messageTextPaddingWidth * 2, imageWidth, imageWidth);
     UIImage *_maskingImage = [UIImage imageNamed:@"pinMask.png"];
     CALayer *_maskingLayer = [CALayer layer];
