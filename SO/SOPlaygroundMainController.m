@@ -17,14 +17,15 @@
 #import "User.h"
 #import "SOUICommons.h"
 #import "PlaygroundComment.h"
+#import "SOQuickCommentView.h"
 
-@interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate,SOPlaygroundFeedCellDelegate, imageViewDelegate,UITextViewDelegate>
+@interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate,SOPlaygroundFeedCellDelegate, imageViewDelegate,SOQuickCommentViewDelegate>
 @property (nonatomic) BOOL initialized;
 @property (nonatomic) NSMutableArray* likeHistory;
 
 @property (nonatomic,weak) PlaygroundFeed* currentCommentingFeed;
 @property (nonatomic) UITextView* dummyComment;
-@property (nonatomic) UIView* commentAccessory;
+@property (nonatomic) SOQuickCommentView* commentAccessory;
 @end
 
 @implementation SOPlaygroundMainController
@@ -78,41 +79,41 @@
         self.likeHistory = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
     }
     
-//    UIImage* sampleImage = [UIImage imageNamed:@"sampleImage2.png"];
-//    NSData* imageData = UIImagePNGRepresentation(sampleImage);
-//    PFFile* image1 = [PFFile fileWithName:@"sampleImage2.png" data:imageData];
-//    
-//    UIImage* sampleImage2 = [UIImage imageNamed:@"sampleImage3.png"];
-//    NSData* imageData2 = UIImagePNGRepresentation(sampleImage2);
-//    PFFile* image2 = [PFFile fileWithName:@"sampleImage3.png" data:imageData2];
-//    //[image1 saveInBackground];
-//    
-//    PFObject* sampleFeed = [PFObject objectWithClassName:@"PlaygroundFeed"];
-//    sampleFeed[@"poster"] = [PFUser currentUser];
-//    sampleFeed[@"text"] = @"这是一段超级长的文字。我就是想看看它能不能被正常显示出来。-- 并不能。";
-//    sampleFeed[@"images"] = @[image1,image2];
-//    [sampleFeed saveInBackground];
+    //    UIImage* sampleImage = [UIImage imageNamed:@"sampleImage2.png"];
+    //    NSData* imageData = UIImagePNGRepresentation(sampleImage);
+    //    PFFile* image1 = [PFFile fileWithName:@"sampleImage2.png" data:imageData];
+    //
+    //    UIImage* sampleImage2 = [UIImage imageNamed:@"sampleImage3.png"];
+    //    NSData* imageData2 = UIImagePNGRepresentation(sampleImage2);
+    //    PFFile* image2 = [PFFile fileWithName:@"sampleImage3.png" data:imageData2];
+    //    //[image1 saveInBackground];
+    //
+    //    PFObject* sampleFeed = [PFObject objectWithClassName:@"PlaygroundFeed"];
+    //    sampleFeed[@"poster"] = [PFUser currentUser];
+    //    sampleFeed[@"text"] = @"这是一段超级长的文字。我就是想看看它能不能被正常显示出来。-- 并不能。";
+    //    sampleFeed[@"images"] = @[image1,image2];
+    //    [sampleFeed saveInBackground];
     
     
     
-//    PFUser *user = [PFUser user];
-//    user.username = @"Shawn";
-//    user.password = @"12345678";
-//    user.email = @"shawn.shan@wisc.edu";
-//    
-//    UIImage* sampleImage2 = [UIImage imageNamed:@"sampleImage2.png"];
-//    NSData* imageData2 = UIImagePNGRepresentation(sampleImage2);
-//    PFFile* image2 = [PFFile fileWithName:@"sampleImage2.png" data:imageData2];
-//    
-//    // other fields can be set just like with PFObject
-//    user[@"portrait"] = image2;
-//    user[@"male"] = @YES;
-//    
-//    [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//        if (!error) {   // Hooray! Let them use the app now.
-//        } else {   NSString *errorString = [error userInfo][@"error"];   // Show the errorString somewhere and let the user try again.
-//        }
-//    }];
+    //    PFUser *user = [PFUser user];
+    //    user.username = @"Shawn";
+    //    user.password = @"12345678";
+    //    user.email = @"shawn.shan@wisc.edu";
+    //
+    //    UIImage* sampleImage2 = [UIImage imageNamed:@"sampleImage2.png"];
+    //    NSData* imageData2 = UIImagePNGRepresentation(sampleImage2);
+    //    PFFile* image2 = [PFFile fileWithName:@"sampleImage2.png" data:imageData2];
+    //
+    //    // other fields can be set just like with PFObject
+    //    user[@"portrait"] = image2;
+    //    user[@"male"] = @YES;
+    //
+    //    [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+    //        if (!error) {   // Hooray! Let them use the app now.
+    //        } else {   NSString *errorString = [error userInfo][@"error"];   // Show the errorString somewhere and let the user try again.
+    //        }
+    //    }];
 }
 
 #pragma mark - UITableViewDelegate
@@ -140,7 +141,7 @@
     if (indexPath.row>=self.objects.count) {
         return [tableView dequeueReusableCellWithIdentifier:@"loadMore"];
     }
-    [object pinInBackground];
+    //[object pinInBackground];
     SOPlaygroundFeedCell* cell = [tableView dequeueReusableCellWithIdentifier:@"feedCell"];
     cell.delegate = self;
     cell.mainController = self;
@@ -160,15 +161,15 @@
 #pragma mark - SOPlaygroundFeedCellDelegate
 
 -(void)cell:(SOPlaygroundFeedCell *)cell didTapImageAtIndex:(NSUInteger)index{
-//    PlaygroundFeed * feed = [PlaygroundFeed object];
-//    feed.message = @"Hahahahah";
+    //    PlaygroundFeed * feed = [PlaygroundFeed object];
+    //    feed.message = @"Hahahahah";
     NSIndexPath* cellIndex = [self.tableView indexPathForCell:cell];
     NSArray* images = self.objects[cellIndex.row][@"images"];
     NSMutableArray* feedImageView = cell.getFeedImageViews;
     PFImageView* imageView = (PFImageView*)feedImageView[index];
     
     CGRect frameInWindow = [imageView.superview convertRect:imageView.frame toView:[[UIApplication sharedApplication] keyWindow]];
-
+    
     UIView * blackOverlay = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     blackOverlay.backgroundColor = [UIColor clearColor];
     
@@ -198,7 +199,7 @@
                              ((SOImageViewController*)imageViewController).returnToFrame = frameInWindow;
                              ((SOImageViewController*)imageViewController).delegate = self;
                          }
-                             [self.navigationController pushViewController:imageViewController animated:NO];
+                         [self.navigationController pushViewController:imageViewController animated:NO];
                      }];
     blackOverlay = nil;
     imageAnimationView = nil;
@@ -216,7 +217,7 @@
     imageView.frame = [imageView.superview convertRect:imageView.frame toView:[[UIApplication sharedApplication] keyWindow]];
     
     [currentWindow addSubview:imageView];
-
+    
     [UIView animateWithDuration:0.4
                      animations:^{
                          blackOverlay.backgroundColor = [UIColor clearColor];
@@ -247,14 +248,14 @@
     }
     [action addFailHandler:^{
         if (like) {
-        [(NSMutableArray*)feed.recentLikeUsers removeObjectAtIndex:0];
-        int count = feed.likeCount.intValue;
-        feed.likeCount = @(--count);
-    }else{
-        [(NSMutableArray*)feed.recentLikeUsers insertObject:[PFUser currentUser] atIndex:0];
-        int count = feed.likeCount.intValue;
-        feed.likeCount = @(++count);
-    }
+            [(NSMutableArray*)feed.recentLikeUsers removeObjectAtIndex:0];
+            int count = feed.likeCount.intValue;
+            feed.likeCount = @(--count);
+        }else{
+            [(NSMutableArray*)feed.recentLikeUsers insertObject:[PFUser currentUser] atIndex:0];
+            int count = feed.likeCount.intValue;
+            feed.likeCount = @(++count);
+        }
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.objects indexOfObject:feed] inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     }];
     
@@ -262,32 +263,30 @@
     
     //[self.tableView reloadData];//maybe too much? optimizaiton needed//hides animation! bad
     MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
-    overlay.animation = MTStatusBarOverlayAnimationFallDown;  // MTStatusBarOverlayAnimationShrink
-    overlay.detailViewMode = MTDetailViewModeHistory;         // enable automatic history-tracking and
     if (like) {
         [PFCloud callFunctionInBackground:@"PlaygroundAddLike"
-                   withParameters:@{@"feedId": feed.objectId,@"userId":[PFUser currentUser].objectId}
-                            block:^(id response, NSError *error) {
-            if (error) {
-                [overlay postImmediateMessage:[NSString stringWithFormat:@"error:%@",error] duration:2];
-                [action failed];
-            }else{
-                [overlay postImmediateMessage:@"like success" duration:2];
-                [action succeed];
-            }
-        }];
+                           withParameters:@{@"feedId": feed.objectId,@"userId":[PFUser currentUser].objectId}
+                                    block:^(id response, NSError *error) {
+                                        if (error) {
+                                            [overlay postImmediateMessage:[NSString stringWithFormat:@"error:%@",error] duration:2];
+                                            [action failed];
+                                        }else{
+                                            [overlay postImmediateMessage:@"like success" duration:2];
+                                            [action succeed];
+                                        }
+                                    }];
     }else{
         [PFCloud callFunctionInBackground:@"PlaygroundRemoveLike"
-                withParameters:@{@"feedId": feed.objectId,@"userId":[PFUser currentUser].objectId}
-                        block:^(id response, NSError *error) {
-            if (error) {
-                [overlay postImmediateMessage:[NSString stringWithFormat:@"error:%@",error] duration:2];
-                [action failed];
-            }else{
-                [overlay postImmediateMessage:@"delete like success" duration:2];
-                [action succeed];
-            }
-        }];
+                           withParameters:@{@"feedId": feed.objectId,@"userId":[PFUser currentUser].objectId}
+                                    block:^(id response, NSError *error) {
+                                        if (error) {
+                                            [overlay postImmediateMessage:[NSString stringWithFormat:@"error:%@",error] duration:2];
+                                            [action failed];
+                                        }else{
+                                            [overlay postImmediateMessage:@"delete like success" duration:2];
+                                            [action succeed];
+                                        }
+                                    }];
     }
 }
 
@@ -298,21 +297,47 @@
         [self.view addSubview:self.dummyComment];
     }
     if (!self.commentAccessory) {
-        self.commentAccessory = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [SOUICommons screenWidth], 44)];
-        UITextView* input = [[UITextView alloc] initWithFrame:self.commentAccessory.bounds];
-        [input setTag:1];
-        [input setDelegate:self];
-        [input setReturnKeyType:UIReturnKeySend];
-        [self.commentAccessory addSubview:input];
+        self.commentAccessory = [[SOQuickCommentView alloc] initWithFrame:CGRectMake(0, 0, [SOUICommons screenWidth], 44)];
+        [self.commentAccessory setDelegate:self];
     }
     [self.dummyComment setInputAccessoryView:self.commentAccessory];
     [self.dummyComment becomeFirstResponder];
-    [[self.commentAccessory viewWithTag:1] becomeFirstResponder];
+    [self.commentAccessory becomeFirstResponder];
     self.currentCommentingFeed = feed;
 }
 
 -(void)userDidTapDeleteComment:(PlaygroundComment *)comment{
-
+    //find cell index by comment
+    NSString* feedId = comment.playgroundFeedId;
+    int i=0;
+    for (; i<self.objects.count; i++) {
+        if ([[(PlaygroundFeed*)self.objects[i] objectId] isEqualToString:feedId]) {
+            break;
+        }
+    }
+    NSArray* comments = [(PlaygroundFeed*)self.objects[i] recentComments];
+    NSUInteger index;
+    if ([comments containsObject:comment]) {
+        if (![comment isKindOfClass:[NSMutableArray class]]) {
+            comments = [NSMutableArray arrayWithArray:comments];
+        }
+        index = [comments indexOfObject:comment];
+        [(NSMutableArray*)comments removeObjectAtIndex:index];
+    }
+    [(PlaygroundFeed*)self.objects[i] setRecentComments:comments];
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    [comment deleteInBackgroundWithBlock:^(BOOL succeeded, NSError * error){
+        MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
+        if (!succeeded) {
+            NSString* msg = [NSString stringWithFormat:@"delete failed:%@",error];
+            [overlay postImmediateMessage:msg animated:true];
+            [(NSMutableArray*)comments insertObject:comment atIndex:index];
+            [(PlaygroundFeed*)self.objects[i] setRecentComments:comments];
+            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        }else{
+            [overlay postImmediateMessage:@"delete comment succeed" animated:true];
+        }
+    }];
 }
 
 -(void)userDidTapNameOfUser:(User *)user{
@@ -320,25 +345,13 @@
     [self.navigationController pushViewController:c animated:true];
 }
 
-#pragma mark - UITextViewDelegate
--(void)textViewDidChange:(UITextView *)textView{
-    NSLog(textView.text);
-}
-
--(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-    if ([text isEqualToString:@"\n"]) {
-        [textView resignFirstResponder];
-        [self.dummyComment resignFirstResponder];
-        return false;
-    }
-    return true;
-}
-
--(void)textViewDidEndEditing:(UITextView *)textView{
-    PlaygroundComment* comment = [PFObject objectWithClassName:@"PlaygroundComment"];
+#pragma mark - SOQuickCommentView
+-(void)commentViewDidReturnWithText:(NSString *)text{
+    [self.dummyComment resignFirstResponder];
+    PlaygroundComment* comment = (PlaygroundComment*)[PFObject objectWithClassName:@"PlaygroundComment"];
     comment.playgroundFeedId = self.currentCommentingFeed.objectId;
     comment.commentOwner = (User*)[PFUser currentUser];
-    comment.message = textView.text;
+    comment.message = text;
     if (![self.currentCommentingFeed.recentComments isKindOfClass:[NSMutableArray class]]) {
         self.currentCommentingFeed.recentComments = [NSMutableArray arrayWithArray:self.currentCommentingFeed.recentComments];
     }
@@ -346,8 +359,6 @@
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.objects indexOfObject:self.currentCommentingFeed] inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     [comment saveInBackgroundWithBlock:^(BOOL succeeded, NSError * error){
         MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
-        overlay.animation = MTStatusBarOverlayAnimationFallDown;  // MTStatusBarOverlayAnimationShrink
-        overlay.detailViewMode = MTDetailViewModeHistory;         // enable automatic
         if (error) {
             [overlay postImmediateMessage:[error localizedDescription] duration:2];
             [(NSMutableArray*)self.currentCommentingFeed.recentComments removeObject:comment];
@@ -358,7 +369,6 @@
         }
     }];
 }
-
 #pragma mark - Segue
 //- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 //    if ([[segue identifier] isEqualToString:@""])

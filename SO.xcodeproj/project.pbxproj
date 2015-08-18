@@ -49,6 +49,7 @@
 		4CCD26481B5E8EDA006CDAF5 /* SOCommunityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD26471B5E8EDA006CDAF5 /* SOCommunityViewController.m */; };
 		4CCD264B1B5E8FEE006CDAF5 /* SOPersonAvatarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD264A1B5E8FEE006CDAF5 /* SOPersonAvatarView.m */; };
 		4CCD26501B5E9FA9006CDAF5 /* SOCommunityContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD264F1B5E9FA9006CDAF5 /* SOCommunityContentView.m */; };
+		4CFC3E6F1B838A9F00E5A9BC /* SOQuickCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFC3E6E1B838A9F00E5A9BC /* SOQuickCommentView.m */; };
 		8A0E3E7C1B77A9F7007E5E65 /* SOLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3E7B1B77A9F7007E5E65 /* SOLabelView.m */; };
 		8A0E3E7F1B77C08A007E5E65 /* CSGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3E7E1B77C08A007E5E65 /* CSGrowingTextView.m */; };
 		8A1138B71B6E8EE70033B994 /* sampleImage2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A1138B61B6E8EE70033B994 /* sampleImage2.png */; };
@@ -236,6 +237,8 @@
 		4CCD264A1B5E8FEE006CDAF5 /* SOPersonAvatarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPersonAvatarView.m; sourceTree = "<group>"; };
 		4CCD264E1B5E9FA9006CDAF5 /* SOCommunityContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCommunityContentView.h; sourceTree = "<group>"; };
 		4CCD264F1B5E9FA9006CDAF5 /* SOCommunityContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCommunityContentView.m; sourceTree = "<group>"; };
+		4CFC3E6D1B838A9F00E5A9BC /* SOQuickCommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOQuickCommentView.h; sourceTree = "<group>"; };
+		4CFC3E6E1B838A9F00E5A9BC /* SOQuickCommentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOQuickCommentView.m; sourceTree = "<group>"; };
 		8A0E3E7A1B77A9F7007E5E65 /* SOLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOLabelView.h; sourceTree = "<group>"; };
 		8A0E3E7B1B77A9F7007E5E65 /* SOLabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOLabelView.m; sourceTree = "<group>"; };
 		8A0E3E7D1B77C08A007E5E65 /* CSGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSGrowingTextView.h; sourceTree = "<group>"; };
@@ -522,6 +525,8 @@
 				4CB3B64B1B7269C6009CE032 /* SOPlaygroundFeedInteractionDelegate.h */,
 				4CBCF6BE1B5257D100EE2195 /* SOPlaygroundMainController.h */,
 				4CBCF6BF1B5257D100EE2195 /* SOPlaygroundMainController.m */,
+				4CFC3E6D1B838A9F00E5A9BC /* SOQuickCommentView.h */,
+				4CFC3E6E1B838A9F00E5A9BC /* SOQuickCommentView.m */,
 				4CBCF6D01B525C7900EE2195 /* SOPlaygroundFeedCell */,
 			);
 			name = Main;
@@ -1103,6 +1108,7 @@
 				8A14F6931B6B1945001AE83D /* FMDatabase.m in Sources */,
 				8A8E5CFA1B7264B2009CE09E /* SOMapBubbleButtonView.m in Sources */,
 				4CBCF6D31B525CD700EE2195 /* SOPlaygroundFeedGenderView.m in Sources */,
+				4CFC3E6F1B838A9F00E5A9BC /* SOQuickCommentView.m in Sources */,
 				8A14F69F1B6B1A74001AE83D /* RCDataBaseManager.m in Sources */,
 				8A14F6971B6B1945001AE83D /* FMResultSet.m in Sources */,
 				8A14F6AD1B6B21B4001AE83D /* INTULocationRequest.m in Sources */,

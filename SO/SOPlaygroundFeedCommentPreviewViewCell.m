@@ -21,7 +21,10 @@
 -(instancetype)initWithComment:(PlaygroundComment*)comment deletable:(BOOL)deletable width:(CGFloat)width{
     self = [super init];
     self.comment = comment;
+    NSLog(@"comment:%@ start fetching",comment);
     [self.comment fetchIfNeeded];
+    //[self.comment fetchFromLocalDatastore];
+    NSLog(@"fecthing finished");
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
     [self addGestureRecognizer:self.tap];
     
