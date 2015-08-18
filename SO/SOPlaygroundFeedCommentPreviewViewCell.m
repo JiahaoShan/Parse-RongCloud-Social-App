@@ -18,7 +18,7 @@
 @end
 
 @implementation SOPlaygroundFeedCommentPreviewViewCell
--(instancetype)initWithComment:(PlaygroundComment*)comment deletable:(BOOL)deletable width:(CGFloat)width{
+-(instancetype)initWithComment:(PlaygroundComment*)comment width:(CGFloat)width{
     self = [super init];
     self.comment = comment;
     NSLog(@"comment:%@ start fetching",comment);
@@ -41,23 +41,25 @@
     [self.commentLabel setFrame:CGRectMake(0, 0, fitSize.width+1, fitSize.height+1)];
     [self.contentView addSubview:self.commentLabel];
     CGRect frame = self.frame;
-    NSRange lastRange = NSMakeRange(self.commentLabel.text.length-1,1);
-    CGRect lastRect = [self boundingRectForCharacterRange:lastRange];
-    CGFloat trailing = CGRectGetMaxX(lastRect);
-    
-    self.deleteLabel = [[UILabel alloc] init];
-    [self.deleteLabel setFont:[UIFont systemFontOfSize:12]];
-    [self.deleteLabel setText:@"删除"];
-    [self.deleteLabel setTextColor:[SOUICommons activeButtonColor]];
-    [self.deleteLabel sizeToFit];
-    CGSize deleteButtonSize = [self.deleteLabel frame].size;
-    if (width-trailing>deleteButtonSize.width) {
-        //delete button in same line
-        [self.deleteLabel setFrame:CGRectMake(width -16 - deleteButtonSize.width, CGRectGetMinY(lastRect), deleteButtonSize.width, deleteButtonSize.height)];
-    }else{
-        [self.deleteLabel setFrame:CGRectMake(0, CGRectGetMaxY(self.commentLabel.frame), deleteButtonSize.width, deleteButtonSize.height)];
+    BOOL deletable = [[PFUser currentUser].objectId isEqualToString:commentOwner.objectId];
+    if (deletable) {
+        NSRange lastRange = NSMakeRange(self.commentLabel.text.length-1,1);
+        CGRect lastRect = [self boundingRectForCharacterRange:lastRange];
+        CGFloat trailing = CGRectGetMaxX(lastRect);
+        self.deleteLabel = [[UILabel alloc] init];
+        [self.deleteLabel setFont:[UIFont systemFontOfSize:12]];
+        [self.deleteLabel setText:@"删除"];
+        [self.deleteLabel setTextColor:[SOUICommons activeButtonColor]];
+        [self.deleteLabel sizeToFit];
+        CGSize deleteButtonSize = [self.deleteLabel frame].size;
+        if (width-trailing>deleteButtonSize.width) {
+            //delete button in same line
+            [self.deleteLabel setFrame:CGRectMake(width -16 - deleteButtonSize.width, CGRectGetMinY(lastRect), deleteButtonSize.width, deleteButtonSize.height)];
+        }else{
+            [self.deleteLabel setFrame:CGRectMake(0, CGRectGetMaxY(self.commentLabel.frame), deleteButtonSize.width, deleteButtonSize.height)];
+        }
+        [self.contentView addSubview:self.deleteLabel];
     }
-    [self.contentView addSubview:self.deleteLabel];
     [self setFrame:CGRectMake(0, 0, frame.size.width, self.commentLabel.frame.size.height)];
     return self;
 }

@@ -11,6 +11,6 @@
 #import "PlaygroundComment.h"
 
 @interface SOPlaygroundFeedCommentPreviewViewCell : UITableViewCell
--(instancetype)initWithComment:(NSDictionary*)comment deletable:(BOOL)deletable width:(CGFloat)width;
+-(instancetype)initWithComment:(NSDictionary*)comment width:(CGFloat)width;
 @property (nonatomic,assign) id<SOPlaygroundFeedInteractionDelegate> delegate;
 @end
