@@ -79,11 +79,9 @@ Parse.Cloud.beforeDelete("PlaygroundComment", function(request, response) {
     if(!request.object.get("playgroundFeedId")){
         response.success();
         return;
-    }else{
-        console.log(request.object);
-        console.log(request.object.get("playgroundFeed"));
-        console.log(request.object.get("playgroundFeed")==true);
-        console.log(!request.object.get("playgroundFeed"));
+    }else if(request.user.id.valueOf() != request.object.get("commentOwner").id.valueOf()){
+        response.error("cannot delete comment by other user");
+        return;
     }
     var fid = request.object.get("playgroundFeedId"); 
     var cid = request.object.id;
