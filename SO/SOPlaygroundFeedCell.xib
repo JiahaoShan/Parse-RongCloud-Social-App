@@ -56,7 +56,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ldf-Ne-RfG">
-                        <rect key="frame" x="76" y="27" width="46" height="21"/>
+                        <rect key="frame" x="76" y="8" width="46" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -75,7 +75,7 @@
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5yg-H5-c18" customClass="SOPlaygroundFeedGenderView">
-                        <rect key="frame" x="130" y="27" width="21" height="21"/>
+                        <rect key="frame" x="130" y="8" width="21" height="21"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="5yg-H5-c18" secondAttribute="height" multiplier="1:1" id="1pG-aN-i1a"/>
                             <constraint firstAttribute="width" constant="60" id="Wbu-gm-LqY"/>
@@ -107,6 +107,13 @@
                             <constraint firstAttribute="height" constant="104" id="bUY-BG-ZiN"/>
                         </constraints>
                     </tableView>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sam-lG-3Nv">
+                        <rect key="frame" x="76" y="38" width="30" height="30"/>
+                        <state key="normal" title="删除">
+                            <color key="titleColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="kXl-EH-6cx" firstAttribute="leading" secondItem="lPF-LX-8h9" secondAttribute="leading" constant="8" id="0jh-bx-DXK"/>
@@ -125,6 +132,8 @@
                     <constraint firstItem="yTb-b3-xAv" firstAttribute="top" secondItem="XdJ-Jm-LTf" secondAttribute="topMargin" id="R7v-TW-FjA"/>
                     <constraint firstItem="RzI-bY-uVE" firstAttribute="leading" secondItem="HS9-Kg-s1h" secondAttribute="leading" id="T9V-Mm-Fmg"/>
                     <constraint firstItem="kXl-EH-6cx" firstAttribute="trailing" secondItem="lPF-LX-8h9" secondAttribute="trailing" id="UA1-cf-Hyx"/>
+                    <constraint firstItem="Sam-lG-3Nv" firstAttribute="leading" secondItem="yTb-b3-xAv" secondAttribute="trailing" constant="8" id="WiA-Sb-16t"/>
+                    <constraint firstItem="ldf-Ne-RfG" firstAttribute="top" secondItem="yTb-b3-xAv" secondAttribute="top" id="XGD-na-gsY"/>
                     <constraint firstItem="V64-7q-5ls" firstAttribute="top" secondItem="kXl-EH-6cx" secondAttribute="bottom" constant="8" id="e3u-f9-llH"/>
                     <constraint firstItem="6u0-Nz-lJI" firstAttribute="top" secondItem="kXl-EH-6cx" secondAttribute="bottom" constant="8" id="eQG-tC-nRa"/>
                     <constraint firstItem="6u0-Nz-lJI" firstAttribute="leading" secondItem="kXl-EH-6cx" secondAttribute="leading" constant="6" id="eUH-eK-uFT"/>
@@ -133,6 +142,7 @@
                     <constraint firstItem="5yg-H5-c18" firstAttribute="centerY" secondItem="ldf-Ne-RfG" secondAttribute="centerY" id="pKF-GN-k48"/>
                     <constraint firstItem="lPF-LX-8h9" firstAttribute="top" secondItem="yTb-b3-xAv" secondAttribute="bottom" id="qDF-PW-YBS"/>
                     <constraint firstItem="5yg-H5-c18" firstAttribute="leading" secondItem="ldf-Ne-RfG" secondAttribute="trailing" constant="8" id="v6H-xe-SIV"/>
+                    <constraint firstItem="Sam-lG-3Nv" firstAttribute="bottom" secondItem="yTb-b3-xAv" secondAttribute="bottom" id="wBO-P4-acG"/>
                     <constraint firstAttribute="trailingMargin" secondItem="RzI-bY-uVE" secondAttribute="trailing" id="wFI-Rf-Hgn"/>
                     <constraint firstItem="lPF-LX-8h9" firstAttribute="top" secondItem="5yg-H5-c18" secondAttribute="bottom" constant="8" symbolic="YES" id="wX8-aI-81C"/>
                     <constraint firstItem="yTb-b3-xAv" firstAttribute="leading" secondItem="XdJ-Jm-LTf" secondAttribute="leadingMargin" id="y72-ns-1JP"/>
@@ -142,6 +152,7 @@
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
+                        <exclude reference="7CW-qh-gko"/>
                         <exclude reference="wX8-aI-81C"/>
                         <exclude reference="zno-P7-viT"/>
                         <exclude reference="Enh-dT-ES4"/>
@@ -155,6 +166,7 @@
                 <outlet property="actionGroupView" destination="V64-7q-5ls" id="Toe-yC-Poz"/>
                 <outlet property="commentPreviewView" destination="RzI-bY-uVE" id="a6w-Nq-wqu"/>
                 <outlet property="commentPreviewViewHeightConstraint" destination="bUY-BG-ZiN" id="NO6-HH-p2E"/>
+                <outlet property="deleteButton" destination="Sam-lG-3Nv" id="0Nf-fJ-zuE"/>
                 <outlet property="feedGenderView" destination="5yg-H5-c18" id="Z3X-Zg-7H0"/>
                 <outlet property="feedImageView" destination="kXl-EH-6cx" id="RXJ-sX-pmk"/>
                 <outlet property="feedImageViewHeightConstraint" destination="K3c-hE-3Np" id="08a-Db-GJf"/>

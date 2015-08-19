@@ -30,7 +30,9 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *commentPreviewViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet SOPlaygroundFeedCommentPreviewView *commentPreviewView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *feedImageViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 @property (weak, nonatomic) IBOutlet SOPlaygroundFeedImageView *feedImageView;
+@property (nonatomic) PlaygroundFeed* feed;
 @end
 
 @implementation SOPlaygroundFeedCell
@@ -41,6 +43,7 @@
 }
 
 -(void)configureWithFeed:(PlaygroundFeed*)data{
+    self.feed = data;
     User* user = data.poster;
     [user fetchIfNeeded];
     
@@ -76,10 +79,22 @@
     //commentPreviewView
     CGFloat h3 = [self.commentPreviewView setComments:data.recentComments totalCount:[data.commentCount intValue] feed:data width:[SOUICommons screenWidth]-16 soDelegate:self.mainController];
     self.commentPreviewViewHeightConstraint.constant = h3;
+    
+    //feed delete button
+    if ([[PFUser currentUser].objectId isEqualToString:user.objectId]) {
+        self.deleteButton.hidden=false;
+        [self.deleteButton addTarget:self action:@selector(feedDeleteButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        self.deleteButton.hidden=true;
+        [self.deleteButton removeTarget:self action:@selector(feedDeleteButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    }
+}
+-(void)feedDeleteButtonTapped:(UIButton*)b{
+    [self.mainController didTapDeleteFeed:self.feed];
 }
 
 -(void)didTapImageAtIndex:(NSUInteger)index{
-    [self.delegate cell:self didTapImageAtIndex:index];
+    [self.mainController cell:self didTapImageAtIndex:index];
 }
 
 - (NSMutableArray*) getFeedImageViews {

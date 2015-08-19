@@ -119,10 +119,12 @@
     [self registerNotificationCenter];
     [self initRongCloudService];
     //登录
+    if ([User currentUser]) {
     NSString *token = [[SOUserDefaultManager sharedInstance] getRongCloudToken];
     if (token.length && [User currentUser]) {
         [self connectToRongCloud];
-    } else {
+    }
+    }else {
         SOLoginViewController *logInController = [[SOLoginViewController alloc] init];
         logInController.hidesBottomBarWhenPushed = YES;
         logInController.delegate = self;

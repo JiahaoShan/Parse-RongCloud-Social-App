@@ -11,6 +11,7 @@
 @class PlaygroundFeed;
 @class User;
 @class PlaygroundComment;
+@class SOPlaygroundFeedCell;
 @protocol SOPlaygroundFeedInteractionDelegate <NSObject>
 
 -(void)userDidTapViewAllCommentForFeed:(PlaygroundFeed*)feed;
@@ -21,4 +22,7 @@
 -(void)userDidWishComment:(PlaygroundFeed*)feed;
 
 -(void)userDidTapNameOfUser:(User*)user;
+-(void)cell:(SOPlaygroundFeedCell*)cell didTapImageAtIndex:(NSUInteger)index;
+
+-(void)didTapDeleteFeed:(PlaygroundFeed *)feed;
 @end

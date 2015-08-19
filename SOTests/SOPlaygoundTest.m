@@ -27,8 +27,10 @@
 }
 
 - (void)testPlaygroundFeedImageViewHeightCalculation {
+    NSMutableArray* a = [[NSMutableArray alloc]initWithArray:@[@(1),@(1),@(2)]];
+    [a removeObject:@(1)];
     // This is an example of a functional test case.
-    SOPlaygroundFeedImageView* view = [[SOPlaygroundFeedImageView alloc] init];
+    //SOPlaygroundFeedImageView* view = [[SOPlaygroundFeedImageView alloc] init];
 //    [view setImages:@[]];
 //    XCTAssert(view.frame.size.height == 0.0f, @"height = 0 when image array is empty");
 //    [view setImages:@[ [NSNull null] ]];

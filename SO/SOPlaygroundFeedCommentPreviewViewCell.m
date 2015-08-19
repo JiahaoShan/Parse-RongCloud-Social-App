@@ -42,6 +42,7 @@
     [self.contentView addSubview:self.commentLabel];
     CGRect frame = self.frame;
     BOOL deletable = [[PFUser currentUser].objectId isEqualToString:commentOwner.objectId];
+    //BOOL deletable = true;
     if (deletable) {
         NSRange lastRange = NSMakeRange(self.commentLabel.text.length-1,1);
         CGRect lastRect = [self boundingRectForCharacterRange:lastRange];

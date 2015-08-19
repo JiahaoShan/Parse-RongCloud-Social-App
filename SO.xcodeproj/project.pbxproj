@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C01FD321B84366E003D79AB /* SOPlaygroundFeedComposeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C01FD311B84366E003D79AB /* SOPlaygroundFeedComposeController.m */; };
 		4C5F8C561B6BE38700727C82 /* SOCommunityTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F8C551B6BE38700727C82 /* SOCommunityTest.m */; };
 		4CA1CB791B5AC4C900B21EEF /* SOImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA1CB781B5AC4C900B21EEF /* SOImageViewController.m */; };
 		4CA1CB7C1B5B40BD00B21EEF /* SOActionSheetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA1CB7B1B5B40BD00B21EEF /* SOActionSheetManager.m */; };
@@ -152,6 +153,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4C01FD301B84366E003D79AB /* SOPlaygroundFeedComposeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPlaygroundFeedComposeController.h; sourceTree = "<group>"; };
+		4C01FD311B84366E003D79AB /* SOPlaygroundFeedComposeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedComposeController.m; sourceTree = "<group>"; };
 		4C5F8C551B6BE38700727C82 /* SOCommunityTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCommunityTest.m; sourceTree = "<group>"; };
 		4CA1CB771B5AC4C900B21EEF /* SOImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOImageViewController.h; sourceTree = "<group>"; };
 		4CA1CB781B5AC4C900B21EEF /* SOImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOImageViewController.m; sourceTree = "<group>"; };
@@ -527,6 +530,8 @@
 				4CBCF6BF1B5257D100EE2195 /* SOPlaygroundMainController.m */,
 				4CFC3E6D1B838A9F00E5A9BC /* SOQuickCommentView.h */,
 				4CFC3E6E1B838A9F00E5A9BC /* SOQuickCommentView.m */,
+				4C01FD301B84366E003D79AB /* SOPlaygroundFeedComposeController.h */,
+				4C01FD311B84366E003D79AB /* SOPlaygroundFeedComposeController.m */,
 				4CBCF6D01B525C7900EE2195 /* SOPlaygroundFeedCell */,
 			);
 			name = Main;
@@ -1079,6 +1084,7 @@
 				8A14F6A01B6B1A74001AE83D /* RCDHttpTool.m in Sources */,
 				4CBCF6B01B524F7500EE2195 /* SOUICommons.m in Sources */,
 				8A8303D11B54BDCA00FB22A5 /* SOSignupViewController.m in Sources */,
+				4C01FD321B84366E003D79AB /* SOPlaygroundFeedComposeController.m in Sources */,
 				8A8E5CFD1B727E2E009CE09E /* SOMapBubbleAnnotationView.m in Sources */,
 				4CBD58D31B76F13000F1F3C7 /* SOFailableAction.m in Sources */,
 				4CB3B63E1B6E22E3009CE032 /* SOPlaygroundFeedActionGroupView.m in Sources */,

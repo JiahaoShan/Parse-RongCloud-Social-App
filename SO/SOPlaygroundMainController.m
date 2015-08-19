@@ -18,11 +18,12 @@
 #import "SOUICommons.h"
 #import "PlaygroundComment.h"
 #import "SOQuickCommentView.h"
+#import "SOPlaygroundFeedComposeController.h"
 
-@interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate,SOPlaygroundFeedCellDelegate, imageViewDelegate,SOQuickCommentViewDelegate>
+@interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate, imageViewDelegate,SOQuickCommentViewDelegate,SOPlaygroundFeedComposeControllerDelegate>
 @property (nonatomic) BOOL initialized;
 @property (nonatomic) NSMutableArray* likeHistory;
-
+@property (nonatomic) UIBarButtonItem* composeItem;
 @property (nonatomic,weak) PlaygroundFeed* currentCommentingFeed;
 @property (nonatomic) UITextView* dummyComment;
 @property (nonatomic) SOQuickCommentView* commentAccessory;
@@ -68,15 +69,25 @@
     return query;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    self.tabBarController.navigationItem.title = @"操场";
+    if (!self.composeItem) {
+        self.composeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(didTapComposeFeed:)];
+    }
+    self.tabBarController.navigationItem.rightBarButtonItem=self.composeItem;
+}
+
 
 -(void)viewDidLoad{
     [super viewDidLoad];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"SOPlaygroundFeedCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"feedCell"];
     NSError* e;
+    if([PFUser currentUser]){
     NSString* response = [PFCloud callFunction:@"PlaygroundGetLikeHistory" withParameters:@{@"userId":[[PFUser currentUser] objectId]} error:&e];
     if (response) {
         self.likeHistory = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
+    }
     }
     
     //    UIImage* sampleImage = [UIImage imageNamed:@"sampleImage2.png"];
@@ -114,6 +125,12 @@
     //        } else {   NSString *errorString = [error userInfo][@"error"];   // Show the errorString somewhere and let the user try again.
     //        }
     //    }];
+}
+
+- (void)didTapComposeFeed:(UIBarButtonItem *)sender{
+    SOPlaygroundFeedComposeController* composer = [self.storyboard instantiateViewControllerWithIdentifier:@"feedCompose"];
+    [composer setDelegate:self];
+    [self presentViewController:composer animated:true completion:nil];
 }
 
 #pragma mark - UITableViewDelegate
@@ -157,52 +174,6 @@
     UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
     CGSize size = [cell.contentView systemLayoutSizeFittingSize: UILayoutFittingCompressedSize];
     return size.height;
-}
-#pragma mark - SOPlaygroundFeedCellDelegate
-
--(void)cell:(SOPlaygroundFeedCell *)cell didTapImageAtIndex:(NSUInteger)index{
-    //    PlaygroundFeed * feed = [PlaygroundFeed object];
-    //    feed.message = @"Hahahahah";
-    NSIndexPath* cellIndex = [self.tableView indexPathForCell:cell];
-    NSArray* images = self.objects[cellIndex.row][@"images"];
-    NSMutableArray* feedImageView = cell.getFeedImageViews;
-    PFImageView* imageView = (PFImageView*)feedImageView[index];
-    
-    CGRect frameInWindow = [imageView.superview convertRect:imageView.frame toView:[[UIApplication sharedApplication] keyWindow]];
-    
-    UIView * blackOverlay = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    blackOverlay.backgroundColor = [UIColor clearColor];
-    
-    UIWindow* currentWindow = [UIApplication sharedApplication].keyWindow;
-    [currentWindow addSubview:blackOverlay];
-    
-    UIImageView* imageAnimationView = [[UIImageView alloc] initWithImage:imageView.image];
-    imageAnimationView.frame = frameInWindow;
-    [currentWindow addSubview:imageAnimationView];
-    
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         blackOverlay.backgroundColor = [UIColor blackColor];
-                         imageAnimationView.center = currentWindow.center;
-                         imageAnimationView.alpha = 0.5;
-                     } completion:^(BOOL finished) {
-                         [blackOverlay removeFromSuperview];
-                         [imageAnimationView removeFromSuperview];
-                         UIViewController* imageViewController = nil;
-                         if ([images count] > 1) {
-                             imageViewController = (SOImagePageViewController*)[[SOImagePageViewController alloc] initWithImages:images AndThumbnails:feedImageView AtIndex:index FromParent:self];
-                         }
-                         else {
-                             PFFile* image = images[index];
-                             imageViewController = (SOImageViewController*)[[SOImageViewController alloc] init];
-                             [(SOImageViewController*)imageViewController setImage:image WithPlaceholder:[feedImageView firstObject]];
-                             ((SOImageViewController*)imageViewController).returnToFrame = frameInWindow;
-                             ((SOImageViewController*)imageViewController).delegate = self;
-                         }
-                         [self.navigationController pushViewController:imageViewController animated:NO];
-                     }];
-    blackOverlay = nil;
-    imageAnimationView = nil;
 }
 
 #pragma mark - SOImageViewController Delegate
@@ -326,9 +297,9 @@
     }
     [(PlaygroundFeed*)self.objects[i] setRecentComments:comments];
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-    [comment deleteInBackgroundWithBlock:^(BOOL succeeded, NSError * error){
+    [PFCloud callFunctionInBackground:@"PlaygroundRemoveComment" withParameters:@{@"commentId":comment.objectId} block:^(NSString* response, NSError * error){
         MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
-        if (!succeeded) {
+        if (error) {
             NSString* msg = [NSString stringWithFormat:@"delete failed:%@",error];
             [overlay postImmediateMessage:msg animated:true];
             [(NSMutableArray*)comments insertObject:comment atIndex:index];
@@ -344,6 +315,64 @@
     UIViewController* c = [self.storyboard instantiateViewControllerWithIdentifier:@"userDetail"];
     [self.navigationController pushViewController:c animated:true];
 }
+
+-(void)cell:(SOPlaygroundFeedCell *)cell didTapImageAtIndex:(NSUInteger)index{
+    //    PlaygroundFeed * feed = [PlaygroundFeed object];
+    //    feed.message = @"Hahahahah";
+    NSIndexPath* cellIndex = [self.tableView indexPathForCell:cell];
+    NSArray* images = self.objects[cellIndex.row][@"images"];
+    NSMutableArray* feedImageView = cell.getFeedImageViews;
+    PFImageView* imageView = (PFImageView*)feedImageView[index];
+    
+    CGRect frameInWindow = [imageView.superview convertRect:imageView.frame toView:[[UIApplication sharedApplication] keyWindow]];
+    
+    UIView * blackOverlay = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    blackOverlay.backgroundColor = [UIColor clearColor];
+    
+    UIWindow* currentWindow = [UIApplication sharedApplication].keyWindow;
+    [currentWindow addSubview:blackOverlay];
+    
+    UIImageView* imageAnimationView = [[UIImageView alloc] initWithImage:imageView.image];
+    imageAnimationView.frame = frameInWindow;
+    [currentWindow addSubview:imageAnimationView];
+    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         blackOverlay.backgroundColor = [UIColor blackColor];
+                         imageAnimationView.center = currentWindow.center;
+                         imageAnimationView.alpha = 0.5;
+                     } completion:^(BOOL finished) {
+                         [blackOverlay removeFromSuperview];
+                         [imageAnimationView removeFromSuperview];
+                         UIViewController* imageViewController = nil;
+                         if ([images count] > 1) {
+                             imageViewController = (SOImagePageViewController*)[[SOImagePageViewController alloc] initWithImages:images AndThumbnails:feedImageView AtIndex:index FromParent:self];
+                         }
+                         else {
+                             PFFile* image = images[index];
+                             imageViewController = (SOImageViewController*)[[SOImageViewController alloc] init];
+                             [(SOImageViewController*)imageViewController setImage:image WithPlaceholder:[feedImageView firstObject]];
+                             ((SOImageViewController*)imageViewController).returnToFrame = frameInWindow;
+                             ((SOImageViewController*)imageViewController).delegate = self;
+                         }
+                         [self.navigationController pushViewController:imageViewController animated:NO];
+                     }];
+    blackOverlay = nil;
+    imageAnimationView = nil;
+}
+
+-(void)didTapDeleteFeed:(PlaygroundFeed *)feed{
+    NSUInteger index = [self.objects indexOfObject:feed];
+    //NSLog(@"%d",[self.objects isKindOfClass:[NSMutableArray class]]);
+    [feed deleteInBackgroundWithBlock:^(BOOL succeeded, NSError * error){
+        NSLog(@"%d,%@",succeeded,error);
+    }];
+    //!!!!!!!!!!!!!!!!!!!!!
+    //i assume self.objects will always be mutable, as it is in this version
+    [(NSMutableArray*)self.objects removeObject:feed];
+    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+}
+
 
 #pragma mark - SOQuickCommentView
 -(void)commentViewDidReturnWithText:(NSString *)text{
@@ -369,6 +398,18 @@
         }
     }];
 }
+
+#pragma mark - feed compose controller delegate
+-(void)userDidTapCancel{
+    NSLog(@"user cancelled composing feed");
+}
+-(void)userDidFinishComposingFeed:(PlaygroundFeed *)feed{
+    NSLog(@"user finished composing feed");
+    [feed saveInBackgroundWithBlock:^(BOOL success, NSError *error){
+        NSLog(@"%d,%@",success,error);
+    }];
+}
+
 #pragma mark - Segue
 //- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 //    if ([[segue identifier] isEqualToString:@""])
@@ -389,5 +430,4 @@
 -(BOOL)likedForFeed:(PlaygroundFeed*)feed{
     return [self.likeHistory containsObject:[feed objectId]];
 }
-
 @end

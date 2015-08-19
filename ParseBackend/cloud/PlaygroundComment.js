@@ -33,116 +33,101 @@
 Parse.Cloud.afterSave("PlaygroundComment", function(request) {
     console.log(request.object);
     var fid = request.object.get("playgroundFeedId");
-    console.log("fid: "+fid);
+    console.log("fid: " + fid);
     query = new Parse.Query("PlaygroundFeed");
-    console.log("query: "+query);
-    query.get(fid).then(function(feed){
-            var comments = feed.get("recentComments");
-            if(!comments){
-                comments = [];
-            }
-                comments.unshift(request.object);
-            if(comments.length>8){
-                comments.pop();
-            }
-            feed.set("recentComments",comments);
-            feed.increment("commentCount");
-            console.log("before it saves");
-            return feed.save(null, {
-                 useMasterKey: true
-            });
-        }).then(function(){
-            console.log("success");
-        },function(error){
-            console.log(error);
+    console.log("query: " + query);
+    query.get(fid).then(function(feed) {
+        var comments = feed.get("recentComments");
+        if (!comments) {
+            comments = [];
+        }
+        comments.unshift(request.object);
+        if (comments.length > 8) {
+            comments.pop();
+        }
+        feed.set("recentComments", comments);
+        feed.increment("commentCount");
+        console.log("before it saves");
+        return feed.save(null, {
+            useMasterKey: true
         });
+    }).then(function() {
+        console.log("success");
+    }, function(error) {
+        console.log(error);
+    });
 });
 Parse.Cloud.define("PlaygroundRemoveComment", function(request, response) {
-    var commentId = request.params.commentId;
+    var cid = request.params.commentId;
+    var comment;
+    var promise;
     query = new Parse.Query("PlaygroundComment");
-    query.get(commentId).then(function(cmt) {
+    promise=query.get(cid);
+    return promise.then(function(cmt) {
         if (!cmt) {
             response.success("does not exist"); //regard this as success
         }
-        return cmt.destroy()
-    }).then(
-        function(result) {
+        if (!cmt.get("playgroundFeedId")) {
             response.success();
-        },
-        function(error) {
-            response.error("remove like failed: " + error);
+        } else if (request.user.id.valueOf() != cmt.get("commentOwner").id.valueOf()) {
+            response.error("cannot delete comment by other user");
         }
-    );
-});
+        comment = cmt;
+        var fid = cmt.get("playgroundFeedId");
+        var feedQuery = new Parse.Query("PlaygroundFeed");
+        return feedQuery.get(fid);
+    }).then(function(feed) {
+        var feedPointer = {
+            __type: "Pointer",
+            className: "PlaygroundFeed",
+            objectId: feed.id
+        };
+        var comments = feed.get("recentComments");
+        if (!comments) {
+            comments = [];
+        }
+        var likeCount = feed.get("commentCount");
+        var isRecentEight = false;
 
-Parse.Cloud.beforeDelete("PlaygroundComment", function(request, response) {
-    if(!request.object.get("playgroundFeedId")){
-        response.success();
-        return;
-    }else if(request.user.id.valueOf() != request.object.get("commentOwner").id.valueOf()){
-        response.error("cannot delete comment by other user");
-        return;
-    }
-    var fid = request.object.get("playgroundFeedId"); 
-    var cid = request.object.id;
-    var feedQuery = new Parse.Query("PlaygroundFeed");
-    feedQuery.get(fid,function(feed) {
-        //delete first
-        var feedPointer={
-                            __type: "Pointer",
-                            className: "PlaygroundFeed",
-                            objectId: feed.id
-                        };
-                        
-        var comments  = feed.get("recentComments");
-                        if(!comments){
-                            comments = [];
-                        }
-                        var likeCount  = feed.get("commentCount");
-                        var isRecentEight = false;
-
-                        for (var i = 0 ; i < comments.length; i++) {
-                            if (comments[i].id == request.object.id) {
-                                isRecentEight = true;
-                                console.log("log6.5: i="+i);
-                                comments.splice(i,1);
-                                break;
-                            }
-                        }
-                        console.log("log7");
-                        if (isRecentEight && likeCount > 8) {
-                            likeQuery = new Parse.Query("PlaygroundComment");
-                            likeQuery.equalTo("playgroundFeed", feed.id);
-                            likeQuery.skip(7);
-                            likeQuery.descending("createdAt");
-                            likeQuery.first({
-                                success: function(oldComment) {
-                                    if (oldComment) {
-                                        likes.push(oldComment);
-                                        feed.increment("commentCount",-1);
-                                        feed.set("recentComments", comments);
-                                        feed.save(null, {useMasterKey: true}).then(function () {
-                                            response.success();
-                                        }, function (error) {
-                                            response.error("error when saving modified feed while deleting comment, reason: "+error.message);
-                                        });
-                                    }
-                                },
-                                    error: function(error) {
-                                        response.error("error when getting next comment while deleting comment, reason: "+error.message);
-                                    }
-                                });
-                        }
-                        else {
-                            console.log("log8");
-                            feed.increment("commentCount",-1);
-                            feed.set("recentComments", comments);
-                            feed.save(null, { useMasterKey: true }).then(function() {
-                                console.log("log9");
-                                response.success();
-                            }, function(error) {
-                                response.error("error when modifying feed while deleting comment, reason: "+error.message);
-                            });
-                        };
+        for (var i = 0; i < comments.length; i++) {
+            if (comments[i].id.valueOf() == cid.valueOf()) {
+                isRecentEight = true;
+                console.log("log6.5: i=" + i);
+                comments.splice(i, 1);
+                break;
+            }
+        }
+        console.log("log7");
+        if (isRecentEight && likeCount > 8) {
+            likeQuery = new Parse.Query("PlaygroundComment");
+            likeQuery.equalTo("playgroundFeed", feed.id);
+            likeQuery.skip(7);
+            likeQuery.descending("createdAt");
+            return promise.then(function(){
+                return likeQuery.first();
+            }).then(function(oldComment){
+                    likes.push(oldComment);
+                    feed.increment("commentCount", -1);
+                    feed.set("recentComments", comments);
+                    return feed.save(null, {
+                        useMasterKey: true
                     });
+            });
+        } else {
+            console.log("log8");
+            feed.increment("commentCount", -1);
+            feed.set("recentComments", comments);
+            return feed.save(null, {
+                useMasterKey: true
+            });
+        };
+    }).then(function(feed){
+        return comment.destroy();
+    }).then(
+    function(result) {
+        response.success();
+    },
+    function(error) {
+        response.error("remove like failed: " + error);
+    });
 });
