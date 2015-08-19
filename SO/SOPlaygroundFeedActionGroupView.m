@@ -17,13 +17,13 @@
 @implementation SOPlaygroundFeedActionGroupView
 
 -(void)awakeFromNib{
-    self.redView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
+    self.redView = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, 16, 16)];
     [self.redView setImage:[UIImage imageNamed:@"like"]];
-    self.grayView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
+    self.grayView = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, 16, 16)];
     [self.grayView setImage:[UIImage imageNamed:@"like_gray"]];
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleLike:)];
     [self addGestureRecognizer:self.tap];
-    self.comment = [[UIButton alloc] initWithFrame:CGRectMake(24, 0, 24, 24)];
+    self.comment = [[UIButton alloc] initWithFrame:CGRectMake(28, 4, 16, 16)];
     [self.comment setBackgroundImage:[UIImage imageNamed:@"comment"] forState:UIControlStateNormal];
     [self.comment addTarget:self action:@selector(commentTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.comment];
@@ -44,7 +44,7 @@
                 self.grayView.alpha = 0;
                 self.redView.alpha = 1;
             } completion:^(BOOL finished) {
-                self.grayView.frame = CGRectMake(0, 0, 24, 24);
+                self.grayView.frame = CGRectMake(4, 4, 16, 16);
                 [self.grayView removeFromSuperview];
                 [self.tap setEnabled:true];
             }];
@@ -58,7 +58,7 @@
                 self.redView.alpha = 0;
                 self.grayView.alpha = 1;
             } completion:^(BOOL finished) {
-                self.redView.frame = CGRectMake(0, 0, 24, 24);
+                self.redView.frame = CGRectMake(4, 4, 16, 16);
                 [self.redView removeFromSuperview];
                 [self.tap setEnabled:true];
             }];

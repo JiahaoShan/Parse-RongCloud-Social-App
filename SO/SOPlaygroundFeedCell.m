@@ -39,7 +39,7 @@
 
 -(void)awakeFromNib {
     self.feedPosterAvatartView.layer.masksToBounds = YES;
-    self.feedPosterAvatartView.layer.cornerRadius = 30;
+    //self.feedPosterAvatartView.layer.cornerRadius = 15;
 }
 
 -(void)configureWithFeed:(PlaygroundFeed*)data{

@@ -89,42 +89,6 @@
         self.likeHistory = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
     }
     }
-    
-    //    UIImage* sampleImage = [UIImage imageNamed:@"sampleImage2.png"];
-    //    NSData* imageData = UIImagePNGRepresentation(sampleImage);
-    //    PFFile* image1 = [PFFile fileWithName:@"sampleImage2.png" data:imageData];
-    //
-    //    UIImage* sampleImage2 = [UIImage imageNamed:@"sampleImage3.png"];
-    //    NSData* imageData2 = UIImagePNGRepresentation(sampleImage2);
-    //    PFFile* image2 = [PFFile fileWithName:@"sampleImage3.png" data:imageData2];
-    //    //[image1 saveInBackground];
-    //
-    //    PFObject* sampleFeed = [PFObject objectWithClassName:@"PlaygroundFeed"];
-    //    sampleFeed[@"poster"] = [PFUser currentUser];
-    //    sampleFeed[@"text"] = @"这是一段超级长的文字。我就是想看看它能不能被正常显示出来。-- 并不能。";
-    //    sampleFeed[@"images"] = @[image1,image2];
-    //    [sampleFeed saveInBackground];
-    
-    
-    
-    //    PFUser *user = [PFUser user];
-    //    user.username = @"Shawn";
-    //    user.password = @"12345678";
-    //    user.email = @"shawn.shan@wisc.edu";
-    //
-    //    UIImage* sampleImage2 = [UIImage imageNamed:@"sampleImage2.png"];
-    //    NSData* imageData2 = UIImagePNGRepresentation(sampleImage2);
-    //    PFFile* image2 = [PFFile fileWithName:@"sampleImage2.png" data:imageData2];
-    //
-    //    // other fields can be set just like with PFObject
-    //    user[@"portrait"] = image2;
-    //    user[@"male"] = @YES;
-    //
-    //    [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-    //        if (!error) {   // Hooray! Let them use the app now.
-    //        } else {   NSString *errorString = [error userInfo][@"error"];   // Show the errorString somewhere and let the user try again.
-    //        }
-    //    }];
 }
 
 - (void)didTapComposeFeed:(UIBarButtonItem *)sender{
@@ -366,6 +330,14 @@
     //NSLog(@"%d",[self.objects isKindOfClass:[NSMutableArray class]]);
     [feed deleteInBackgroundWithBlock:^(BOOL succeeded, NSError * error){
         NSLog(@"%d,%@",succeeded,error);
+        MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
+        if (error) {
+            [overlay postImmediateMessage:[NSString stringWithFormat:@"delete feed failed:%@",error] duration:2];
+            [(NSMutableArray*)self.objects insertObject:feed atIndex:index];
+            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        }else{
+            [overlay postImmediateMessage:@"delete feed succeed" duration:2];
+        }
     }];
     //!!!!!!!!!!!!!!!!!!!!!
     //i assume self.objects will always be mutable, as it is in this version
@@ -405,8 +377,18 @@
 }
 -(void)userDidFinishComposingFeed:(PlaygroundFeed *)feed{
     NSLog(@"user finished composing feed");
+    [(NSMutableArray*)self.objects insertObject:feed atIndex:0];
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.objects indexOfObject:self.currentCommentingFeed] inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     [feed saveInBackgroundWithBlock:^(BOOL success, NSError *error){
-        NSLog(@"%d,%@",success,error);
+        MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
+        if (error) {
+            [overlay postImmediateMessage:[error localizedDescription] duration:2];
+            [(NSMutableArray*)self.objects removeObject:feed];
+            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.objects indexOfObject:self.currentCommentingFeed] inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        }
+        else{
+            [overlay postImmediateMessage:@"post comment success" duration:2];
+        }
     }];
 }
 

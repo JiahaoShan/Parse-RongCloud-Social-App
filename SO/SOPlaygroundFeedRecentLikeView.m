@@ -26,6 +26,8 @@
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
     [self addGestureRecognizer:self.tap];
     self.nameRanges = [[NSMutableArray alloc] init];
+    //[self setContentInset:UIEdgeInsetsMake(0, 30, 0, 30)];
+    [self setTextContainerInset:UIEdgeInsetsMake(0, -4, 0, 0)];
 }
 
 -(void)setLikes:(NSArray*)likes totalCount:(int)totalCount feed:(PlaygroundFeed*)feed width:(CGFloat)width{
