@@ -24,20 +24,23 @@
     int locationTryCounter;
 }
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-@property (strong, nonatomic) NSMutableArray *messageList;
+@property (strong, nonatomic) NSMutableArray *annotationList;
 @property (nonatomic) BOOL ifLocatedUser;
+@property (nonatomic) BOOL preventSendingMessage;
 @property (nonatomic) BOOL waitForLocation;
+@property (nonatomic) BOOL waitForAppealingSendingMessage;
 @property (nonatomic, strong) CSGrowingTextView* textView;
 @property (nonatomic, strong) UIView* inputMessageView;
 @property (strong, nonatomic) NSMutableDictionary *userMessageDict;
 @property (nonatomic, strong) UIImageView* userPotraitImageView;
 @property (nonatomic, strong) UIImage* userPotraitImage;
+@property (nonatomic, strong) NSTimer* preventSendingMessageTimer;
 @end
 
 
 @implementation SOMapBubbleViewController
 
-@synthesize messageList = _messageList;
+@synthesize annotationList = _annotationList;
 
 const CGFloat messageFrameWidth = 100.0f;
 const CGFloat messageTextPaddingWidth = 5.0f;
@@ -45,12 +48,12 @@ const CGFloat messageTextWidth = messageFrameWidth - 2 * messageTextPaddingWidth
 const CGFloat imageWidth = 40.0f;
 const NSInteger displayDistanceMeters = 5000;
 
-- (NSMutableArray*) messageList
+- (NSMutableArray*) annotationList
 {
-    if (!_messageList){
-        _messageList = [[NSMutableArray alloc] init];
+    if (!_annotationList){
+        _annotationList = [[NSMutableArray alloc] init];
     }
-    return _messageList;
+    return _annotationList;
 }
 
 - (NSMutableDictionary*) userMessageDict
@@ -69,14 +72,6 @@ const NSInteger displayDistanceMeters = 5000;
     return _userPotraitImageView;
 }
 
-- (UIImage*) userPotraitImage
-{
-    if (!_userPotraitImage){
-        _userPotraitImage = [UIImage imageNamed:@"pinMask"];
-    }
-    return _userPotraitImage;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     _mapView.delegate = self;
@@ -85,7 +80,6 @@ const NSInteger displayDistanceMeters = 5000;
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance (CLLocationCoordinate2DMake(43.076592, -89.4124875), 5000, 5000);
     [_mapView setRegion:region animated:NO];
     locationTryCounter = 0;
-    
     [self requestForUserPotraitImage];
     [self requestForMoreAccurateLocation: INTULocationAccuracyCity];
     //cancelLocationRequest
@@ -93,7 +87,7 @@ const NSInteger displayDistanceMeters = 5000;
 
 - (void) requestForUserPotraitImage {
     RCUserInfo* userInfo = [RCIMClient sharedRCIMClient].currentUserInfo;
-    _userPotraitImage = [UIImage imageNamed:@"pinMask"];
+    _userPotraitImage = nil;
     [[SODataManager sharedInstance] getUserInfoWithUserId:userInfo.userId completion:^(RCUserInfo *userInfo) {
         NSString* userPotraitUrl = userInfo.portraitUri;
         NSURLRequest *imageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:userPotraitUrl] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60];
@@ -101,7 +95,6 @@ const NSInteger displayDistanceMeters = 5000;
             _userPotraitImage = image;
         } failure:^void(NSURLRequest * request, NSHTTPURLResponse * response, NSError * error) {
             //TODO: LOAD FAILED;
-            _userPotraitImage = [UIImage imageNamed:@"pinMask"];
             NSLog(@"error");
         }];
     }];
@@ -182,6 +175,8 @@ const NSInteger displayDistanceMeters = 5000;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    _preventSendingMessage = NO;
+    _waitForAppealingSendingMessage = NO;
     [self joinChatRoom];
 }
 
@@ -235,10 +230,8 @@ const NSInteger displayDistanceMeters = 5000;
     NSDictionary *extraInfo = @{@"Latitude" : [NSString stringWithFormat:@"%f",_mapView.userLocation.coordinate.latitude],
                                 @"Longitude" : [NSString stringWithFormat:@"%f",_mapView.userLocation.coordinate.longitude],
                                 };
-    
     NSError *error = nil;
     NSData *json;
-    
     // Dictionary convertable to JSON ?
     if ([NSJSONSerialization isValidJSONObject:extraInfo])
     {
@@ -344,14 +337,9 @@ const NSInteger displayDistanceMeters = 5000;
             [self addNewMessage:textMessage];
         }
     }
-    NSLog(notification.description);
 }
 
 - (void) addNewMessage:(RCTextMessage*)textMessage {
-    if ([self.messageList count] > 10) {
-        [self.messageList removeLastObject];
-        [self.messageList insertObject:textMessage atIndex:0];
-    }
     NSString* content = textMessage.content;
     
     NSError *jsonError;
@@ -369,9 +357,40 @@ const NSInteger displayDistanceMeters = 5000;
     myAnnotation.title = content;
     myAnnotation.subtitle = textMessage.senderUserInfo.userId;
     
+    [self updateannotationList:myAnnotation];
+    
     [[SODataManager sharedInstance] getUserInfoWithUserId:textMessage.senderUserInfo.userId completion:^(RCUserInfo *userInfo) {
         [self setMessageView:userInfo withAnnotation:myAnnotation];
     }];
+}
+
+-(void)updateannotationList:(SOMapBubbleAnnotation*)annotation{
+    //TODO: TEST THE FOLLOWING CODES
+    
+    //exist, update the location
+    if ([_userMessageDict objectForKey:annotation.subtitle]) {
+        for (int i = 0; i < [self.annotationList count]; i++) {
+            SOMapBubbleAnnotation* anno = [self.annotationList objectAtIndex:i];
+            if ([anno.subtitle isEqualToString:annotation.subtitle]) {
+                [self.annotationList removeObjectAtIndex:i];
+                [self.annotationList insertObject:annotation atIndex:0];
+                break;
+            }
+        }
+    }
+    //not existed
+    else {
+        NSUInteger numberOfannotationList = [self.annotationList count];
+        if (numberOfannotationList > 10) {
+            SOMapBubbleAnnotation* removedAnnotation = [self.annotationList objectAtIndex:numberOfannotationList - 1];
+            [self.annotationList removeLastObject];
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [_mapView removeAnnotation:removedAnnotation];
+                [_userMessageDict removeObjectForKey:removedAnnotation.subtitle];
+            });
+        }
+        [self.annotationList insertObject:annotation atIndex:0];
+    }
 }
 
 - (void) setMessageView: (RCUserInfo*)userInfo withAnnotation:(SOMapBubbleAnnotation*)annotation{
@@ -444,6 +463,11 @@ const NSInteger displayDistanceMeters = 5000;
             _waitForLocation = YES;
             return;
         }
+        else if (_preventSendingMessage) {
+            [self runSpinAnimationOnView:sender duration:1.0f rotations:0.5f repeat:999.0f];
+            _waitForAppealingSendingMessage = YES;
+            return;
+        }
         
         _waitForLocation = NO;
         [self runSpinAnimationOnView:sender duration:1.0f rotations:0.5f repeat:1.0f];
@@ -459,21 +483,6 @@ const NSInteger displayDistanceMeters = 5000;
         }
         [sender setNeedsDisplay];
     }
-    //    [UIView animateWithDuration:1.0
-    //                     animations:^{
-    //                         theView.frame = newFrame;    // move
-    //                     }
-    //                     completion:^(BOOL finished){
-    //                         // code to run when animation completes
-    //                         // (in this case, another animation:)
-    //                         [UIView animateWithDuration:1.0
-    //                                          animations:^{
-    //                                              theView.alpha = 0.0;   // fade out
-    //                                          }
-    //                                          completion:^(BOOL finished){
-    //                                              [theView removeFromSuperview];
-    //                                          }];
-    //                     }];
 }
 
 - (void) startInputMode {
@@ -518,10 +527,16 @@ const NSInteger displayDistanceMeters = 5000;
     _textView.delegate = self;
     [_textView becomeFirstResponder];
     
-    
     [_inputMessageView addSubview:_textView];
     
-    UIImageView* imageView = [[UIImageView alloc] initWithImage:_userPotraitImage];
+    UIImageView* imageView;
+    if (!_userPotraitImage) {
+        imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pinMask"]];
+        [self requestForUserPotraitImage];
+    }
+    else {
+        imageView = [[UIImageView alloc] initWithImage:_userPotraitImage];
+    }
     imageView.frame = CGRectMake((messageFrameWidth - imageWidth)/2, 15 + messageTextPaddingWidth * 2, imageWidth, imageWidth);
     UIImage *_maskingImage = [UIImage imageNamed:@"pinMask.png"];
     CALayer *_maskingLayer = [CALayer layer];
@@ -537,6 +552,7 @@ const NSInteger displayDistanceMeters = 5000;
     [textView resignFirstResponder];
     [self sendMessage];
     [self addButtonTapped:_addButton];
+    [self setPreventSendingMessage];
     return YES;
 }
 
@@ -583,6 +599,27 @@ const NSInteger displayDistanceMeters = 5000;
                                                 cancelButtonTitle:@"知道啦！"
                                                 otherButtonTitles:nil];
         [alertView show];
+    }
+}
+
+-(void)setPreventSendingMessage{
+    _preventSendingMessage = YES;
+    if (self.preventSendingMessageTimer) {
+        [self.preventSendingMessageTimer invalidate];
+        self.preventSendingMessageTimer = nil;
+    }
+    self.preventSendingMessageTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                                       target:self
+                                                                     selector:@selector(sendMessageTimer:)
+                                                                     userInfo:nil repeats:NO];
+}
+
+-(void)sendMessageTimer:(NSTimer *)timer {
+    _preventSendingMessage = NO;
+    if (_waitForAppealingSendingMessage) {
+        [self.addButton.layer removeAllAnimations];
+        _waitForAppealingSendingMessage = NO;
+        [self addButtonTapped:self.addButton];
     }
 }
 @end
