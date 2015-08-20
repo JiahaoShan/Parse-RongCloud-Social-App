@@ -119,32 +119,11 @@
     [self registerNotificationCenter];
     [self initRongCloudService];
     //登录
-    if ([User currentUser]) {
-    NSString *token = [[SOUserDefaultManager sharedInstance] getRongCloudToken];
-    if (token.length && [User currentUser]) {
-        [self connectToRongCloud];
+    if ([User currentUser] && [[SOUserDefaultManager sharedInstance] getRongCloudToken]) {
+            [self connectToRongCloud];
     }
-    }else {
-        SOLoginViewController *logInController = [[SOLoginViewController alloc] init];
-        logInController.hidesBottomBarWhenPushed = YES;
-        logInController.delegate = self;
-        SOSignupViewController *signupController = [[SOSignupViewController alloc] init];
-        signupController.delegate = self;
-        signupController.hidesBottomBarWhenPushed = YES;
-        signupController.fields = (PFSignUpFieldsUsernameAndPassword
-                                   | PFSignUpFieldsSignUpButton
-                                   | PFSignUpFieldsEmail
-                                   | PFSignUpFieldsAdditional
-                                   | PFSignUpFieldsDismissButton);
-        logInController.signUpController = signupController;
-        logInController.fields = (PFLogInFieldsUsernameAndPassword
-                                  | PFLogInFieldsLogInButton
-                                  | PFLogInFieldsSignUpButton
-                                  | PFLogInFieldsPasswordForgotten
-                                  );
-        UINavigationController *_navi =
-        [[UINavigationController alloc] initWithRootViewController:logInController];
-        self.window.rootViewController = _navi;
+    else {
+            [self showLoginViewController];
     }
     return YES;
 }
@@ -404,6 +383,29 @@
         UINavigationController *rootNavi = [storyboard instantiateViewControllerWithIdentifier:@"rootNavigationViewController"];
         self.window.rootViewController = rootNavi;
     });
+}
+
+- (void) showLoginViewController {
+    SOLoginViewController *logInController = [[SOLoginViewController alloc] init];
+    logInController.hidesBottomBarWhenPushed = YES;
+    logInController.delegate = self;
+    SOSignupViewController *signupController = [[SOSignupViewController alloc] init];
+    signupController.delegate = self;
+    signupController.hidesBottomBarWhenPushed = YES;
+    signupController.fields = (PFSignUpFieldsUsernameAndPassword
+                               | PFSignUpFieldsSignUpButton
+                               | PFSignUpFieldsEmail
+                               | PFSignUpFieldsAdditional
+                               | PFSignUpFieldsDismissButton);
+    logInController.signUpController = signupController;
+    logInController.fields = (PFLogInFieldsUsernameAndPassword
+                              | PFLogInFieldsLogInButton
+                              | PFLogInFieldsSignUpButton
+                              | PFLogInFieldsPasswordForgotten
+                              );
+    UINavigationController *_navi =
+    [[UINavigationController alloc] initWithRootViewController:logInController];
+    self.window.rootViewController = _navi;
 }
 
 - (void) initCustomizedDataModel{

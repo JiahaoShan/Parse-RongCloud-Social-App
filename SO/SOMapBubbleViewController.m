@@ -93,6 +93,7 @@ const NSInteger displayDistanceMeters = 5000;
 
 - (void) requestForUserPotraitImage {
     RCUserInfo* userInfo = [RCIMClient sharedRCIMClient].currentUserInfo;
+    _userPotraitImage = [UIImage imageNamed:@"pinMask"];
     [[SODataManager sharedInstance] getUserInfoWithUserId:userInfo.userId completion:^(RCUserInfo *userInfo) {
         NSString* userPotraitUrl = userInfo.portraitUri;
         NSURLRequest *imageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:userPotraitUrl] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60];
@@ -113,7 +114,7 @@ const NSInteger displayDistanceMeters = 5000;
                           delayUntilAuthorized:YES
                                          block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
                                              if (status == INTULocationStatusSuccess) {
-                                                 NSLog([NSString stringWithFormat:@"Success, %ld",(long)achievedAccuracy]);
+                                                 //NSLog([NSString stringWithFormat:@"Success, %ld",(long)achievedAccuracy]);
                                                  locationTryCounter = 0;
                                                  if (achievedAccuracy >= INTULocationAccuracyNeighborhood) {
                                                      _ifLocatedUser = YES;
@@ -125,19 +126,57 @@ const NSInteger displayDistanceMeters = 5000;
                                                      }
                                                  }
                                                  if (achievedAccuracy < INTULocationAccuracyHouse) {
-                                                     NSLog([NSString stringWithFormat:@"Success < House! Move on!, %ld",(long)achievedAccuracy]);
+                                                     //NSLog([NSString stringWithFormat:@"Success < House! Move on!, %ld",(long)achievedAccuracy]);
                                                      [self requestForMoreAccurateLocation:achievedAccuracy + 1];
                                                  }
                                              }
                                              else if (status == INTULocationStatusTimedOut) {
-                                                 NSLog([NSString stringWithFormat:@"Fail < House! Counter: %ld, Achieved Accuracy:%ld",locationTryCounter, (long)achievedAccuracy]);
+                                                 //NSLog([NSString stringWithFormat:@"Fail < House! Counter: %ld, Achieved Accuracy:%ld",locationTryCounter, (long)achievedAccuracy]);
                                                  if (locationTryCounter < 3) {
                                                      locationTryCounter++;
                                                      [self requestForMoreAccurateLocation:achievedAccuracy + 1];
                                                  }
+                                                 else {
+                                                     if (_ifLocatedUser) {
+                                                         [self hideMessage];
+                                                         [self.addButton.layer removeAllAnimations];
+                                                     } else {
+                                                         _waitForLocation = NO;
+                                                         [self presentAlertViewWithTitle:@"出错啦" andMessage:@"好难过，定位失败。连您所在的城市都定位不到，稍后再试一下好吗？" showSettingOption:NO];
+                                                         [self hideMessage];
+                                                         [self.addButton.layer removeAllAnimations];
+                                                     }
+                                                 }
+                                             }
+                                             else if (status == INTULocationStatusServicesNotDetermined){
+                                                 _waitForLocation = NO;
+                                                 [self hideMessage];
+                                                 [self.addButton.layer removeAllAnimations];
+                                                 [self presentAlertViewWithTitle:@"出错啦" andMessage:@"请允许定位服务来使用地图群聊" showSettingOption:YES];
+                                             }
+                                             else if (status == INTULocationStatusServicesDenied){
+                                                 _waitForLocation = NO;
+                                                 [self hideMessage];
+                                                 [self.addButton.layer removeAllAnimations];
+                                                 [self presentAlertViewWithTitle:@"出错啦" andMessage:@"为什么把我拒绝。。请允许定位服务来使用地图群聊"  showSettingOption:YES];
+                                             }
+                                             else if (status == INTULocationStatusServicesRestricted){
+                                                 _waitForLocation = NO;
+                                                 [self hideMessage];
+                                                 [self.addButton.layer removeAllAnimations];
+                                                 [self presentAlertViewWithTitle:@"出错啦" andMessage:@"抱歉，您没有系统权限开启定位服务，直到您开启定位服务前暂时无法发送地图群聊" showSettingOption:NO];
+                                             }
+                                             else if (status == INTULocationStatusServicesDisabled){
+                                                 _waitForLocation = NO;
+                                                 [self hideMessage];
+                                                 [self.addButton.layer removeAllAnimations];
+                                                 [self presentAlertViewWithTitle:@"出错啦" andMessage:@"您需要开启系统定位来发送地图群聊" showSettingOption:YES];
                                              }
                                              else {
-                                                 // An error occurred, more info is available by looking at the specific status returned.
+                                                 _waitForLocation = NO;
+                                                 [self hideMessage];
+                                                 [self.addButton.layer removeAllAnimations];
+                                                 [self presentAlertViewWithTitle:@"出错啦" andMessage:@"定位出现错误，请连接WiFi或者稍后再试" showSettingOption:NO];
                                              }
                                          }];
 }
@@ -148,6 +187,7 @@ const NSInteger displayDistanceMeters = 5000;
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
+    _waitForLocation = NO;
     [self quitChatRoom];
     //[self applyMapViewMemoryFix];
 }
@@ -398,11 +438,13 @@ const NSInteger displayDistanceMeters = 5000;
     if (_waitForLocation) return;
     if ([sender isKindOfClass:[SOMapBubbleButtonView class]]) {
         if (sender.isAddButton && !_ifLocatedUser) {
+            [self requestForMoreAccurateLocation:INTULocationAccuracyCity];
             [self runSpinAnimationOnView:sender duration:1.0f rotations:0.5f repeat:999.0f];
             [self showMesssage:@"定位中..."];
             _waitForLocation = YES;
             return;
         }
+        
         _waitForLocation = NO;
         [self runSpinAnimationOnView:sender duration:1.0f rotations:0.5f repeat:1.0f];
         if (sender.isAddButton) {
@@ -511,16 +553,36 @@ const NSInteger displayDistanceMeters = 5000;
     [view.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
 }
 
-//-(NSString*) getUserImageUrl: (NSString*) userId {
-//    if (userId == nil) {
-//        RCUserInfo* userInfo = [RCIMClient sharedRCIMClient].currentUserInfo;
-//        return userInfo.portraitUri;
-//    }
-//    else {
-//        [[SODataManager sharedInstance] getUserInfoWithUserId:userId completion:^(RCUserInfo *userInfo) {
-//
-//        }];
-//    }
-//}
+- (void) presentAlertViewWithTitle:(NSString*)title andMessage:(NSString*)message showSettingOption:(BOOL)show{
+    // Greater or Equal
+    if ([[[UIDevice currentDevice] systemVersion] compare:@"8.0" options:NSNumericSearch] != NSOrderedAscending) {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:title
+                                                                       message:message
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* actionOne = [UIAlertAction actionWithTitle:@"知道啦！" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {}];
 
+        [alert addAction:actionOne];
+        if (show) {
+            UIAlertAction* actionTwo = [UIAlertAction actionWithTitle:@"设置" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
+                                                                  if (&UIApplicationOpenSettingsURLString != NULL) {
+                                                                      NSURL *appSettings = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                                                                      [[UIApplication sharedApplication] openURL:appSettings];
+                                                                  }
+                                                              }];
+            [alert addAction:actionTwo];
+        }
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+                                                          message:message
+                                                         delegate:nil
+                                                cancelButtonTitle:@"知道啦！"
+                                                otherButtonTitles:nil];
+        [alertView show];
+    }
+}
 @end
