@@ -8,7 +8,7 @@
 
 #import "SOPlaygroundFeedImageView.h"
 #import <ParseUI/ParseUI.h>
-
+#import <Parse/Parse.h>
 @interface SOPlaygroundFeedImageView()
 @property (nonatomic) BOOL visible;
 @property (nonatomic) NSArray* images; //an array of PFFiles
@@ -60,7 +60,7 @@
     }
 }
 
--(CGFloat)setImagesWithFiles:(NSArray*)files{
+-(CGFloat)setImagesWithThumbNails:(NSArray*)thumbnails files:(NSArray*)files{
     if (files.count == 0) {
         [self setVisible:NO];
         return 0;
@@ -77,23 +77,42 @@
     
     _images = files;
     if (files.count==1) {
-        PFImageView* iv = [[PFImageView alloc] initWithImage:[UIImage imageNamed:@"placeholderImage"]];
-        [iv setImage:[UIImage imageNamed:@"placeholderImage"]];
-        [iv setFile:files[0]];
-        [iv loadInBackground];
+        PFFile* f = thumbnails[0];
+        if (![f isDataAvailable]) {
+            f = files[0];
+            if (![f isDataAvailable]) {
+                f = thumbnails[0];
+            }
+        }
+        UIImageView* iv;
+        if ([f isDataAvailable]) {
+            UIImage* image = [UIImage imageWithData:[f getData]];
+            iv = [[UIImageView alloc] initWithImage:image];
+        }else{
+            iv = [[PFImageView alloc] initWithImage:[UIImage imageNamed:@"placeholderImage"]];
+            [(PFImageView*)iv setFile:f];
+            [(PFImageView*)iv loadInBackground];
+        }
         [self addSubview:iv];
         [self.imageViews addObject:iv];
     }else{
         for (int i=0;i<files.count;i++) {
-            PFImageView* iv = [[PFImageView alloc] initWithImage:[UIImage imageNamed:@"placeholderImage"]];
-            [iv setImage:[UIImage imageNamed:@"placeholderImage"]];
-            [iv setFile:files[i]];
-            [iv loadInBackground: ^(UIImage *image, NSError *error) {
-                if (!error) {
-                    // Configure your image view in here
-                    
+            PFFile* f = thumbnails[0];
+            if (![f isDataAvailable]) {
+                f = files[0];
+                if (![f isDataAvailable]) {
+                    f = thumbnails[0];
                 }
-            }];
+            }
+            UIImageView* iv;
+            if ([f isDataAvailable]) {
+                UIImage* image = [UIImage imageWithData:[f getData]];
+                iv = [[UIImageView alloc] initWithImage:image];
+            }else{
+                iv = [[PFImageView alloc] initWithImage:[UIImage imageNamed:@"placeholderImage"]];
+                [(PFImageView*)iv setFile:f];
+                [(PFImageView*)iv loadInBackground];
+            }
             [self addSubview:iv];
             [self.imageViews addObject:iv];
         }

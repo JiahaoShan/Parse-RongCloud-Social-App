@@ -50,6 +50,15 @@
 		4CCD26481B5E8EDA006CDAF5 /* SOCommunityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD26471B5E8EDA006CDAF5 /* SOCommunityViewController.m */; };
 		4CCD264B1B5E8FEE006CDAF5 /* SOPersonAvatarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD264A1B5E8FEE006CDAF5 /* SOPersonAvatarView.m */; };
 		4CCD26501B5E9FA9006CDAF5 /* SOCommunityContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCD264F1B5E9FA9006CDAF5 /* SOCommunityContentView.m */; };
+		4CF7E9C41B872099009C181C /* SOImageProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7E9C31B872099009C181C /* SOImageProvider.m */; };
+		4CF7E9D61B8729DE009C181C /* ELCAlbumPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7E9C61B8729DE009C181C /* ELCAlbumPickerController.m */; };
+		4CF7E9D71B8729DE009C181C /* ELCAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7E9C81B8729DE009C181C /* ELCAsset.m */; };
+		4CF7E9D81B8729DE009C181C /* ELCAssetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7E9CA1B8729DE009C181C /* ELCAssetCell.m */; };
+		4CF7E9D91B8729DE009C181C /* ELCAssetTablePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7E9CE1B8729DE009C181C /* ELCAssetTablePicker.m */; };
+		4CF7E9DA1B8729DE009C181C /* ELCImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7E9D01B8729DE009C181C /* ELCImagePickerController.m */; };
+		4CF7E9DB1B8729DE009C181C /* ELCConsole.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7E9D31B8729DE009C181C /* ELCConsole.m */; };
+		4CF7E9DC1B8729DE009C181C /* ELCOverlayImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7E9D51B8729DE009C181C /* ELCOverlayImageView.m */; };
+		4CF7E9E11B8734A7009C181C /* SOPlaygroundFeedComposeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7E9E01B8734A7009C181C /* SOPlaygroundFeedComposeImageView.m */; };
 		4CFC3E6F1B838A9F00E5A9BC /* SOQuickCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFC3E6E1B838A9F00E5A9BC /* SOQuickCommentView.m */; };
 		8A0E3E7C1B77A9F7007E5E65 /* SOLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3E7B1B77A9F7007E5E65 /* SOLabelView.m */; };
 		8A0E3E7F1B77C08A007E5E65 /* CSGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3E7E1B77C08A007E5E65 /* CSGrowingTextView.m */; };
@@ -240,6 +249,27 @@
 		4CCD264A1B5E8FEE006CDAF5 /* SOPersonAvatarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPersonAvatarView.m; sourceTree = "<group>"; };
 		4CCD264E1B5E9FA9006CDAF5 /* SOCommunityContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCommunityContentView.h; sourceTree = "<group>"; };
 		4CCD264F1B5E9FA9006CDAF5 /* SOCommunityContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCommunityContentView.m; sourceTree = "<group>"; };
+		4CF7E9C21B872099009C181C /* SOImageProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOImageProvider.h; sourceTree = "<group>"; };
+		4CF7E9C31B872099009C181C /* SOImageProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOImageProvider.m; sourceTree = "<group>"; };
+		4CF7E9C51B8729DE009C181C /* ELCAlbumPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCAlbumPickerController.h; sourceTree = "<group>"; };
+		4CF7E9C61B8729DE009C181C /* ELCAlbumPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCAlbumPickerController.m; sourceTree = "<group>"; };
+		4CF7E9C71B8729DE009C181C /* ELCAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCAsset.h; sourceTree = "<group>"; };
+		4CF7E9C81B8729DE009C181C /* ELCAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCAsset.m; sourceTree = "<group>"; };
+		4CF7E9C91B8729DE009C181C /* ELCAssetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCAssetCell.h; sourceTree = "<group>"; };
+		4CF7E9CA1B8729DE009C181C /* ELCAssetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCAssetCell.m; sourceTree = "<group>"; };
+		4CF7E9CB1B8729DE009C181C /* ELCAssetSelectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCAssetSelectionDelegate.h; sourceTree = "<group>"; };
+		4CF7E9CC1B8729DE009C181C /* ELCAssetPickerFilterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCAssetPickerFilterDelegate.h; sourceTree = "<group>"; };
+		4CF7E9CD1B8729DE009C181C /* ELCAssetTablePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCAssetTablePicker.h; sourceTree = "<group>"; };
+		4CF7E9CE1B8729DE009C181C /* ELCAssetTablePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCAssetTablePicker.m; sourceTree = "<group>"; };
+		4CF7E9CF1B8729DE009C181C /* ELCImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCImagePickerController.h; sourceTree = "<group>"; };
+		4CF7E9D01B8729DE009C181C /* ELCImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCImagePickerController.m; sourceTree = "<group>"; };
+		4CF7E9D11B8729DE009C181C /* ELCImagePickerHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCImagePickerHeader.h; sourceTree = "<group>"; };
+		4CF7E9D21B8729DE009C181C /* ELCConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCConsole.h; sourceTree = "<group>"; };
+		4CF7E9D31B8729DE009C181C /* ELCConsole.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCConsole.m; sourceTree = "<group>"; };
+		4CF7E9D41B8729DE009C181C /* ELCOverlayImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCOverlayImageView.h; sourceTree = "<group>"; };
+		4CF7E9D51B8729DE009C181C /* ELCOverlayImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCOverlayImageView.m; sourceTree = "<group>"; };
+		4CF7E9DF1B8734A7009C181C /* SOPlaygroundFeedComposeImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPlaygroundFeedComposeImageView.h; sourceTree = "<group>"; };
+		4CF7E9E01B8734A7009C181C /* SOPlaygroundFeedComposeImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedComposeImageView.m; sourceTree = "<group>"; };
 		4CFC3E6D1B838A9F00E5A9BC /* SOQuickCommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOQuickCommentView.h; sourceTree = "<group>"; };
 		4CFC3E6E1B838A9F00E5A9BC /* SOQuickCommentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOQuickCommentView.m; sourceTree = "<group>"; };
 		8A0E3E7A1B77A9F7007E5E65 /* SOLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOLabelView.h; sourceTree = "<group>"; };
@@ -487,6 +517,7 @@
 		4CBCF6AC1B524DE700EE2195 /* SOBasicUI */ = {
 			isa = PBXGroup;
 			children = (
+				4CF7E9DD1B8729E7009C181C /* ELCImagePicker */,
 				4CBCF6AE1B524F7500EE2195 /* SOUICommons.h */,
 				4CBCF6AF1B524F7500EE2195 /* SOUICommons.m */,
 				4CB3B6451B6E5FD2009CE032 /* MTStatusBarOverlay.h */,
@@ -504,6 +535,8 @@
 				4CA1CB771B5AC4C900B21EEF /* SOImageViewController.h */,
 				4CA1CB781B5AC4C900B21EEF /* SOImageViewController.m */,
 				4CBCF6C41B52592F00EE2195 /* UIView+ActivityIndicator.h */,
+				4CF7E9C21B872099009C181C /* SOImageProvider.h */,
+				4CF7E9C31B872099009C181C /* SOImageProvider.m */,
 				4CBCF6C51B52592F00EE2195 /* UIView+ActivityIndicator.m */,
 				8AA7BC901B5E07CE00ABB812 /* SOImagePageViewController.h */,
 				8AA7BC911B5E07CE00ABB812 /* SOImagePageViewController.m */,
@@ -530,8 +563,7 @@
 				4CBCF6BF1B5257D100EE2195 /* SOPlaygroundMainController.m */,
 				4CFC3E6D1B838A9F00E5A9BC /* SOQuickCommentView.h */,
 				4CFC3E6E1B838A9F00E5A9BC /* SOQuickCommentView.m */,
-				4C01FD301B84366E003D79AB /* SOPlaygroundFeedComposeController.h */,
-				4C01FD311B84366E003D79AB /* SOPlaygroundFeedComposeController.m */,
+				4CF7E9DE1B87342A009C181C /* FeedCompose */,
 				4CBCF6D01B525C7900EE2195 /* SOPlaygroundFeedCell */,
 			);
 			name = Main;
@@ -579,6 +611,41 @@
 				4CCD264A1B5E8FEE006CDAF5 /* SOPersonAvatarView.m */,
 			);
 			name = SOCommunity;
+			sourceTree = "<group>";
+		};
+		4CF7E9DD1B8729E7009C181C /* ELCImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				4CF7E9C51B8729DE009C181C /* ELCAlbumPickerController.h */,
+				4CF7E9C61B8729DE009C181C /* ELCAlbumPickerController.m */,
+				4CF7E9C71B8729DE009C181C /* ELCAsset.h */,
+				4CF7E9C81B8729DE009C181C /* ELCAsset.m */,
+				4CF7E9C91B8729DE009C181C /* ELCAssetCell.h */,
+				4CF7E9CA1B8729DE009C181C /* ELCAssetCell.m */,
+				4CF7E9CB1B8729DE009C181C /* ELCAssetSelectionDelegate.h */,
+				4CF7E9CC1B8729DE009C181C /* ELCAssetPickerFilterDelegate.h */,
+				4CF7E9CD1B8729DE009C181C /* ELCAssetTablePicker.h */,
+				4CF7E9CE1B8729DE009C181C /* ELCAssetTablePicker.m */,
+				4CF7E9CF1B8729DE009C181C /* ELCImagePickerController.h */,
+				4CF7E9D01B8729DE009C181C /* ELCImagePickerController.m */,
+				4CF7E9D11B8729DE009C181C /* ELCImagePickerHeader.h */,
+				4CF7E9D21B8729DE009C181C /* ELCConsole.h */,
+				4CF7E9D31B8729DE009C181C /* ELCConsole.m */,
+				4CF7E9D41B8729DE009C181C /* ELCOverlayImageView.h */,
+				4CF7E9D51B8729DE009C181C /* ELCOverlayImageView.m */,
+			);
+			name = ELCImagePicker;
+			sourceTree = "<group>";
+		};
+		4CF7E9DE1B87342A009C181C /* FeedCompose */ = {
+			isa = PBXGroup;
+			children = (
+				4C01FD301B84366E003D79AB /* SOPlaygroundFeedComposeController.h */,
+				4C01FD311B84366E003D79AB /* SOPlaygroundFeedComposeController.m */,
+				4CF7E9DF1B8734A7009C181C /* SOPlaygroundFeedComposeImageView.h */,
+				4CF7E9E01B8734A7009C181C /* SOPlaygroundFeedComposeImageView.m */,
+			);
+			name = FeedCompose;
 			sourceTree = "<group>";
 		};
 		8A14F65E1B6575F9001AE83D /* SOProfile */ = {
@@ -1059,6 +1126,7 @@
 				8AA7BC921B5E07CE00ABB812 /* SOImagePageViewController.m in Sources */,
 				8A14F6951B6B1945001AE83D /* FMDatabasePool.m in Sources */,
 				4CB3B6411B6E2737009CE032 /* SOPlaygroundFeedCommentPreviewView.m in Sources */,
+				4CF7E9D91B8729DE009C181C /* ELCAssetTablePicker.m in Sources */,
 				8A14F66E1B658C9B001AE83D /* CAPSPageMenu.m in Sources */,
 				8A14F66B1B65800E001AE83D /* HMSegmentedControl.m in Sources */,
 				4CA673D21B541D9C00D5FDFA /* UIButton+AFNetworking.m in Sources */,
@@ -1069,6 +1137,7 @@
 				4CA673D41B541D9C00D5FDFA /* UIProgressView+AFNetworking.m in Sources */,
 				4CA673B61B54166400D5FDFA /* AFHTTPSessionManager.m in Sources */,
 				4CBCF6B61B52517D00EE2195 /* SONavigationController.m in Sources */,
+				4CF7E9D61B8729DE009C181C /* ELCAlbumPickerController.m in Sources */,
 				8AA7BC831B5DF77200ABB812 /* PlaygroundLike.m in Sources */,
 				4CA673D31B541D9C00D5FDFA /* UIImageView+AFNetworking.m in Sources */,
 				8A14F6921B6B1945001AE83D /* DBHelper.m in Sources */,
@@ -1076,6 +1145,7 @@
 				4CA673B71B54166400D5FDFA /* AFNetworkReachabilityManager.m in Sources */,
 				4CA673B41B54166400D5FDFA /* AFHTTPRequestOperation.m in Sources */,
 				4CA673BA1B54166400D5FDFA /* AFURLRequestSerialization.m in Sources */,
+				4CF7E9DC1B8729DE009C181C /* ELCOverlayImageView.m in Sources */,
 				4CA673B91B54166400D5FDFA /* AFURLConnectionOperation.m in Sources */,
 				4CA673BC1B54166400D5FDFA /* AFURLSessionManager.m in Sources */,
 				4CCD26501B5E9FA9006CDAF5 /* SOCommunityContentView.m in Sources */,
@@ -1083,9 +1153,12 @@
 				8A14F6961B6B1945001AE83D /* FMDatabaseQueue.m in Sources */,
 				8A14F6A01B6B1A74001AE83D /* RCDHttpTool.m in Sources */,
 				4CBCF6B01B524F7500EE2195 /* SOUICommons.m in Sources */,
+				4CF7E9D81B8729DE009C181C /* ELCAssetCell.m in Sources */,
 				8A8303D11B54BDCA00FB22A5 /* SOSignupViewController.m in Sources */,
+				4CF7E9DB1B8729DE009C181C /* ELCConsole.m in Sources */,
 				4C01FD321B84366E003D79AB /* SOPlaygroundFeedComposeController.m in Sources */,
 				8A8E5CFD1B727E2E009CE09E /* SOMapBubbleAnnotationView.m in Sources */,
+				4CF7E9DA1B8729DE009C181C /* ELCImagePickerController.m in Sources */,
 				4CBD58D31B76F13000F1F3C7 /* SOFailableAction.m in Sources */,
 				4CB3B63E1B6E22E3009CE032 /* SOPlaygroundFeedActionGroupView.m in Sources */,
 				4CA1CB7C1B5B40BD00B21EEF /* SOAlert.m in Sources */,
@@ -1101,13 +1174,16 @@
 				4CBCF6BD1B5257A500EE2195 /* SOTableViewController.m in Sources */,
 				4CBCF6B31B52510F00EE2195 /* SOBaseViewController.m in Sources */,
 				4CBCF6C31B5258BC00EE2195 /* SOPlaygroundDetailController.m in Sources */,
+				4CF7E9C41B872099009C181C /* SOImageProvider.m in Sources */,
 				8A14F6A11B6B1A74001AE83D /* AFHttpTool.m in Sources */,
+				4CF7E9E11B8734A7009C181C /* SOPlaygroundFeedComposeImageView.m in Sources */,
 				8A8303DC1B58B92100FB22A5 /* SOPeopleTableViewController.m in Sources */,
 				4CBCF6C01B5257D100EE2195 /* SOPlaygroundMainController.m in Sources */,
 				8A14F6791B659702001AE83D /* PersonalInfoSettingTableViewCell.m in Sources */,
 				4CA673B81B54166400D5FDFA /* AFSecurityPolicy.m in Sources */,
 				4CA673D51B541D9C00D5FDFA /* UIRefreshControl+AFNetworking.m in Sources */,
 				8AA7BC8F1B5DFCA300ABB812 /* User.m in Sources */,
+				4CF7E9D71B8729DE009C181C /* ELCAsset.m in Sources */,
 				4CA673D11B541D9C00D5FDFA /* UIAlertView+AFNetworking.m in Sources */,
 				8A14F6AC1B6B21B4001AE83D /* INTULocationManager.m in Sources */,
 				8A14F6B01B6B4C56001AE83D /* SOMapBubbleAnnotation.m in Sources */,

@@ -1,7 +1,6 @@
 SOAction->声音支持
-
-
-
+SOImageProvider->图片的压缩
 
 Finished:
 SOAction->Destructive/Cancel Button的区分
+PlaygroundFeed->刚发送的Feed显示不出图片

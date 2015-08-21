@@ -47,7 +47,7 @@
     User* user = data.poster;
     [user fetchIfNeeded];
     
-    CGFloat h1 = [self.feedImageView setImagesWithFiles:data.images];
+    CGFloat h1 = [self.feedImageView setImagesWithThumbNails:data.thumbnails files:data.images];
     self.feedImageView.delegate = self;
     [self.feedImageViewHeightConstraint setConstant:h1];
     
@@ -58,15 +58,18 @@
     }
     
     [self.feedPosterNameView setText:user.username];
-    
     [self.feedPosterAvatartView setFile:user.portraitThumbnail];
     [self.feedPosterAvatartView loadInBackground];
     
+    //main text view
     [self.feedTextView setText:data.text];
     CGSize size = [self.feedTextView sizeThatFits:CGSizeMake([SOUICommons screenWidth]-32, CGFLOAT_MAX)];//-32 might depend on screen scale
     [self.feedTextViewHeightConstraint setConstant:size.height+1];//ios bug
+    
+    //time label
     [self.feedPostedTimeLabel setText:[SOUICommons descriptionForDate:data.createdAt]];
     
+    //like/comment
     [self.actionGroupView setLiked:[data liked]];
     [self.actionGroupView setFeed:data];
     [self.actionGroupView setDelegate:self.mainController];

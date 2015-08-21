@@ -19,5 +19,9 @@ static NSString* kSOGenderNotSpecified = @"NotSpecified";
 @property NSURL* imageURL;
 @end
 
+#define kPlaygroundSingleImageHeight 100.0f
+//if more than one image, each image is cropped as square
+#define kPlaygroundMultipleImageSize 60.0f
+#define kPlaygroundImagePadding 8.0f
 
 #endif

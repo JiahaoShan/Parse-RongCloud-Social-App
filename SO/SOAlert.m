@@ -50,10 +50,18 @@
             [titleL setFont:[UIFont systemFontOfSize:17]];
             [titleL sizeToFit];
             [titleL setBackgroundColor:[UIColor clearColor]];
+            [titleL setUserInteractionEnabled:false];
             [titleL setCenter:CGPointMake(self.alertWidth/2, titleL.center.y)];
             [titleL setTextColor:[SOUICommons primaryTintColor]];
             self.alertHeight+=CGRectGetHeight(titleL.frame);
             [[self alertBody] addSubview:titleL];
+            
+            if (!message) {
+                UIView* sep = [[UIView alloc] initWithFrame:CGRectMake(0, self.alertHeight, self.alertWidth, 1)];
+                [sep setBackgroundColor:[SOUICommons lightBackgroundGray]];
+                [self.alertBody addSubview:sep];
+                self.alertHeight++;
+            }
         }
         
         if (message) {
@@ -61,15 +69,20 @@
             [messageL setShowsHorizontalScrollIndicator:false];
             [messageL setShowsVerticalScrollIndicator:false];
             [messageL setText:message];
-            [messageL setFont:[UIFont systemFontOfSize:15]];
+            [messageL setFont:[UIFont systemFontOfSize:14]];
             [messageL setTextColor:[SOUICommons primaryTintColor]];
             [messageL setBackgroundColor:[UIColor clearColor]];
             [messageL setUserInteractionEnabled:false];
             CGSize maxSize = CGSizeMake(self.alertWidth*2/3, CGFLOAT_MAX);
             CGSize requiredSize = [messageL sizeThatFits:maxSize];
             messageL.frame = CGRectMake(self.alertWidth/6, self.alertHeight, requiredSize.width, requiredSize.height);
-            self.alertHeight+=requiredSize.height+6;
+            self.alertHeight+=requiredSize.height;
             [[self alertBody] addSubview:messageL];
+            
+            UIView* sep = [[UIView alloc] initWithFrame:CGRectMake(0, self.alertHeight, self.alertWidth, 1)];
+            [sep setBackgroundColor:[SOUICommons lightBackgroundGray]];
+            [self.alertBody addSubview:sep];
+            self.alertHeight++;
         }
         
         self.buttonCount=0;//count for non-seperator objects

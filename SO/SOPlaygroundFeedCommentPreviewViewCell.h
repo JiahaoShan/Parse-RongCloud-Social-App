@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "SOPlaygroundFeedInteractionDelegate.h"
 #import "PlaygroundComment.h"
+#import "PlaygroundFeed.h"
 
 @interface SOPlaygroundFeedCommentPreviewViewCell : UITableViewCell
--(instancetype)initWithComment:(NSDictionary*)comment width:(CGFloat)width;
+-(instancetype)initWithComment:(PlaygroundComment*)comment width:(CGFloat)width;
+-(instancetype)initWithViewAllCount:(NSInteger)count feed:(PlaygroundFeed*)feed;
 @property (nonatomic,assign) id<SOPlaygroundFeedInteractionDelegate> delegate;
 @end

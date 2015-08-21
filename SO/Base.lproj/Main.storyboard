@@ -41,24 +41,44 @@
                                 </items>
                             </navigationBar>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="-&gt;" translatesAutoresizingMaskIntoConstraints="NO" id="8Ck-TM-Tpl">
-                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="190"/>
+                                <color key="backgroundColor" red="0.94083410499999998" green="0.91150379179999996" blue="0.76821911330000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="190" id="Wc4-tg-GT3"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z4k-ZA-SUv" userLabel="add image view" customClass="SOPlaygroundFeedComposeImageView">
+                                <rect key="frame" x="0.0" y="254" width="600" height="346"/>
+                                <color key="backgroundColor" red="0.99816989899999997" green="0.90613931420000005" blue="0.49482896920000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="346" id="mYk-PE-R7a"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="xkn-F1-9cB" firstAttribute="top" secondItem="pfA-Sa-rTS" secondAttribute="bottom" id="0LZ-Qi-pZe"/>
-                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="bottom" secondItem="ud7-tv-PxP" secondAttribute="top" id="27j-6U-hqZ"/>
-                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="top" secondItem="xkn-F1-9cB" secondAttribute="bottom" id="CmR-4O-HB7"/>
-                            <constraint firstItem="xkn-F1-9cB" firstAttribute="leading" secondItem="8Ck-TM-Tpl" secondAttribute="leading" id="FHB-Hy-qp0"/>
-                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="leading" secondItem="3zl-0h-Q6H" secondAttribute="leading" id="Vi0-T3-zAH"/>
-                            <constraint firstAttribute="trailing" secondItem="8Ck-TM-Tpl" secondAttribute="trailing" id="VyA-Sp-5Qf"/>
-                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="trailing" secondItem="xkn-F1-9cB" secondAttribute="trailing" id="d4D-mE-7vz"/>
+                            <constraint firstItem="xkn-F1-9cB" firstAttribute="trailing" secondItem="8Ck-TM-Tpl" secondAttribute="trailing" id="0L4-wx-rFR"/>
+                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="top" secondItem="xkn-F1-9cB" secondAttribute="bottom" id="Cih-pa-JPx"/>
+                            <constraint firstItem="xkn-F1-9cB" firstAttribute="top" secondItem="pfA-Sa-rTS" secondAttribute="bottom" id="H99-Co-PcJ"/>
+                            <constraint firstAttribute="trailing" secondItem="Z4k-ZA-SUv" secondAttribute="trailing" id="IV7-v5-NzQ"/>
+                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="leading" secondItem="Z4k-ZA-SUv" secondAttribute="leading" id="PUQ-mV-gX8"/>
+                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="leading" secondItem="3zl-0h-Q6H" secondAttribute="leading" id="Rzv-KZ-UbT"/>
+                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="trailing" secondItem="Z4k-ZA-SUv" secondAttribute="trailing" id="Trt-gQ-pg0"/>
+                            <constraint firstItem="Z4k-ZA-SUv" firstAttribute="top" secondItem="8Ck-TM-Tpl" secondAttribute="bottom" id="WfX-aG-uga"/>
+                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="leading" secondItem="xkn-F1-9cB" secondAttribute="leading" id="nk0-33-sgu"/>
+                            <constraint firstItem="Z4k-ZA-SUv" firstAttribute="bottom" secondItem="ud7-tv-PxP" secondAttribute="top" id="xhl-A6-oKP"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="xhl-A6-oKP"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
+                        <outlet property="addImageView" destination="Z4k-ZA-SUv" id="xr4-a6-sXI"/>
+                        <outlet property="addImageViewHeigheConstraint" destination="mYk-PE-R7a" id="qgR-pH-t2X"/>
                         <outlet property="messageView" destination="8Ck-TM-Tpl" id="JHg-BL-iBV"/>
                     </connections>
                 </viewController>

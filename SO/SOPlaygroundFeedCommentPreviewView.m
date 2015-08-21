@@ -52,6 +52,9 @@
     return 1;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if (self.commentCount>self.comments.count) {
+        return self.comments.count+1;
+    }
     return self.comments.count;
 }
 -(void)createCells{
@@ -59,6 +62,12 @@
     self.height = 0;
     for (int i=0; i<self.comments.count; i++) {
         SOPlaygroundFeedCommentPreviewViewCell* c = [[SOPlaygroundFeedCommentPreviewViewCell alloc] initWithComment:self.comments[i] width:self.width];
+        [c setDelegate:self.soDelegate];
+        [self.cells addObject:c];
+        self.height+=c.frame.size.height;
+    }
+    if (self.commentCount>self.comments.count) {
+        SOPlaygroundFeedCommentPreviewViewCell* c = [[SOPlaygroundFeedCommentPreviewViewCell alloc] initWithViewAllCount:self.commentCount feed:self.feed];
         [c setDelegate:self.soDelegate];
         [self.cells addObject:c];
         self.height+=c.frame.size.height;

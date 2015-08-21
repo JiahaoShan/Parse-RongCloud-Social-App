@@ -20,6 +20,8 @@
 #import "SOQuickCommentView.h"
 #import "SOPlaygroundFeedComposeController.h"
 
+#import "SOImageProvider.h"
+
 @interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate, imageViewDelegate,SOQuickCommentViewDelegate,SOPlaygroundFeedComposeControllerDelegate>
 @property (nonatomic) BOOL initialized;
 @property (nonatomic) NSMutableArray* likeHistory;
@@ -27,6 +29,8 @@
 @property (nonatomic,weak) PlaygroundFeed* currentCommentingFeed;
 @property (nonatomic) UITextView* dummyComment;
 @property (nonatomic) SOQuickCommentView* commentAccessory;
+
+@property (nonatomic) SOImageProvider* p;
 @end
 
 @implementation SOPlaygroundMainController
@@ -103,7 +107,6 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
     if (indexPath.row == self.objects.count && self.paginationEnabled) {
         // Load More Cell
         [self loadNextPage];
@@ -273,6 +276,14 @@
             [overlay postImmediateMessage:@"delete comment succeed" animated:true];
         }
     }];
+}
+
+-(void)userDidTapViewAllCommentForFeed:(PlaygroundFeed *)feed{
+    NSLog(@"view all comment");
+}
+
+-(void)userDidTapViewAllLikeForFeed:(PlaygroundFeed *)feed{
+     NSLog(@"view all like");
 }
 
 -(void)userDidTapNameOfUser:(User *)user{

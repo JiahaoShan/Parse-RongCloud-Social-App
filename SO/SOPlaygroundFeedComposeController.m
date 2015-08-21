@@ -7,13 +7,25 @@
 //
 
 #import "SOPlaygroundFeedComposeController.h"
+#import "SOPlaygroundFeedComposeImageView.h"
+#import "SOImageProvider.h"
 
-@interface SOPlaygroundFeedComposeController()
+@interface SOPlaygroundFeedComposeController()<SOPlaygroundFeedComposeImageViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextView *messageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *addImageViewHeigheConstraint;
+@property (weak, nonatomic) IBOutlet SOPlaygroundFeedComposeImageView *addImageView;
+@property (strong,nonatomic) SOImageProvider* imageProvider;
 
 @end
 
 @implementation SOPlaygroundFeedComposeController
+-(SOImageProvider*)imageProvider{
+    if (!_imageProvider) {
+        _imageProvider = [[SOImageProvider alloc] initWithViewController:self];
+        [_imageProvider setDelegate:self];
+    }
+    return _imageProvider;
+}
 - (IBAction)cancelled:(UIBarButtonItem *)sender {
     [self dismissViewControllerAnimated:true completion:^{
         [self.delegate userDidTapCancel];
@@ -23,10 +35,33 @@
     PlaygroundFeed* newFeed = [[PlaygroundFeed alloc] initWithClassName:@"PlaygroundFeed"];
     newFeed.text = self.messageView.text;
     newFeed.poster = [PFUser currentUser];
+    NSMutableArray* files = [NSMutableArray array];
+    for (UIImage* img in [self.addImageView images]) {
+        NSData* data = UIImagePNGRepresentation(img);
+        PFFile* file = [PFFile fileWithName:@"UserPostedImage" data:data];
+        [files addObject:file];
+    }
+    newFeed.images = files;
+    
     [self.delegate userDidFinishComposingFeed:newFeed];
     [self dismissViewControllerAnimated:true completion:NULL];
 }
+-(void)loadView{
+    [super loadView];
+    [self.addImageView setDelegate:self];
+}
+#pragma mark - SOPlaygroundFeedComposeImageViewDelegate
+-(void)didRequestMoreImage{
+    [self.imageProvider present];
+}
+-(void)didChangeHeightTo:(CGFloat)height{
+    self.addImageViewHeigheConstraint.constant=height;
+}
 
+#pragma mark - SOImageProviderProtocol
+-(void)providerDidGetPhotos:(NSArray*)photos{
+    [[self addImageView] appendImages:photos];
+}
 
 //    UIImage* sampleImage = [UIImage imageNamed:@"sampleImage2.png"];
 //    NSData* imageData = UIImagePNGRepresentation(sampleImage);
