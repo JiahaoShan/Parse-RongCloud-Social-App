@@ -37,6 +37,7 @@
     self.width = width;
     self.soDelegate = soDelegate;
     [self createCells];
+    [self reloadData];
     return self.height;
 }
 

@@ -16,7 +16,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="kXl-EH-6cx" customClass="SOPlaygroundFeedImageView">
-                        <rect key="frame" x="8" y="226" width="489" height="266"/>
+                        <rect key="frame" x="8" y="214" width="489" height="266"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="266" id="K3c-hE-3Np"/>
                             <constraint firstAttribute="height" constant="120" id="Ngw-aA-Qef"/>
@@ -32,13 +32,13 @@
                         </variation>
                     </view>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lPF-LX-8h9">
-                        <rect key="frame" x="8" y="76" width="489" height="150"/>
+                        <rect key="frame" x="8" y="64" width="489" height="150"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="150" id="HdF-Rf-Y0m"/>
                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="800" id="U89-1g-BRe"/>
                             <constraint firstAttribute="height" constant="20" id="Ypy-Jk-haS"/>
                         </constraints>
-                        <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         <variation key="default">
@@ -49,30 +49,30 @@
                         </variation>
                     </textView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yTb-b3-xAv" customClass="PFImageView">
-                        <rect key="frame" x="8" y="8" width="68" height="68"/>
+                        <rect key="frame" x="8" y="8" width="56" height="56"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="yTb-b3-xAv" secondAttribute="height" multiplier="1:1" id="JKI-uQ-9SJ"/>
                             <constraint firstAttribute="width" constant="30" id="zzN-Hs-CTQ"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ldf-Ne-RfG">
-                        <rect key="frame" x="84" y="8" width="46" height="21"/>
+                        <rect key="frame" x="72" y="8" width="46" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6u0-Nz-lJI">
-                        <rect key="frame" x="8" y="500" width="28" height="24"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <rect key="frame" x="8" y="488" width="36" height="36"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V64-7q-5ls" userLabel="actionGroup" customClass="SOPlaygroundFeedActionGroupView">
-                        <rect key="frame" x="433" y="500" width="48" height="24"/>
+                        <rect key="frame" x="421" y="488" width="60" height="36"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="24" id="RKP-Ia-n5V"/>
-                            <constraint firstAttribute="height" constant="24" id="pu6-Xh-nXd"/>
-                            <constraint firstAttribute="width" constant="48" id="uIM-cn-Py4"/>
+                            <constraint firstAttribute="height" constant="36" id="pu6-Xh-nXd"/>
+                            <constraint firstAttribute="width" constant="60" id="uIM-cn-Py4"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -81,7 +81,7 @@
                         </variation>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5yg-H5-c18" customClass="SOPlaygroundFeedGenderView">
-                        <rect key="frame" x="138" y="8" width="21" height="21"/>
+                        <rect key="frame" x="126" y="8" width="21" height="21"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="5yg-H5-c18" secondAttribute="height" multiplier="1:1" id="1pG-aN-i1a"/>
                             <constraint firstAttribute="width" constant="60" id="Wbu-gm-LqY"/>
@@ -99,15 +99,15 @@
                     </imageView>
                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="RzI-bY-uVE" customClass="SOPlaygroundFeedCommentPreviewView">
                         <rect key="frame" x="8" y="624" width="481" height="104"/>
-                        <color key="backgroundColor" white="0.90000000000000002" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="104" id="bUY-BG-ZiN"/>
                         </constraints>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tableView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sam-lG-3Nv">
-                        <rect key="frame" x="44" y="500" width="30" height="24"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <rect key="frame" x="52" y="488" width="32" height="36"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <state key="normal" title="删除">
                             <color key="titleColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
