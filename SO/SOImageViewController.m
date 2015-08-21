@@ -7,7 +7,7 @@
 //
 
 #import "SOImageViewController.h"
-#import "SOActionSheetManager.h"
+#import "SOAlert.h"
 #import "UIView+ActivityIndicator.h"
 
 @interface SOImageViewController () <UIScrollViewDelegate>
@@ -132,15 +132,19 @@
 
 -(void)longPressed:(UILongPressGestureRecognizer*)g{
     NSLog(@"longPressed");
+    if (![g isEnabled]) {
+        return;//otherwise this will be called twice
+    }
     [g setEnabled:false];
-    SOActionSheetManager* actionSheet = [[SOActionSheetManager alloc] init];
-    [actionSheet addAction:@"Save" type:SOActionTypeDefault handler:^{
+    SOAlert* actionSheet = [[SOAlert alloc] initWithType:SOAlertTypeActionSheet title:nil message:nil actions:@[
+  @{@"title":@"Save",@"type":[SOAlert SOActionTypeDefault],@"handler":^{
         NSLog(@"should save");
-    }];
-    [actionSheet addAction:@"Cancel" type:SOActionTypeCancel handler:^{
-         self.longPress.enabled = true;
-    }];
-    [actionSheet showInViewController:self];
+    }},
+  @{@"title":@"Cancel",@"type":[SOAlert SOActionTypeCancel]}
+  ] didDismiss:^{
+      self.longPress.enabled = true;
+  }];
+    [actionSheet show];
 }
 
 -(void)tapped:(UITapGestureRecognizer*)t{

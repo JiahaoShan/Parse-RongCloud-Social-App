@@ -14,6 +14,8 @@
 +(UIColor*)textColor;
 +(UIColor*)activeButtonColor;//indicated tappable text
 +(UIColor*)descriptiveTextColor;
++(UIColor*)translucentWhite;//translucent white
++(UIColor*)unavailableMask;//translucent black
 +(CGFloat)screenHeight;
 +(CGFloat)screenWidth;
 +(NSString*)descriptionForDate:(NSDate*)date;

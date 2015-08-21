@@ -122,7 +122,7 @@
     if (indexPath.row>=self.objects.count) {
         return [tableView dequeueReusableCellWithIdentifier:@"loadMore"];
     }
-    //[object pinInBackground];
+    [object pinInBackground];
     SOPlaygroundFeedCell* cell = [tableView dequeueReusableCellWithIdentifier:@"feedCell"];
     cell.delegate = self;
     cell.mainController = self;

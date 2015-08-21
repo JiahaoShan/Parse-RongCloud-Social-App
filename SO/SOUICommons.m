@@ -18,7 +18,7 @@
     static dispatch_once_t onceToken;
     static UIColor* primaryTint = nil;
     dispatch_once(&onceToken,^{
-        primaryTint = [UIColor colorWithRed:232.0/255 green:32.0/255 blue:32.0/255 alpha:1];
+        primaryTint = [UIColor colorWithRed:149.0/255 green:165.0/255 blue:165.0/255 alpha:1];
     });
     return primaryTint;
 }
@@ -46,6 +46,22 @@
         descriptiveTextColor = [UIColor grayColor];
     });
     return descriptiveTextColor;
+}
++(UIColor*)translucentWhite{
+    static dispatch_once_t onceToken;
+    static UIColor* translucentWhite = nil;
+    dispatch_once(&onceToken,^{
+        translucentWhite = [UIColor colorWithWhite:0.9 alpha:0.98];
+    });
+    return translucentWhite;
+}
++(UIColor*)unavailableMask{
+    static dispatch_once_t onceToken;
+    static UIColor* unavailableMask = nil;
+    dispatch_once(&onceToken,^{
+        unavailableMask = [UIColor colorWithWhite:0.1 alpha:0.9];
+    });
+    return unavailableMask;
 }
 +(CGFloat)screenHeight{
     return [[UIScreen mainScreen] bounds].size.height;
