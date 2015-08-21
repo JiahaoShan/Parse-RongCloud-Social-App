@@ -24,4 +24,7 @@ static NSString* kSOGenderNotSpecified = @"NotSpecified";
 #define kPlaygroundMultipleImageSize 60.0f
 #define kPlaygroundImagePadding 8.0f
 
+#define PFFILE_MAX_SIZE 10*1024*1024
+#define PFFILE_IMAGE_SUITABLE_SIZE 1*1024*1024
+
 #endif

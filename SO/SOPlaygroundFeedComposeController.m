@@ -9,7 +9,7 @@
 #import "SOPlaygroundFeedComposeController.h"
 #import "SOPlaygroundFeedComposeImageView.h"
 #import "SOImageProvider.h"
-
+#import "MTStatusBarOverlay.h"
 @interface SOPlaygroundFeedComposeController()<SOPlaygroundFeedComposeImageViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextView *messageView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *addImageViewHeigheConstraint;
@@ -37,9 +37,25 @@
     newFeed.poster = [PFUser currentUser];
     NSMutableArray* files = [NSMutableArray array];
     for (UIImage* img in [self.addImageView images]) {
-        NSData* data = UIImagePNGRepresentation(img);
-        PFFile* file = [PFFile fileWithName:@"UserPostedImage" data:data];
-        [files addObject:file];
+        //compress image
+        NSData* data = UIImageJPEGRepresentation(img, 0.8);//UIImagePNGRepresentation(img);
+        if ([data length]>PFFILE_IMAGE_SUITABLE_SIZE) {
+            data = UIImageJPEGRepresentation(img, 0.6);
+            if ([data length]>PFFILE_IMAGE_SUITABLE_SIZE) {
+                data = UIImageJPEGRepresentation(img, 0.4);
+                if ([data length]>PFFILE_IMAGE_SUITABLE_SIZE) {
+                    data = UIImageJPEGRepresentation(img, 0.2);
+                    if ([data length]>PFFILE_IMAGE_SUITABLE_SIZE) {
+                        [[MTStatusBarOverlay sharedInstance] postImmediateErrorMessage:@"image too big" duration:2 animated:true];
+                        data=nil;
+                    }
+                }
+            }
+        }
+        if (data) {
+            PFFile* file = [PFFile fileWithName:@"UserPostedImage" data:data];
+            [files addObject:file];
+        }
     }
     newFeed.images = files;
     
