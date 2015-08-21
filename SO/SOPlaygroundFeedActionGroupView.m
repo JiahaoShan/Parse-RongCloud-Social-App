@@ -17,13 +17,13 @@
 @implementation SOPlaygroundFeedActionGroupView
 
 -(void)awakeFromNib{
-    self.redView = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, 16, 16)];
+    self.redView = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, 24, 24)];
     [self.redView setImage:[UIImage imageNamed:@"like"]];
-    self.grayView = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, 16, 16)];
+    self.grayView = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, 24, 24)];
     [self.grayView setImage:[UIImage imageNamed:@"like_gray"]];
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleLike:)];
     [self addGestureRecognizer:self.tap];
-    self.comment = [[UIButton alloc] initWithFrame:CGRectMake(28, 4, 16, 16)];
+    self.comment = [[UIButton alloc] initWithFrame:CGRectMake(32, 4, 24, 24)];
     [self.comment setBackgroundImage:[UIImage imageNamed:@"comment"] forState:UIControlStateNormal];
     [self.comment addTarget:self action:@selector(commentTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.comment];

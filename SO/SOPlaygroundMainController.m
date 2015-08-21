@@ -383,8 +383,9 @@
         MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
         if (error) {
             [overlay postImmediateMessage:[error localizedDescription] duration:2];
-            [(NSMutableArray*)self.objects removeObject:feed];
-            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.objects indexOfObject:self.currentCommentingFeed] inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            NSUInteger index = [self.objects indexOfObject:feed];
+            [(NSMutableArray*)self.objects removeObjectAtIndex:index];
+            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
         }
         else{
             [overlay postImmediateMessage:@"post comment success" duration:2];
