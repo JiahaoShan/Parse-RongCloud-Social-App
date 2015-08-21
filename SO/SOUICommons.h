@@ -13,9 +13,12 @@
 +(UIColor*)primaryTintColor;
 +(UIColor*)textColor;
 +(UIColor*)activeButtonColor;//indicated tappable text
++(UIColor*)destructiveButtonColor;
 +(UIColor*)descriptiveTextColor;
 +(UIColor*)translucentWhite;//translucent white
 +(UIColor*)unavailableMask;//translucent black
++(UIColor*)backgroundGray;//general background
++(UIColor*)lightBackgroundGray;
 +(CGFloat)screenHeight;
 +(CGFloat)screenWidth;
 +(NSString*)descriptionForDate:(NSDate*)date;

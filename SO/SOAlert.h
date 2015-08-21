@@ -17,11 +17,11 @@ typedef NS_ENUM(NSUInteger, SOAlertType) {
 };
 
 @interface SOAlert : UIView
--(instancetype)initWithType:(SOAlertType)type title:(NSString*)title message:(NSString*)message actions:(NSArray*)actions didDismiss:(SOActionHandler)dismissAction;
+-(instancetype)initWithType:(SOAlertType)type title:(NSString*)title message:(NSString*)message items:(NSArray*)items didDismiss:(SOActionHandler)dismissAction;
 -(void)show;
 -(void)dismiss;
 
 +(id)SOActionTypeDefault;
 +(id)SOActionTypeDestructive;
-+(id)SOActionTypeCancel;
++(id)SOActionItemSeperator;
 @end

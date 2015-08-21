@@ -12,30 +12,27 @@
 @property SOAlertType type;
 @property NSMutableArray* handlers;
 @property (strong)SOActionHandler dismissAction;
-@property NSMutableArray* buttons;
 @property NSString* title;
 @property NSString* message;
 @property UIView* alertBody;
 @property UITapGestureRecognizer* tap;
-
+@property int buttonCount;
 @property CGFloat alertWidth;
 @property CGFloat alertHeight;//used when action sheet
 @end
 
 @implementation SOAlert
--(instancetype)initWithType:(SOAlertType)type title:(NSString*)title message:(NSString*)message actions:(NSArray*)actions didDismiss:(SOActionHandler)dismissAction{
+-(instancetype)initWithType:(SOAlertType)type title:(NSString*)title message:(NSString*)message items:(NSArray*)items didDismiss:(SOActionHandler)dismissAction{
     if (self=[super initWithFrame:CGRectMake(0, 0, [SOUICommons screenWidth], [SOUICommons screenHeight])]) {
         self.type = type;
         self.handlers = [NSMutableArray array];
         self.title = title;
         self.message = message;
-        self.buttons = [NSMutableArray array];
         self.alertHeight=0;
         self.dismissAction = [dismissAction copy];
         self.alertBody = [[UIView alloc] initWithFrame:CGRectZero];
         [self addSubview:self.alertBody];
         [self.alertBody setBackgroundColor:[SOUICommons translucentWhite]];
-        [[self.alertBody layer] setCornerRadius:5];
         [self.alertBody setClipsToBounds:true];
         
         if (self.type==SOAlertTypeActionSheet) {
@@ -50,7 +47,7 @@
             [titleL setShowsVerticalScrollIndicator:false];
             [titleL setTextAlignment:NSTextAlignmentCenter];
             [titleL setText:title];
-            [titleL setFont:[UIFont systemFontOfSize:16]];
+            [titleL setFont:[UIFont systemFontOfSize:17]];
             [titleL sizeToFit];
             [titleL setBackgroundColor:[UIColor clearColor]];
             [titleL setCenter:CGPointMake(self.alertWidth/2, titleL.center.y)];
@@ -64,6 +61,7 @@
             [messageL setShowsHorizontalScrollIndicator:false];
             [messageL setShowsVerticalScrollIndicator:false];
             [messageL setText:message];
+            [messageL setFont:[UIFont systemFontOfSize:15]];
             [messageL setTextColor:[SOUICommons primaryTintColor]];
             [messageL setBackgroundColor:[UIColor clearColor]];
             [messageL setUserInteractionEnabled:false];
@@ -74,18 +72,26 @@
             [[self alertBody] addSubview:messageL];
         }
         
+        self.buttonCount=0;//count for non-seperator objects
+        for (id item in items) {
+            if (item!=[SOAlert SOActionItemSeperator]) {
+                self.buttonCount++;
+            }
+        }
+        
         if (self.type==SOAlertTypeActionSheet) {
             self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)];
             [self addGestureRecognizer:self.tap];
-            [self createButtonsWithActions:actions vertical:true];
+            [self createButtonsWithItems:items vertical:true];
             [self.alertBody setFrame:CGRectMake(0, 0, self.alertWidth, self.alertHeight)];
         }else if (self.type==SOAlertTypeAlert){
+            NSAssert(self.buttonCount==items.count, @"alert cannot have seperator");
+            [[self.alertBody layer] setCornerRadius:5];
             self.userInteractionEnabled = true;//block action to views behind it
-
-            if (actions.count<=2) {
-                [self createButtonsWithActions:actions vertical:false];
+            if (self.buttonCount<=2) {
+                [self createButtonsWithItems:items vertical:false];
             }else{
-                [self createButtonsWithActions:actions vertical:true];
+                [self createButtonsWithItems:items vertical:true];
             }
             [self.alertBody setFrame:CGRectMake(0, 0, self.alertWidth, self.alertHeight)];
         }
@@ -93,47 +99,72 @@
     return self;
 }
 
--(void)createButtonsWithActions:(NSArray*)actions vertical:(BOOL)vertical{
+-(void)createButtonsWithItems:(NSArray*)items vertical:(BOOL)vertical{
     if (vertical) {
-        for (int i=0; i<actions.count; i++) {
-            NSDictionary* dic = actions[i];
+        for (int i=0; i<items.count; i++) {
+            id item = items[i];
+            if (item==[SOAlert SOActionItemSeperator]) {
+                UIView* sep = [[UIView alloc] initWithFrame:CGRectMake(0, self.alertHeight, self.alertWidth, 6)];
+                [sep setBackgroundColor:[SOUICommons lightBackgroundGray]];
+                [self.alertBody addSubview:sep];
+                self.alertHeight+=6;
+                continue;
+            }
+            NSDictionary* dic = item;
             id handler = [dic objectForKey:@"handler"];
             if (handler){
                 [self.handlers addObject:[handler copy]];
             }else{
                 [self.handlers addObject:[NSNull null]];
             }
-            UIButton* button = [self buttonWithFrame:CGRectMake(0, self.alertHeight, self.alertWidth, 44) title:dic[@"title"] tag:i];
-            self.alertHeight+=44;
+            UIButton* button = [self buttonWithType:dic[@"type"] frame:CGRectMake(0, self.alertHeight, self.alertWidth, 44) title:dic[@"title"] tag:self.handlers.count-1];
             [self.alertBody addSubview:button];
+            self.alertHeight+=44;
+            if (i!=items.count-1 && items[i+1]!=[SOAlert SOActionItemSeperator]) {
+                UIView* sep = [[UIView alloc] initWithFrame:CGRectMake(0, self.alertHeight, self.alertWidth, 1)];
+                [sep setBackgroundColor:[SOUICommons lightBackgroundGray]];
+                [self.alertBody addSubview:sep];
+                self.alertHeight++;
+            }
         }
     }else{
         CGFloat curX=0;
-        CGFloat perWidth = self.alertWidth/actions.count;
-        for (int i=0; i<actions.count; i++) {
-            NSDictionary* dic = actions[i];
+        CGFloat perWidth = (self.alertWidth-self.buttonCount+1)/items.count;
+        for (int i=0; i<items.count; i++) {
+            NSDictionary* dic = items[i];
             id handler = [dic objectForKey:@"handler"];
             if (handler){
                 [self.handlers addObject:[handler copy]];
             }else{
                 [self.handlers addObject:[NSNull null]];
             }
-            UIButton* button = [self buttonWithFrame:CGRectMake(curX, self.alertHeight, perWidth, 44) title:dic[@"title"] tag:i];
+            UIButton* button = [self buttonWithType:dic[@"type"] frame:CGRectMake(curX, self.alertHeight, perWidth, 44) title:dic[@"title"] tag:i];
             [self.alertBody addSubview:button];
             curX+=perWidth;
+            
+            if (i!=items.count-1) {
+                UIView* sep = [[UIView alloc] initWithFrame:CGRectMake(curX, self.alertHeight, 1, 44)];
+                [sep setBackgroundColor:[UIColor grayColor]];
+                [self.alertBody addSubview:sep];
+                curX++;
+            }
         }
         self.alertHeight+=44;
     }
 }
 
--(UIButton*)buttonWithFrame:(CGRect)frame title:(NSString*)title tag:(NSInteger)tag{
+-(UIButton*)buttonWithType:(id)type frame:(CGRect)frame title:(NSString*)title tag:(NSInteger)tag{
     UIButton* button = [[UIButton alloc] initWithFrame:frame];
     [button setTitle:title forState:UIControlStateNormal];
-    [button setTitleColor:[SOUICommons primaryTintColor] forState:UIControlStateNormal];
+    if (type==[SOAlert SOActionTypeDestructive]) {
+        [button setTitleColor:[SOUICommons destructiveButtonColor] forState:UIControlStateNormal];
+        [[button titleLabel] setFont:[UIFont systemFontOfSize:17]];
+    }else{
+        [button setTitleColor:[SOUICommons primaryTintColor] forState:UIControlStateNormal];
+        [[button titleLabel] setFont:[UIFont systemFontOfSize:16]];
+    }
     [button setTag:tag];
     [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [[button layer] setBorderColor:[[UIColor grayColor] CGColor]];
-    [[button layer] setBorderWidth:0.5];
     return button;
 }
 
@@ -192,13 +223,13 @@
     });
     return type;
 }
-+(id)SOActionTypeCancel{
++(id)SOActionItemSeperator{
     static dispatch_once_t onceToken;
-    static NSObject* type = nil;
+    static NSObject* sep = nil;
     dispatch_once(&onceToken,^{
-        type = [[NSObject alloc] init];
+        sep = [[NSObject alloc] init];
     });
-    return type;
+    return sep;
 }
 
 @end

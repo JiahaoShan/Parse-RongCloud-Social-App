@@ -136,11 +136,12 @@
         return;//otherwise this will be called twice
     }
     [g setEnabled:false];
-    SOAlert* actionSheet = [[SOAlert alloc] initWithType:SOAlertTypeActionSheet title:nil message:nil actions:@[
-  @{@"title":@"Save",@"type":[SOAlert SOActionTypeDefault],@"handler":^{
+    SOAlert* actionSheet = [[SOAlert alloc] initWithType:SOAlertTypeActionSheet title:nil message:nil items:@[
+  @{@"title":@"Save",@"handler":^{
         NSLog(@"should save");
     }},
-  @{@"title":@"Cancel",@"type":[SOAlert SOActionTypeCancel]}
+  [SOAlert SOActionItemSeperator],
+  @{@"title":@"Cancel"}
   ] didDismiss:^{
       self.longPress.enabled = true;
   }];

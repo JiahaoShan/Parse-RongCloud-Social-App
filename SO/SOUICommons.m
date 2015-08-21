@@ -39,6 +39,14 @@
     });
     return activeButtonColor;
 }
++(UIColor*)destructiveButtonColor{
+    static dispatch_once_t onceToken;
+    static UIColor* destructiveButtonColor = nil;
+    dispatch_once(&onceToken,^{
+        destructiveButtonColor = [UIColor redColor];
+    });
+    return destructiveButtonColor;
+}
 +(UIColor*)descriptiveTextColor{
     static dispatch_once_t onceToken;
     static UIColor* descriptiveTextColor = nil;
@@ -51,7 +59,7 @@
     static dispatch_once_t onceToken;
     static UIColor* translucentWhite = nil;
     dispatch_once(&onceToken,^{
-        translucentWhite = [UIColor colorWithWhite:0.9 alpha:0.98];
+        translucentWhite = [UIColor colorWithWhite:1 alpha:1];
     });
     return translucentWhite;
 }
@@ -62,6 +70,22 @@
         unavailableMask = [UIColor colorWithWhite:0.1 alpha:0.9];
     });
     return unavailableMask;
+}
++(UIColor*)backgroundGray{
+    static dispatch_once_t onceToken;
+    static UIColor* backgroundGray = nil;
+    dispatch_once(&onceToken,^{
+        backgroundGray = [UIColor grayColor];
+    });
+    return backgroundGray;
+}
++(UIColor*)lightBackgroundGray{
+    static dispatch_once_t onceToken;
+    static UIColor* backgroundGray = nil;
+    dispatch_once(&onceToken,^{
+        backgroundGray = [UIColor colorWithWhite:0.8 alpha:1];
+    });
+    return backgroundGray;
 }
 +(CGFloat)screenHeight{
     return [[UIScreen mainScreen] bounds].size.height;
