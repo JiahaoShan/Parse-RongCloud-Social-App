@@ -74,6 +74,8 @@ const NSInteger displayDistanceMeters = 5000;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"地图群聊";
+    self.navigationItem.title = @"地图群聊";
     _mapView.delegate = self;
     _mapView.showsUserLocation = YES;
     _mapView.mapType = MKMapTypeStandard;
@@ -175,9 +177,24 @@ const NSInteger displayDistanceMeters = 5000;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    _preventSendingMessage = NO;
+    _waitForAppealingSendingMessage = NO;
+    UILabel *titleView = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 44)];
+    titleView.backgroundColor = [UIColor clearColor];
+    titleView.font = [UIFont boldSystemFontOfSize:19];
+    titleView.textColor = [UIColor whiteColor];
+    titleView.textAlignment = NSTextAlignmentCenter;
+    titleView.text = @"地图群聊";
+    self.tabBarController.navigationItem.titleView = titleView;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     _preventSendingMessage = NO;
     _waitForAppealingSendingMessage = NO;
     [self joinChatRoom];
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -224,6 +241,9 @@ const NSInteger displayDistanceMeters = 5000;
 }
 
 - (void) sendMessage {
+    NSString* message = _textView.internalTextView.text;
+    NSString* trimmedMessage = [message stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if (trimmedMessage.length == 0) return;
     RCTextMessage* content = [RCTextMessage messageWithContent:_textView.internalTextView.text];
     content.senderUserInfo = [RCIMClient sharedRCIMClient].currentUserInfo;
     
@@ -253,6 +273,20 @@ const NSInteger displayDistanceMeters = 5000;
     }];
 }
 
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+{
+    if ([view.annotation isKindOfClass:[MKUserLocation class]]) {
+        return;
+    }
+    
+    if ([view.annotation isKindOfClass:[SOMapBubbleAnnotation class]]) {
+        SOMapBubbleAnnotation* annotation = (SOMapBubbleAnnotation*) view.annotation;
+        NSString* userID = annotation.subtitle;
+        UIViewController* c = [self.storyboard instantiateViewControllerWithIdentifier:@"userDetail"];
+        [self.navigationController pushViewController:c animated:YES];
+        [mapView deselectAnnotation:view.annotation animated:YES];
+    }
+}
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
     
@@ -270,7 +304,7 @@ const NSInteger displayDistanceMeters = 5000;
         // Try to dequeue an existing annotation view first
         MKAnnotationView *annotationView  = [[MKAnnotationView alloc] init];
         annotationView.annotation = annotation;
-        annotationView.canShowCallout = YES;
+        annotationView.canShowCallout = NO;
         
         // set pin image
         SOMapBubbleAnnotation *mapAnnotation = (SOMapBubbleAnnotation*) annotation;
@@ -493,11 +527,23 @@ const NSInteger displayDistanceMeters = 5000;
         _mapView.scrollEnabled = NO;
         _mapView.zoomEnabled = NO;
         _mapView.showsUserLocation = NO;
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonTapped:)];
+        [cancelButton setTintColor:[UIColor whiteColor]];
+        self.tabBarController.navigationItem.leftBarButtonItem = cancelButton;
         [self addTextField];
     }
 }
 
+- (void) cancelButtonTapped:(UIBarButtonItem*)button {
+    self.addButton.isAddButton = YES;
+    self.addButton.fillColor = [UIColor colorWithRed:87.0f/255.0f green:218.0f/255.0f blue:213.0f/255.0f alpha:1];
+    [self runSpinAnimationOnView:self.addButton duration:1.0f rotations:0.5f repeat:1.0f];
+    [self endInputMode];
+    [self.addButton setNeedsDisplay];
+}
+
 - (void) endInputMode {
+    self.tabBarController.navigationItem.leftBarButtonItem = nil;
     _mapView.scrollEnabled = YES;
     _mapView.zoomEnabled = YES;
     _mapView.showsUserLocation = YES;
@@ -554,6 +600,16 @@ const NSInteger displayDistanceMeters = 5000;
     [self addButtonTapped:_addButton];
     [self setPreventSendingMessage];
     return YES;
+}
+
+- (BOOL)growingTextView:(CSGrowingTextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    if(range.length + range.location > textView.internalTextView.text.length)
+    {
+        return NO;
+    }
+    
+    NSUInteger newLength = [textView.internalTextView.text length] + [text length] - range.length;
+    return newLength <= 25;
 }
 
 - (void) runSpinAnimationOnView:(UIView*)view duration:(CGFloat)duration rotations:(CGFloat)rotations repeat:(float)repeat;

@@ -102,6 +102,7 @@
     
     return [layoutManager boundingRectForGlyphRange:glyphRange inTextContainer:textContainer];
 }
+
 -(void)tapped:(UITapGestureRecognizer*)tap{
     if (self.viewAll && [self.delegate respondsToSelector:@selector(userDidTapViewAllCommentForFeed:)]) {
         [self.delegate userDidTapViewAllCommentForFeed:self.feed];

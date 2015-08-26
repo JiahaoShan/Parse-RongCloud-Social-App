@@ -8,7 +8,9 @@
 
 #import "SOBaseViewController.h"
 #import "SOMapBubbleButtonView.h"
+#import "SOMapBubbleChatRecordTableView.h"
 
 @interface SOMapBubbleViewController : SOBaseViewController 
 @property (weak, nonatomic) IBOutlet SOMapBubbleButtonView *addButton;
+@property (weak, nonatomic) IBOutlet SOMapBubbleChatRecordTableView *recordTable;
 @end
