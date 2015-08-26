@@ -59,6 +59,7 @@
 		4CF7E9DB1B8729DE009C181C /* ELCConsole.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7E9D31B8729DE009C181C /* ELCConsole.m */; };
 		4CF7E9DC1B8729DE009C181C /* ELCOverlayImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7E9D51B8729DE009C181C /* ELCOverlayImageView.m */; };
 		4CF7E9E11B8734A7009C181C /* SOPlaygroundFeedComposeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7E9E01B8734A7009C181C /* SOPlaygroundFeedComposeImageView.m */; };
+		4CF7EA491B8D6D50009C181C /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7EA481B8D6D50009C181C /* TTTAttributedLabel.m */; };
 		4CFC3E6F1B838A9F00E5A9BC /* SOQuickCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFC3E6E1B838A9F00E5A9BC /* SOQuickCommentView.m */; };
 		8A0E3E7C1B77A9F7007E5E65 /* SOLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3E7B1B77A9F7007E5E65 /* SOLabelView.m */; };
 		8A0E3E7F1B77C08A007E5E65 /* CSGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3E7E1B77C08A007E5E65 /* CSGrowingTextView.m */; };
@@ -270,6 +271,8 @@
 		4CF7E9D51B8729DE009C181C /* ELCOverlayImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCOverlayImageView.m; sourceTree = "<group>"; };
 		4CF7E9DF1B8734A7009C181C /* SOPlaygroundFeedComposeImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPlaygroundFeedComposeImageView.h; sourceTree = "<group>"; };
 		4CF7E9E01B8734A7009C181C /* SOPlaygroundFeedComposeImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedComposeImageView.m; sourceTree = "<group>"; };
+		4CF7EA471B8D6D50009C181C /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
+		4CF7EA481B8D6D50009C181C /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		4CFC3E6D1B838A9F00E5A9BC /* SOQuickCommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOQuickCommentView.h; sourceTree = "<group>"; };
 		4CFC3E6E1B838A9F00E5A9BC /* SOQuickCommentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOQuickCommentView.m; sourceTree = "<group>"; };
 		8A0E3E7A1B77A9F7007E5E65 /* SOLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOLabelView.h; sourceTree = "<group>"; };
@@ -520,6 +523,8 @@
 				4CF7E9DD1B8729E7009C181C /* ELCImagePicker */,
 				4CBCF6AE1B524F7500EE2195 /* SOUICommons.h */,
 				4CBCF6AF1B524F7500EE2195 /* SOUICommons.m */,
+				4CF7EA471B8D6D50009C181C /* TTTAttributedLabel.h */,
+				4CF7EA481B8D6D50009C181C /* TTTAttributedLabel.m */,
 				4CB3B6451B6E5FD2009CE032 /* MTStatusBarOverlay.h */,
 				4CB3B6461B6E5FD2009CE032 /* MTStatusBarOverlay.m */,
 				4CBCF6B71B52521200EE2195 /* SOTabBarController.h */,
@@ -1131,6 +1136,7 @@
 				8A14F66E1B658C9B001AE83D /* CAPSPageMenu.m in Sources */,
 				8A14F66B1B65800E001AE83D /* HMSegmentedControl.m in Sources */,
 				4CA673D21B541D9C00D5FDFA /* UIButton+AFNetworking.m in Sources */,
+				4CF7EA491B8D6D50009C181C /* TTTAttributedLabel.m in Sources */,
 				8A692F251B53349F00E9DC22 /* SOChatListViewController.m in Sources */,
 				4CCD26481B5E8EDA006CDAF5 /* SOCommunityViewController.m in Sources */,
 				4CA673D61B541D9C00D5FDFA /* UIWebView+AFNetworking.m in Sources */,
