@@ -13,4 +13,5 @@
 @interface SOMapBubbleViewController : SOBaseViewController 
 @property (weak, nonatomic) IBOutlet SOMapBubbleButtonView *addButton;
 @property (weak, nonatomic) IBOutlet SOMapBubbleChatRecordTableView *recordTable;
+@property (weak, nonatomic) IBOutlet SOMapBubbleChatRecordTableView *chatRecordTableView;
 @end

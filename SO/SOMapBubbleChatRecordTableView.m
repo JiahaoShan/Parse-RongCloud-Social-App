@@ -11,54 +11,11 @@
 @interface SOMapBubbleChatRecordTableView() <UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) NSMutableArray* messages;
 @property (nonatomic) int messageCount;//total count
-@property (nonatomic) CGFloat width;
-@property (nonatomic) CGFloat height;
-@property (nonatomic,strong) NSMutableArray* cells;
 @end
 
+static NSString * const MapChatCellIdentifier = @"MapBubbleChatRecordCell";
+
 @implementation SOMapBubbleChatRecordTableView
-
--(void)awakeFromNib{
-    [super awakeFromNib];
-    [self setScrollEnabled:YES];
-    [self setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    self.delegate = self;
-    self.dataSource = self;
-}
-
--(CGFloat)setMessages:(NSMutableArray*)messages width:(CGFloat)width soDelegate:(id<SOMapBubbleChatRecordInteractionDelegate>)soDelegate{
-    self.messages = messages;
-    self.messageCount = 0;
-    self.width = width;
-    self.soDelegate = soDelegate;
-//    [self createCells];
-    [self reloadData];
-    return self.height;
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return [self.cells[indexPath.row] frame].size.height;
-}
-
--(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSString* identifier = @"MapBubbleChatRecordCell";
-    SOMapBubbleChatRecordTableViewCell* cell = (SOMapBubbleChatRecordTableViewCell*)[self dequeueReusableCellWithIdentifier:identifier];
-    if (cell == nil) {
-        cell = [[SOMapBubbleChatRecordTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-    return self.cells[self.messageCount - indexPath.row];
-}
-
--(NSInteger)numberOfRowsInSection:(NSInteger)section{
-    return 1;
-}
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (self.messageCount>self.messages.count) {
-        return self.messages.count+1;
-    }
-    return self.messages.count;
-}
 
 -(void)insertMessage:(RCTextMessage*)message withUserInfo:(RCUserInfo*) userInfo
 {
@@ -67,25 +24,60 @@
     [self insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
+-(void)awakeFromNib{
+    [super awakeFromNib];
+    self.delegate = self;
+    self.dataSource = self;
+    self.separatorStyle = UITableViewCellSeparatorStyleNone;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return [self heightForChatRecordCellAtIndexPath:indexPath];
+}
+
+- (CGFloat)heightForChatRecordCellAtIndexPath:(NSIndexPath *)indexPath {
+    static SOMapBubbleChatRecordTableViewCell *sizingCell = nil;
+    static dispatch_once_t token;
+    dispatch_once(&token, ^{
+        sizingCell = [self dequeueReusableCellWithIdentifier:MapChatCellIdentifier];
+    });
+    
+    sizingCell.textLabel.text = @"Nigulars";
+    return [self calculateHeightForConfiguredSizingCell:sizingCell];
+}
+
+- (CGFloat)calculateHeightForConfiguredSizingCell:(UITableViewCell *)sizingCell {
+    [sizingCell setNeedsLayout];
+    [sizingCell layoutIfNeeded];
+    
+    return 30;
+    
+    CGSize size = [sizingCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    return size.height;
+}
+
+-(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    SOMapBubbleChatRecordTableViewCell* cell = (SOMapBubbleChatRecordTableViewCell*)[self dequeueReusableCellWithIdentifier:MapChatCellIdentifier];
+    if (cell == nil) {
+        cell = [[SOMapBubbleChatRecordTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MapChatCellIdentifier];
+    }
+    cell.textLabel.text = @"Nigulars";
+    cell.detailTextLabel.text = @"Fuck you";
+    return cell;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 5;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
 -(SOMapBubbleChatRecordTableViewCell*)configureCellForMessage:(RCTextMessage*)message
 {
     return nil;
 }
-//-(void)createCells{
-//    [self.cells removeAllObjects];
-//    self.height = 0;
-//    for (int i=0; i<self.messages.count; i++) {
-//        SOMapBubbleChatRecordTableViewCell* c = [[SOMapBubbleChatRecordTableViewCell alloc] initWithComment:self.messages[i] width:self.width];
-//        [c setDelegate:self.soDelegate];
-//        [self.cells addObject:c];
-//        self.height+=c.frame.size.height;
-//    }
-//    if (self.messageCount>self.messages.count) {
-//        SOMapBubbleChatRecordTableViewCell* c = [[SOMapBubbleChatRecordTableViewCell alloc] initWithViewAllCount:self.messageCount feed:self.feed];
-//        [c setDelegate:self.soDelegate];
-//        [self.cells addObject:c];
-//        self.height+=c.frame.size.height;
-//    }
-//}
 
 @end

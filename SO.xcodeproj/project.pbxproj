@@ -63,6 +63,8 @@
 		8A0E3E7C1B77A9F7007E5E65 /* SOLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3E7B1B77A9F7007E5E65 /* SOLabelView.m */; };
 		8A0E3E7F1B77C08A007E5E65 /* CSGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3E7E1B77C08A007E5E65 /* CSGrowingTextView.m */; };
 		8A1092AC1B8D5CF8006D217D /* SOMapBubbleChatRecordTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1092AA1B8D5CF8006D217D /* SOMapBubbleChatRecordTableView.m */; };
+		8A1092AF1B8D9282006D217D /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1092AE1B8D9282006D217D /* TTTAttributedLabel.m */; };
+		8A1092B21B8D9404006D217D /* SOMapBubbleChatRecordTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1092B11B8D9404006D217D /* SOMapBubbleChatRecordTableViewCell.m */; };
 		8A1138B71B6E8EE70033B994 /* sampleImage2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A1138B61B6E8EE70033B994 /* sampleImage2.png */; };
 		8A1138B91B6EC6720033B994 /* sampleImage3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A1138B81B6EC6720033B994 /* sampleImage3.png */; };
 		8A1138BC1B6F23CC0033B994 /* University.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1138BB1B6F23CC0033B994 /* University.m */; };
@@ -106,7 +108,6 @@
 		8A22DB451B52F9540032AB1E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB441B52F9540032AB1E /* MapKit.framework */; };
 		8A22DB471B52F95A0032AB1E /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB461B52F95A0032AB1E /* OpenGLES.framework */; };
 		8A22DB491B52F96D0032AB1E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB481B52F96D0032AB1E /* UIKit.framework */; };
-		8A2CDC811B8AE7F1009132F7 /* SOMapBubbleChatRecordTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2CDC801B8AE7F1009132F7 /* SOMapBubbleChatRecordTableViewCell.m */; };
 		8A5800461B522F010032EC1C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5800451B522F010032EC1C /* main.m */; };
 		8A5800491B522F010032EC1C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5800481B522F010032EC1C /* AppDelegate.m */; };
 		8A5800521B522F010032EC1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A5800501B522F010032EC1C /* Main.storyboard */; };
@@ -280,6 +281,10 @@
 		8A0E3E7E1B77C08A007E5E65 /* CSGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSGrowingTextView.m; sourceTree = "<group>"; };
 		8A1092AA1B8D5CF8006D217D /* SOMapBubbleChatRecordTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMapBubbleChatRecordTableView.m; sourceTree = "<group>"; };
 		8A1092AB1B8D5CF8006D217D /* SOMapBubbleChatRecordTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMapBubbleChatRecordTableView.h; sourceTree = "<group>"; };
+		8A1092AD1B8D9282006D217D /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
+		8A1092AE1B8D9282006D217D /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
+		8A1092B01B8D9404006D217D /* SOMapBubbleChatRecordTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMapBubbleChatRecordTableViewCell.h; sourceTree = "<group>"; };
+		8A1092B11B8D9404006D217D /* SOMapBubbleChatRecordTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMapBubbleChatRecordTableViewCell.m; sourceTree = "<group>"; };
 		8A1138B61B6E8EE70033B994 /* sampleImage2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sampleImage2.png; path = SO/Resources/sampleImage2.png; sourceTree = "<group>"; };
 		8A1138B81B6EC6720033B994 /* sampleImage3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sampleImage3.png; path = SO/Resources/sampleImage3.png; sourceTree = "<group>"; };
 		8A1138BA1B6F23CC0033B994 /* University.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = University.h; sourceTree = "<group>"; };
@@ -348,9 +353,6 @@
 		8A22DB441B52F9540032AB1E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		8A22DB461B52F95A0032AB1E /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		8A22DB481B52F96D0032AB1E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		8A2CDC7F1B8AE7F1009132F7 /* SOMapBubbleChatRecordTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMapBubbleChatRecordTableViewCell.h; sourceTree = "<group>"; };
-		8A2CDC801B8AE7F1009132F7 /* SOMapBubbleChatRecordTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMapBubbleChatRecordTableViewCell.m; sourceTree = "<group>"; };
-		8A2CDC821B8AEA8B009132F7 /* SOMapBubbleChatRecordInteractionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMapBubbleChatRecordInteractionDelegate.h; sourceTree = "<group>"; };
 		8A5800401B522F010032EC1C /* SO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A5800441B522F010032EC1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A5800451B522F010032EC1C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -527,6 +529,8 @@
 				4CF7E9DD1B8729E7009C181C /* ELCImagePicker */,
 				4CBCF6AE1B524F7500EE2195 /* SOUICommons.h */,
 				4CBCF6AF1B524F7500EE2195 /* SOUICommons.m */,
+				8A1092AD1B8D9282006D217D /* TTTAttributedLabel.h */,
+				8A1092AE1B8D9282006D217D /* TTTAttributedLabel.m */,
 				4CB3B6451B6E5FD2009CE032 /* MTStatusBarOverlay.h */,
 				4CB3B6461B6E5FD2009CE032 /* MTStatusBarOverlay.m */,
 				4CBCF6B71B52521200EE2195 /* SOTabBarController.h */,
@@ -979,11 +983,10 @@
 				8A8E5CFC1B727E2E009CE09E /* SOMapBubbleAnnotationView.m */,
 				8A19809E1B72D6E300AC75B0 /* SOMapBubbleView.h */,
 				8A19809F1B72D6E300AC75B0 /* SOMapBubbleView.m */,
-				8A2CDC7F1B8AE7F1009132F7 /* SOMapBubbleChatRecordTableViewCell.h */,
-				8A2CDC801B8AE7F1009132F7 /* SOMapBubbleChatRecordTableViewCell.m */,
-				8A2CDC821B8AEA8B009132F7 /* SOMapBubbleChatRecordInteractionDelegate.h */,
 				8A1092AB1B8D5CF8006D217D /* SOMapBubbleChatRecordTableView.h */,
 				8A1092AA1B8D5CF8006D217D /* SOMapBubbleChatRecordTableView.m */,
+				8A1092B01B8D9404006D217D /* SOMapBubbleChatRecordTableViewCell.h */,
+				8A1092B11B8D9404006D217D /* SOMapBubbleChatRecordTableViewCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1163,6 +1166,7 @@
 				4CA673BC1B54166400D5FDFA /* AFURLSessionManager.m in Sources */,
 				4CCD26501B5E9FA9006CDAF5 /* SOCommunityContentView.m in Sources */,
 				8A5800491B522F010032EC1C /* AppDelegate.m in Sources */,
+				8A1092B21B8D9404006D217D /* SOMapBubbleChatRecordTableViewCell.m in Sources */,
 				8A14F6961B6B1945001AE83D /* FMDatabaseQueue.m in Sources */,
 				8A14F6A01B6B1A74001AE83D /* RCDHttpTool.m in Sources */,
 				4CBCF6B01B524F7500EE2195 /* SOUICommons.m in Sources */,
@@ -1209,10 +1213,10 @@
 				8A14F6AD1B6B21B4001AE83D /* INTULocationRequest.m in Sources */,
 				4CA673B51B54166400D5FDFA /* AFHTTPRequestOperationManager.m in Sources */,
 				4CA1CB791B5AC4C900B21EEF /* SOImageViewController.m in Sources */,
-				8A2CDC811B8AE7F1009132F7 /* SOMapBubbleChatRecordTableViewCell.m in Sources */,
 				4CBCF6CD1B525BA300EE2195 /* SOPlaygroundFeedCell.m in Sources */,
 				8AF8FA7E1B54A20300401474 /* SOCommonStrings.m in Sources */,
 				4CA673BB1B54166400D5FDFA /* AFURLResponseSerialization.m in Sources */,
+				8A1092AF1B8D9282006D217D /* TTTAttributedLabel.m in Sources */,
 				8A8303D81B58AC0900FB22A5 /* SOConversationViewController.m in Sources */,
 				8A14F6811B6B067D001AE83D /* SODataManager.m in Sources */,
 				8A14F6731B6595F6001AE83D /* SOPersonalInfoTableViewController.m in Sources */,

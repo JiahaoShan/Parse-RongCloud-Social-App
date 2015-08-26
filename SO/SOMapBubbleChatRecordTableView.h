@@ -8,11 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "SOMapBubbleChatRecordTableViewCell.h"
-#import "SOMapBubbleChatRecordInteractionDelegate.h"
+#import <RongIMKit/RongIMKit.h>
 
 @interface SOMapBubbleChatRecordTableView : UITableView
-
-@property (nonatomic,assign) id<SOMapBubbleChatRecordInteractionDelegate> soDelegate;
-
-
+-(void)insertMessage:(RCTextMessage*)message withUserInfo:(RCUserInfo*) userInfo;
 @end

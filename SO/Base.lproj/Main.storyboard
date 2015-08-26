@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--feedCompose-->
@@ -538,20 +539,38 @@
                                     <action selector="addButtonTapped:" destination="t9u-1s-BBI" eventType="touchUpInside" id="hWx-CS-ywA"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="RZd-zZ-L5q" customClass="SOMapBubbleChatRecordTableView">
-                                <rect key="frame" x="0.0" y="64" width="218" height="329"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="28" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="RZd-zZ-L5q" customClass="SOMapBubbleChatRecordTableView">
+                                <rect key="frame" x="0.0" y="64" width="218" height="487"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexColor" red="0.40619536713286714" green="0.78794252622377625" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" id="SyQ-WT-WdT" customClass="SOMapBubbleChatRecordTableViewCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MapBubbleChatRecordCell" rowHeight="28" id="SyQ-WT-WdT" customClass="SOMapBubbleChatRecordTableViewCell">
                                         <rect key="frame" x="0.0" y="0.0" width="218" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SyQ-WT-WdT" id="OdJ-lG-dZX">
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IoH-Y3-F0M" customClass="TTTAttributedLabel">
+                                                    <rect key="frame" x="8" y="-4" width="202" height="36"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="IoH-Y3-F0M" firstAttribute="leading" secondItem="OdJ-lG-dZX" secondAttribute="leadingMargin" id="3n2-eu-vh1"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="IoH-Y3-F0M" secondAttribute="bottom" constant="-12.5" id="iqc-Cz-XZI"/>
+                                                <constraint firstItem="IoH-Y3-F0M" firstAttribute="centerX" secondItem="OdJ-lG-dZX" secondAttribute="centerX" id="rUU-LL-NZd"/>
+                                                <constraint firstItem="IoH-Y3-F0M" firstAttribute="top" secondItem="OdJ-lG-dZX" secondAttribute="top" constant="-4" id="zdh-ol-TQd"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <connections>
+                                            <outlet property="textLabel" destination="IoH-Y3-F0M" id="I4T-zX-eTC"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -560,15 +579,18 @@
                         <constraints>
                             <constraint firstItem="szE-Xl-Sfb" firstAttribute="centerX" secondItem="9bp-T6-124" secondAttribute="centerX" id="WdD-3i-cr7"/>
                             <constraint firstItem="6Ko-1c-JwN" firstAttribute="top" secondItem="9bp-T6-124" secondAttribute="bottom" constant="24" id="X15-dk-5hr"/>
+                            <constraint firstItem="RZd-zZ-L5q" firstAttribute="leading" secondItem="TY5-vW-4Q6" secondAttribute="leadingMargin" constant="-16" id="X2P-t7-kb1"/>
                             <constraint firstItem="szE-Xl-Sfb" firstAttribute="top" secondItem="QoU-0d-ZvZ" secondAttribute="bottom" id="Xgp-ca-EbK"/>
                             <constraint firstAttribute="centerX" secondItem="9bp-T6-124" secondAttribute="centerX" constant="-0.5" id="pNP-8f-031"/>
                             <constraint firstItem="szE-Xl-Sfb" firstAttribute="bottom" secondItem="6Ko-1c-JwN" secondAttribute="top" id="tcL-mf-iSc"/>
+                            <constraint firstItem="RZd-zZ-L5q" firstAttribute="top" secondItem="QoU-0d-ZvZ" secondAttribute="bottom" id="ubp-Zw-ZZT"/>
                             <constraint firstItem="szE-Xl-Sfb" firstAttribute="leading" secondItem="TY5-vW-4Q6" secondAttribute="leading" id="w9C-Gm-zhn"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="jfE-Ih-JTu"/>
                     <connections>
                         <outlet property="addButton" destination="9bp-T6-124" id="tkP-WA-ErH"/>
+                        <outlet property="chatRecordTableView" destination="RZd-zZ-L5q" id="wGw-Yj-1Pn"/>
                         <outlet property="mapView" destination="szE-Xl-Sfb" id="uUP-tY-beX"/>
                         <outlet property="recordTable" destination="RZd-zZ-L5q" id="7aw-Be-Pw2"/>
                     </connections>
