@@ -97,11 +97,11 @@
         [self.imageViews addObject:iv];
     }else{
         for (int i=0;i<files.count;i++) {
-            PFFile* f = thumbnails[0];
+            PFFile* f = thumbnails[i];
             if (![f isDataAvailable]) {
-                f = files[0];
+                f = files[i];
                 if (![f isDataAvailable]) {
-                    f = thumbnails[0];
+                    f = thumbnails[i];
                 }
             }
             UIImageView* iv;
