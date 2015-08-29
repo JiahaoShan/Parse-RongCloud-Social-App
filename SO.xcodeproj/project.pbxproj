@@ -59,12 +59,10 @@
 		4CF7E9DB1B8729DE009C181C /* ELCConsole.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7E9D31B8729DE009C181C /* ELCConsole.m */; };
 		4CF7E9DC1B8729DE009C181C /* ELCOverlayImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7E9D51B8729DE009C181C /* ELCOverlayImageView.m */; };
 		4CF7E9E11B8734A7009C181C /* SOPlaygroundFeedComposeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7E9E01B8734A7009C181C /* SOPlaygroundFeedComposeImageView.m */; };
-		4CF7EA491B8D6D50009C181C /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF7EA481B8D6D50009C181C /* TTTAttributedLabel.m */; };
 		4CFC3E6F1B838A9F00E5A9BC /* SOQuickCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFC3E6E1B838A9F00E5A9BC /* SOQuickCommentView.m */; };
 		8A0E3E7C1B77A9F7007E5E65 /* SOLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3E7B1B77A9F7007E5E65 /* SOLabelView.m */; };
 		8A0E3E7F1B77C08A007E5E65 /* CSGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E3E7E1B77C08A007E5E65 /* CSGrowingTextView.m */; };
 		8A1092AC1B8D5CF8006D217D /* SOMapBubbleChatRecordTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1092AA1B8D5CF8006D217D /* SOMapBubbleChatRecordTableView.m */; };
-		8A1092AF1B8D9282006D217D /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1092AE1B8D9282006D217D /* TTTAttributedLabel.m */; };
 		8A1092B21B8D9404006D217D /* SOMapBubbleChatRecordTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A1092B11B8D9404006D217D /* SOMapBubbleChatRecordTableViewCell.m */; };
 		8A1138B71B6E8EE70033B994 /* sampleImage2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A1138B61B6E8EE70033B994 /* sampleImage2.png */; };
 		8A1138B91B6EC6720033B994 /* sampleImage3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A1138B81B6EC6720033B994 /* sampleImage3.png */; };
@@ -133,6 +131,7 @@
 		8A58008E1B522FF60032EC1C /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A58008D1B522FF60032EC1C /* libsqlite3.dylib */; };
 		8A5800901B5230110032EC1C /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A58008F1B5230110032EC1C /* Accounts.framework */; };
 		8A5800921B5230190032EC1C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5800911B5230190032EC1C /* Social.framework */; };
+		8A638F791B91692300F16576 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A638F781B91692300F16576 /* TTTAttributedLabel.m */; };
 		8A692F251B53349F00E9DC22 /* SOChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A692F241B53349F00E9DC22 /* SOChatListViewController.m */; };
 		8A8303CE1B54BD5600FB22A5 /* SOLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8303CD1B54BD5600FB22A5 /* SOLoginViewController.m */; };
 		8A8303D11B54BDCA00FB22A5 /* SOSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8303D01B54BDCA00FB22A5 /* SOSignupViewController.m */; };
@@ -274,8 +273,6 @@
 		4CF7E9D51B8729DE009C181C /* ELCOverlayImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCOverlayImageView.m; sourceTree = "<group>"; };
 		4CF7E9DF1B8734A7009C181C /* SOPlaygroundFeedComposeImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPlaygroundFeedComposeImageView.h; sourceTree = "<group>"; };
 		4CF7E9E01B8734A7009C181C /* SOPlaygroundFeedComposeImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedComposeImageView.m; sourceTree = "<group>"; };
-		4CF7EA471B8D6D50009C181C /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
-		4CF7EA481B8D6D50009C181C /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		4CFC3E6D1B838A9F00E5A9BC /* SOQuickCommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOQuickCommentView.h; sourceTree = "<group>"; };
 		4CFC3E6E1B838A9F00E5A9BC /* SOQuickCommentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOQuickCommentView.m; sourceTree = "<group>"; };
 		8A0E3E7A1B77A9F7007E5E65 /* SOLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOLabelView.h; sourceTree = "<group>"; };
@@ -284,8 +281,6 @@
 		8A0E3E7E1B77C08A007E5E65 /* CSGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSGrowingTextView.m; sourceTree = "<group>"; };
 		8A1092AA1B8D5CF8006D217D /* SOMapBubbleChatRecordTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMapBubbleChatRecordTableView.m; sourceTree = "<group>"; };
 		8A1092AB1B8D5CF8006D217D /* SOMapBubbleChatRecordTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMapBubbleChatRecordTableView.h; sourceTree = "<group>"; };
-		8A1092AD1B8D9282006D217D /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
-		8A1092AE1B8D9282006D217D /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		8A1092B01B8D9404006D217D /* SOMapBubbleChatRecordTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMapBubbleChatRecordTableViewCell.h; sourceTree = "<group>"; };
 		8A1092B11B8D9404006D217D /* SOMapBubbleChatRecordTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMapBubbleChatRecordTableViewCell.m; sourceTree = "<group>"; };
 		8A1138B61B6E8EE70033B994 /* sampleImage2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sampleImage2.png; path = SO/Resources/sampleImage2.png; sourceTree = "<group>"; };
@@ -385,6 +380,8 @@
 		8A58008D1B522FF60032EC1C /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		8A58008F1B5230110032EC1C /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		8A5800911B5230190032EC1C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		8A638F771B91692300F16576 /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
+		8A638F781B91692300F16576 /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		8A692F231B53349F00E9DC22 /* SOChatListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOChatListViewController.h; sourceTree = "<group>"; };
 		8A692F241B53349F00E9DC22 /* SOChatListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOChatListViewController.m; sourceTree = "<group>"; };
 		8A8303CC1B54BD5600FB22A5 /* SOLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOLoginViewController.h; sourceTree = "<group>"; };
@@ -532,13 +529,8 @@
 				4CF7E9DD1B8729E7009C181C /* ELCImagePicker */,
 				4CBCF6AE1B524F7500EE2195 /* SOUICommons.h */,
 				4CBCF6AF1B524F7500EE2195 /* SOUICommons.m */,
-<<<<<<< HEAD
-				8A1092AD1B8D9282006D217D /* TTTAttributedLabel.h */,
-				8A1092AE1B8D9282006D217D /* TTTAttributedLabel.m */,
-=======
-				4CF7EA471B8D6D50009C181C /* TTTAttributedLabel.h */,
-				4CF7EA481B8D6D50009C181C /* TTTAttributedLabel.m */,
->>>>>>> 18d0f70f9b5abf3e46da28f3ecddd3cb3586ad9b
+				8A638F771B91692300F16576 /* TTTAttributedLabel.h */,
+				8A638F781B91692300F16576 /* TTTAttributedLabel.m */,
 				4CB3B6451B6E5FD2009CE032 /* MTStatusBarOverlay.h */,
 				4CB3B6461B6E5FD2009CE032 /* MTStatusBarOverlay.m */,
 				4CBCF6B71B52521200EE2195 /* SOTabBarController.h */,
@@ -1154,7 +1146,6 @@
 				8A14F66E1B658C9B001AE83D /* CAPSPageMenu.m in Sources */,
 				8A14F66B1B65800E001AE83D /* HMSegmentedControl.m in Sources */,
 				4CA673D21B541D9C00D5FDFA /* UIButton+AFNetworking.m in Sources */,
-				4CF7EA491B8D6D50009C181C /* TTTAttributedLabel.m in Sources */,
 				8A692F251B53349F00E9DC22 /* SOChatListViewController.m in Sources */,
 				4CCD26481B5E8EDA006CDAF5 /* SOCommunityViewController.m in Sources */,
 				4CA673D61B541D9C00D5FDFA /* UIWebView+AFNetworking.m in Sources */,
@@ -1225,7 +1216,7 @@
 				4CBCF6CD1B525BA300EE2195 /* SOPlaygroundFeedCell.m in Sources */,
 				8AF8FA7E1B54A20300401474 /* SOCommonStrings.m in Sources */,
 				4CA673BB1B54166400D5FDFA /* AFURLResponseSerialization.m in Sources */,
-				8A1092AF1B8D9282006D217D /* TTTAttributedLabel.m in Sources */,
+				8A638F791B91692300F16576 /* TTTAttributedLabel.m in Sources */,
 				8A8303D81B58AC0900FB22A5 /* SOConversationViewController.m in Sources */,
 				8A14F6811B6B067D001AE83D /* SODataManager.m in Sources */,
 				8A14F6731B6595F6001AE83D /* SOPersonalInfoTableViewController.m in Sources */,
