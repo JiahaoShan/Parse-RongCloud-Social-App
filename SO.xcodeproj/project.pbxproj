@@ -107,6 +107,7 @@
 		8A22DB451B52F9540032AB1E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB441B52F9540032AB1E /* MapKit.framework */; };
 		8A22DB471B52F95A0032AB1E /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB461B52F95A0032AB1E /* OpenGLES.framework */; };
 		8A22DB491B52F96D0032AB1E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A22DB481B52F96D0032AB1E /* UIKit.framework */; };
+		8A4DE1AC1B92561800B9BD18 /* SOMapBubbleChatRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DE1AB1B92561800B9BD18 /* SOMapBubbleChatRecord.m */; };
 		8A5800461B522F010032EC1C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5800451B522F010032EC1C /* main.m */; };
 		8A5800491B522F010032EC1C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A5800481B522F010032EC1C /* AppDelegate.m */; };
 		8A5800521B522F010032EC1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A5800501B522F010032EC1C /* Main.storyboard */; };
@@ -351,6 +352,8 @@
 		8A22DB441B52F9540032AB1E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		8A22DB461B52F95A0032AB1E /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		8A22DB481B52F96D0032AB1E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		8A4DE1AA1B92561800B9BD18 /* SOMapBubbleChatRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMapBubbleChatRecord.h; sourceTree = "<group>"; };
+		8A4DE1AB1B92561800B9BD18 /* SOMapBubbleChatRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMapBubbleChatRecord.m; sourceTree = "<group>"; };
 		8A5800401B522F010032EC1C /* SO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A5800441B522F010032EC1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A5800451B522F010032EC1C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -704,6 +707,7 @@
 		8A14F6821B6B0ABC001AE83D /* SOMapBubble */ = {
 			isa = PBXGroup;
 			children = (
+				8A4DE1A91B9255EC00B9BD18 /* DataModel */,
 				8A8E5CF71B726464009CE09E /* Views */,
 				8A14F6A21B6B1BA3001AE83D /* SOMapBubbleViewController.h */,
 				8A14F6A31B6B1BA3001AE83D /* SOMapBubbleViewController.m */,
@@ -798,6 +802,15 @@
 				8A8303D31B577B4600FB22A5 /* RongIMLib.framework */,
 			);
 			name = RoungCloud;
+			sourceTree = "<group>";
+		};
+		8A4DE1A91B9255EC00B9BD18 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				8A4DE1AA1B92561800B9BD18 /* SOMapBubbleChatRecord.h */,
+				8A4DE1AB1B92561800B9BD18 /* SOMapBubbleChatRecord.m */,
+			);
+			name = DataModel;
 			sourceTree = "<group>";
 		};
 		8A5800371B522F000032EC1C = {
@@ -1193,6 +1206,7 @@
 				4CBCF6C31B5258BC00EE2195 /* SOPlaygroundDetailController.m in Sources */,
 				4CF7E9C41B872099009C181C /* SOImageProvider.m in Sources */,
 				8A14F6A11B6B1A74001AE83D /* AFHttpTool.m in Sources */,
+				8A4DE1AC1B92561800B9BD18 /* SOMapBubbleChatRecord.m in Sources */,
 				4CF7E9E11B8734A7009C181C /* SOPlaygroundFeedComposeImageView.m in Sources */,
 				8A8303DC1B58B92100FB22A5 /* SOPeopleTableViewController.m in Sources */,
 				4CBCF6C01B5257D100EE2195 /* SOPlaygroundMainController.m in Sources */,

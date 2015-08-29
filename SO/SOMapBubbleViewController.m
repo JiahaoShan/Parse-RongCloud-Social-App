@@ -20,7 +20,7 @@
 #import "SOUserDefaultManager.h"
 
 
-@interface SOMapBubbleViewController () <MKMapViewDelegate, CSGrowingTextViewDelegate> {
+@interface SOMapBubbleViewController () <MKMapViewDelegate, CSGrowingTextViewDelegate, TTTAttributedLabelDelegate> {
     int locationTryCounter;
 }
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -267,6 +267,7 @@ const NSInteger displayDistanceMeters = 5000;
     }
     
     [[RCIMClient sharedRCIMClient] sendMessage:ConversationType_CHATROOM targetId:@"id" content:content pushContent:@"extraInfo"success:^(long messageId){
+        [self.chatRecordTableView insertMessage:content withUserInfo:content.senderUserInfo];
         NSLog(@"send successfully");
     } error:^(RCErrorCode nErrorCode, long messageId) {
         NSLog(@"send error");
@@ -395,6 +396,8 @@ const NSInteger displayDistanceMeters = 5000;
     
     [[SODataManager sharedInstance] getUserInfoWithUserId:textMessage.senderUserInfo.userId completion:^(RCUserInfo *userInfo) {
         [self setMessageView:userInfo withAnnotation:myAnnotation];
+        if (!self.chatRecordTableView.attributeLabelDelegate) self.chatRecordTableView.attributeLabelDelegate = self;
+        [self.chatRecordTableView insertMessage:textMessage withUserInfo:userInfo];
     }];
 }
 
@@ -677,5 +680,10 @@ const NSInteger displayDistanceMeters = 5000;
         _waitForAppealingSendingMessage = NO;
         [self addButtonTapped:self.addButton];
     }
+}
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+    UIViewController* c = [self.storyboard instantiateViewControllerWithIdentifier:@"userDetail"];
+    [self.navigationController pushViewController:c animated:YES];
 }
 @end

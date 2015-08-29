@@ -10,6 +10,10 @@
 #import "SOMapBubbleChatRecordTableViewCell.h"
 #import <RongIMKit/RongIMKit.h>
 
+
 @interface SOMapBubbleChatRecordTableView : UITableView
 -(void)insertMessage:(RCTextMessage*)message withUserInfo:(RCUserInfo*) userInfo;
+
+@property (weak, nonatomic) id attributeLabelDelegate;
+
 @end
