@@ -2,12 +2,12 @@
 //  SOTabBarController.h
 //  SO
 //
-//  Created by Guanqing Yan on 7/12/15.
+//  Created by Guanqing Yan on 8/30/15.
 //  Copyright (c) 2015 Guanqing Shan. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface SOTabBarController : UITabBarController
+@interface SOTabBarController : UITabBarController<UITabBarControllerDelegate>
 
 @end

@@ -9,6 +9,7 @@
 #import "SOPlaygroundFeedComposeController.h"
 #import "SOPlaygroundFeedComposeImageView.h"
 #import "SOImageProvider.h"
+#import "SOUICommons.h"
 #import "MTStatusBarOverlay.h"
 @interface SOPlaygroundFeedComposeController()<SOPlaygroundFeedComposeImageViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextView *messageView;
@@ -16,9 +17,25 @@
 @property (weak, nonatomic) IBOutlet SOPlaygroundFeedComposeImageView *addImageView;
 @property (strong,nonatomic) SOImageProvider* imageProvider;
 
+
+@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @end
 
 @implementation SOPlaygroundFeedComposeController
+
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    [self.navigationBar setBarTintColor:[SOUICommons primaryTintColor]];
+    [self.navigationBar setTintColor:[SOUICommons textColor]];
+    UILabel* titleLabel = [[UILabel alloc] init];
+    [SOUICommons configureNavigationBarLabel:titleLabel];
+    [titleLabel setText:@"创作"];
+    [titleLabel sizeToFit];
+    UINavigationItem* item = [self.navigationBar.items firstObject];
+    [item setTitleView:titleLabel];
+}
+
+
 -(SOImageProvider*)imageProvider{
     if (!_imageProvider) {
         _imageProvider = [[SOImageProvider alloc] initWithViewController:self];

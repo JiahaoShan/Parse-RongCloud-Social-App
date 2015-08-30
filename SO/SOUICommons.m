@@ -7,6 +7,7 @@
 //
 
 #import "SOUICommons.h"
+#import <CoreGraphics/CoreGraphics.h>
 
 @interface SOUICommons(){
 }
@@ -115,5 +116,20 @@
 +(UIColor*)randomColor{
     CGFloat r = (CGFloat)(arc4random()%255/255.0);
     return [UIColor colorWithHue:r saturation:1 brightness:1 alpha:1];
+}
++(UIImage*)opaqueImageOfColor:(UIColor*)color size:(CGSize)size{
+    UIImage* image;
+    UIGraphicsBeginImageContext(size);
+    [color setFill];
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextFillRect(context, CGRectMake(0, 0, size.width, size.height));
+    image=UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
++(void)configureNavigationBarLabel:(UILabel*)label{
+    label.font = [UIFont boldSystemFontOfSize:19];
+    label.textColor = [UIColor redColor];
+    label.textAlignment = NSTextAlignmentCenter;
 }
 @end

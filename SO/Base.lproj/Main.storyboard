@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BWw-ha-VuI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D72i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BWw-ha-VuI">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -16,77 +16,85 @@
                         <viewControllerLayoutGuide type="bottom" id="ud7-tv-PxP"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="3zl-0h-Q6H">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xkn-F1-9cB">
-                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
-                                <color key="barTintColor" red="0.89901620370000002" green="0.19147147" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <textAttributes key="titleTextAttributes">
-                                    <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textAttributes>
-                                <items>
-                                    <navigationItem title="创作" id="0MT-8I-1Qx">
-                                        <barButtonItem key="leftBarButtonItem" title="放弃" id="j2i-2W-Kvc">
-                                            <color key="tintColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            <connections>
-                                                <action selector="cancelled:" destination="AAw-q8-Dui" id="GEQ-Wv-5el"/>
-                                            </connections>
-                                        </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" title="发送" id="BeK-Fx-dxq">
-                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <connections>
-                                                <action selector="finish:" destination="AAw-q8-Dui" id="hrb-6A-DbS"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="-&gt;" translatesAutoresizingMaskIntoConstraints="NO" id="8Ck-TM-Tpl">
-                                <rect key="frame" x="0.0" y="64" width="600" height="190"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="236"/>
                                 <color key="backgroundColor" red="0.94083410499999998" green="0.91150379179999996" blue="0.76821911330000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="190" id="Wc4-tg-GT3"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Wc4-tg-GT3"/>
+                                    </mask>
+                                </variation>
                             </textView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DUq-gL-MeQ">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="zLz-RN-Vzn"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem title="创作" id="oPi-eR-FDK">
+                                        <barButtonItem key="leftBarButtonItem" title="放弃" id="cTb-9a-l60">
+                                            <connections>
+                                                <action selector="cancelled:" destination="AAw-q8-Dui" id="omR-wH-2ZA"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Go" id="hxg-5t-0a3">
+                                            <connections>
+                                                <action selector="finish:" destination="AAw-q8-Dui" id="bP4-co-jrc"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z4k-ZA-SUv" userLabel="add image view" customClass="SOPlaygroundFeedComposeImageView">
-                                <rect key="frame" x="0.0" y="254" width="600" height="346"/>
+                                <rect key="frame" x="0.0" y="300" width="568" height="300"/>
                                 <color key="backgroundColor" red="0.99816989899999997" green="0.90613931420000005" blue="0.49482896920000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="346" id="mYk-PE-R7a"/>
+                                    <constraint firstAttribute="height" constant="300" id="EdF-8D-7Mr"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="xkn-F1-9cB" firstAttribute="trailing" secondItem="8Ck-TM-Tpl" secondAttribute="trailing" id="0L4-wx-rFR"/>
-                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="top" secondItem="xkn-F1-9cB" secondAttribute="bottom" id="Cih-pa-JPx"/>
-                            <constraint firstItem="xkn-F1-9cB" firstAttribute="top" secondItem="pfA-Sa-rTS" secondAttribute="bottom" id="H99-Co-PcJ"/>
-                            <constraint firstAttribute="trailing" secondItem="Z4k-ZA-SUv" secondAttribute="trailing" id="IV7-v5-NzQ"/>
-                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="leading" secondItem="Z4k-ZA-SUv" secondAttribute="leading" id="PUQ-mV-gX8"/>
-                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="leading" secondItem="3zl-0h-Q6H" secondAttribute="leading" id="Rzv-KZ-UbT"/>
-                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="trailing" secondItem="Z4k-ZA-SUv" secondAttribute="trailing" id="Trt-gQ-pg0"/>
-                            <constraint firstItem="Z4k-ZA-SUv" firstAttribute="top" secondItem="8Ck-TM-Tpl" secondAttribute="bottom" id="WfX-aG-uga"/>
-                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="leading" secondItem="xkn-F1-9cB" secondAttribute="leading" id="nk0-33-sgu"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="DUq-gL-MeQ" secondAttribute="trailing" constant="-16" id="008-zB-NXe"/>
+                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="leading" secondItem="3zl-0h-Q6H" secondAttribute="leadingMargin" constant="-16" id="0km-eu-FhC"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Z4k-ZA-SUv" secondAttribute="trailing" constant="16" id="2rg-Ov-Lcf"/>
+                            <constraint firstItem="Z4k-ZA-SUv" firstAttribute="leading" secondItem="3zl-0h-Q6H" secondAttribute="leadingMargin" constant="-16" id="3sQ-UV-sBL"/>
+                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="top" secondItem="Z4k-ZA-SUv" secondAttribute="bottom" constant="-8" id="6dz-0n-MFi"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="8Ck-TM-Tpl" secondAttribute="trailing" constant="-16" id="9tg-cJ-Sjy"/>
+                            <constraint firstItem="DUq-gL-MeQ" firstAttribute="leading" secondItem="3zl-0h-Q6H" secondAttribute="leadingMargin" constant="-16" id="CFb-0C-AtM"/>
+                            <constraint firstItem="8Ck-TM-Tpl" firstAttribute="top" secondItem="DUq-gL-MeQ" secondAttribute="bottom" id="mhZ-ca-4zL"/>
+                            <constraint firstItem="ud7-tv-PxP" firstAttribute="top" secondItem="Z4k-ZA-SUv" secondAttribute="bottom" id="nYB-dg-4oa"/>
+                            <constraint firstItem="Z4k-ZA-SUv" firstAttribute="top" secondItem="8Ck-TM-Tpl" secondAttribute="bottom" id="rqC-JH-x8m"/>
+                            <constraint firstItem="DUq-gL-MeQ" firstAttribute="top" secondItem="pfA-Sa-rTS" secondAttribute="bottom" constant="-20" id="sJy-n1-bFv"/>
                             <constraint firstItem="Z4k-ZA-SUv" firstAttribute="bottom" secondItem="ud7-tv-PxP" secondAttribute="top" id="xhl-A6-oKP"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="6dz-0n-MFi"/>
                                 <exclude reference="xhl-A6-oKP"/>
                             </mask>
                         </variation>
                     </view>
+                    <navigationItem key="navigationItem" title="创作" id="3G4-pE-2Q7">
+                        <barButtonItem key="backBarButtonItem" title="放弃" id="OyD-iw-rbc"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="addImageView" destination="Z4k-ZA-SUv" id="xr4-a6-sXI"/>
-                        <outlet property="addImageViewHeigheConstraint" destination="mYk-PE-R7a" id="qgR-pH-t2X"/>
                         <outlet property="messageView" destination="8Ck-TM-Tpl" id="JHg-BL-iBV"/>
+                        <outlet property="navigationBar" destination="DUq-gL-MeQ" id="F19-0a-f8R"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gPo-uZ-d1O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1022" y="-459"/>
+            <point key="canvasLocation" x="1834" y="477"/>
         </scene>
         <!--操场-->
         <scene sceneID="DL5-Bh-AnV">
@@ -138,7 +146,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tdi-kV-UDv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1074" y="282"/>
+            <point key="canvasLocation" x="1036" y="290"/>
         </scene>
         <!--Item-->
         <scene sceneID="erW-8X-ogI">
@@ -176,7 +184,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yzA-g1-62f" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1766" y="88"/>
+            <point key="canvasLocation" x="1694" y="-352"/>
         </scene>
         <!--Personal Info Table View Controller-->
         <scene sceneID="P8C-Cz-Ltd">
@@ -438,7 +446,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jak-7m-ReJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1892" y="810"/>
+            <point key="canvasLocation" x="1756" y="1338"/>
         </scene>
         <!--community-->
         <scene sceneID="GQa-Nw-thn">
@@ -462,12 +470,12 @@
             </objects>
             <point key="canvasLocation" x="-598" y="-125"/>
         </scene>
-        <!--tab bar-->
+        <!--标题-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
                 <tabBarController storyboardIdentifier="SOtabBarController" hidesBottomBarWhenPushed="YES" id="49e-Tb-3d3" customClass="SOTabBarController" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout"/>
-                    <navigationItem key="navigationItem" title="tab bar" id="zPG-r8-Ejq"/>
+                    <navigationItem key="navigationItem" title="标题" id="zPG-r8-Ejq"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="W28-zg-YXA">
                         <rect key="frame" x="0.0" y="975" width="768" height="49"/>
@@ -521,7 +529,7 @@
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                             </mapView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="110" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="RZd-zZ-L5q" customClass="SOMapBubbleChatRecordTableView">
-                                <rect key="frame" x="0.0" y="64" width="300.5" height="243.5"/>
+                                <rect key="frame" x="0.0" y="64" width="301" height="244"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexColor" red="0.40619536713286714" green="0.78794252622377625" blue="1" alpha="1" colorSpace="calibratedRGB"/>

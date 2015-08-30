@@ -13,6 +13,7 @@
 -(void)awakeFromNib{
     [super awakeFromNib];
     [[self navigationBar] setBarTintColor:[SOUICommons primaryTintColor]];
+    [[self navigationBar] setTintColor:[SOUICommons textColor]];
     [[self navigationBar] setTitleTextAttributes:@{NSForegroundColorAttributeName:[SOUICommons textColor]}];
     [self setExtendedLayoutIncludesOpaqueBars:false];
 }
