@@ -1,18 +1,18 @@
+////
+////  SOPlaygroundFeedCommentPreviewViewCell.h
+////  SO
+////
+////  Created by Guanqing Yan on 8/9/15.
+////  Copyright (c) 2015 Guanqing Shan. All rights reserved.
+////
 //
-//  SOPlaygroundFeedCommentPreviewViewCell.h
-//  SO
+//#import <UIKit/UIKit.h>
+//#import "SOPlaygroundFeedInteractionDelegate.h"
+//#import "PlaygroundComment.h"
+//#import "PlaygroundFeed.h"
 //
-//  Created by Guanqing Yan on 8/9/15.
-//  Copyright (c) 2015 Guanqing Shan. All rights reserved.
-//
-
-#import <UIKit/UIKit.h>
-#import "SOPlaygroundFeedInteractionDelegate.h"
-#import "PlaygroundComment.h"
-#import "PlaygroundFeed.h"
-
-@interface SOPlaygroundFeedCommentPreviewViewCell : UITableViewCell
--(instancetype)initWithComment:(PlaygroundComment*)comment width:(CGFloat)width;
--(instancetype)initWithViewAllCount:(NSInteger)count feed:(PlaygroundFeed*)feed;
-@property (nonatomic,assign) id<SOPlaygroundFeedInteractionDelegate> delegate;
-@end
+//@interface SOPlaygroundFeedCommentPreviewViewCell : UITableViewCell
+//-(instancetype)initWithComment:(PlaygroundComment*)comment width:(CGFloat)width;
+//-(instancetype)initWithViewAllCount:(NSInteger)count feed:(PlaygroundFeed*)feed;
+//@property (nonatomic,assign) id<SOPlaygroundFeedInteractionDelegate> delegate;
+//@end

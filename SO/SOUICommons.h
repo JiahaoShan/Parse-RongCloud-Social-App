@@ -22,4 +22,5 @@
 +(CGFloat)screenHeight;
 +(CGFloat)screenWidth;
 +(NSString*)descriptionForDate:(NSDate*)date;
++(UIColor*)randomColor;
 @end

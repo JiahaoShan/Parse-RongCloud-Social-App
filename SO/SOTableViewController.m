@@ -7,6 +7,7 @@
 //
 
 #import "SOTableViewController.h"
+#import "SOUICommons.h"
 
 @interface SOTableViewController()<UITableViewDelegate>
 @end

@@ -112,4 +112,8 @@
     }
     return @"刚刚";
 }
++(UIColor*)randomColor{
+    CGFloat r = (CGFloat)(arc4random()%255/255.0);
+    return [UIColor colorWithHue:r saturation:1 brightness:1 alpha:1];
+}
 @end

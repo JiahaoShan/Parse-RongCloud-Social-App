@@ -44,7 +44,7 @@
                 self.grayView.alpha = 0;
                 self.redView.alpha = 1;
             } completion:^(BOOL finished) {
-                self.grayView.frame = CGRectMake(4, 4, 16, 16);
+                self.grayView.frame = CGRectMake(4, 4, 24, 24);
                 [self.grayView removeFromSuperview];
                 [self.tap setEnabled:true];
             }];
@@ -58,7 +58,7 @@
                 self.redView.alpha = 0;
                 self.grayView.alpha = 1;
             } completion:^(BOOL finished) {
-                self.redView.frame = CGRectMake(4, 4, 16, 16);
+                self.redView.frame = CGRectMake(4, 4, 24, 24);
                 [self.redView removeFromSuperview];
                 [self.tap setEnabled:true];
             }];
