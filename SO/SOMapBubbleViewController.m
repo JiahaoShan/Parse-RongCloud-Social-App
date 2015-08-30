@@ -72,9 +72,12 @@ const NSInteger displayDistanceMeters = 5000;
     return _userPotraitImageView;
 }
 
+-(NSString*)title{
+    return @"地图群聊";
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"地图群聊";
     self.navigationItem.title = @"地图群聊";
     _mapView.delegate = self;
     _mapView.showsUserLocation = YES;
@@ -180,13 +183,6 @@ const NSInteger displayDistanceMeters = 5000;
     [super viewWillAppear:animated];
     _preventSendingMessage = NO;
     _waitForAppealingSendingMessage = NO;
-    UILabel *titleView = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 44)];
-    titleView.backgroundColor = [UIColor clearColor];
-    titleView.font = [UIFont boldSystemFontOfSize:19];
-    titleView.textColor = [UIColor whiteColor];
-    titleView.textAlignment = NSTextAlignmentCenter;
-    titleView.text = @"地图群聊";
-    self.tabBarController.navigationItem.titleView = titleView;
 }
 
 - (void)viewDidAppear:(BOOL)animated {

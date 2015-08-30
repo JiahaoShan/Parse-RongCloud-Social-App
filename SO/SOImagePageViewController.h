@@ -14,6 +14,5 @@
 @property (nonatomic, strong) NSArray *pageImagesThumbnails;
 @property (nonatomic, strong) id parent;
 
-
 - (id)initWithImages: (NSArray*) images AndThumbnails: (NSArray*) thumbnails AtIndex:(NSInteger) index FromParent: (id) parent;
 @end
