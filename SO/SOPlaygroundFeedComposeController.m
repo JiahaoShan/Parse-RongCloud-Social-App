@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *addImageViewHeigheConstraint;
 @property (weak, nonatomic) IBOutlet SOPlaygroundFeedComposeImageView *addImageView;
 @property (strong,nonatomic) SOImageProvider* imageProvider;
+
+
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @end
 
@@ -25,6 +27,12 @@
     [super viewDidLoad];
     [self.navigationBar setBarTintColor:[SOUICommons primaryTintColor]];
     [self.navigationBar setTintColor:[SOUICommons textColor]];
+    UILabel* titleLabel = [[UILabel alloc] init];
+    [SOUICommons configureNavigationBarLabel:titleLabel];
+    [titleLabel setText:@"创作"];
+    [titleLabel sizeToFit];
+    UINavigationItem* item = [self.navigationBar.items firstObject];
+    [item setTitleView:titleLabel];
 }
 
 

@@ -35,7 +35,7 @@
 		4CB3B6471B6E5FD2009CE032 /* MTStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB3B6461B6E5FD2009CE032 /* MTStatusBarOverlay.m */; };
 		4CB3B64A1B726905009CE032 /* SOPlaygroundFeedRecentLikeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB3B6491B726905009CE032 /* SOPlaygroundFeedRecentLikeView.m */; };
 		4CBB8EAB1B9376330032D8EC /* SOPlaygroundFeedCommentPreviewViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CBB8EAA1B9376330032D8EC /* SOPlaygroundFeedCommentPreviewViewCell.xib */; };
-		4CBB8EAE1B93BE830032D8EC /* SOTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBB8EAD1B93BE830032D8EC /* SOTabBarController.m */; };
+		4CBB8EB11B93BF360032D8EC /* SOTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBB8EB01B93BF360032D8EC /* SOTabBarController.m */; };
 		4CBCF6B01B524F7500EE2195 /* SOUICommons.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6AF1B524F7500EE2195 /* SOUICommons.m */; };
 		4CBCF6B31B52510F00EE2195 /* SOBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6B21B52510F00EE2195 /* SOBaseViewController.m */; };
 		4CBCF6B61B52517D00EE2195 /* SONavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6B51B52517D00EE2195 /* SONavigationController.m */; };
@@ -225,8 +225,8 @@
 		4CB3B6491B726905009CE032 /* SOPlaygroundFeedRecentLikeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPlaygroundFeedRecentLikeView.m; sourceTree = "<group>"; };
 		4CB3B64B1B7269C6009CE032 /* SOPlaygroundFeedInteractionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPlaygroundFeedInteractionDelegate.h; sourceTree = "<group>"; };
 		4CBB8EAA1B9376330032D8EC /* SOPlaygroundFeedCommentPreviewViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SOPlaygroundFeedCommentPreviewViewCell.xib; sourceTree = "<group>"; };
-		4CBB8EAC1B93BE830032D8EC /* SOTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SOTabBarController.h; path = SO/SOTabBarController.h; sourceTree = "<group>"; };
-		4CBB8EAD1B93BE830032D8EC /* SOTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SOTabBarController.m; path = SO/SOTabBarController.m; sourceTree = "<group>"; };
+		4CBB8EAF1B93BF360032D8EC /* SOTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOTabBarController.h; sourceTree = "<group>"; };
+		4CBB8EB01B93BF360032D8EC /* SOTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOTabBarController.m; sourceTree = "<group>"; };
 		4CBCF6AE1B524F7500EE2195 /* SOUICommons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOUICommons.h; sourceTree = "<group>"; };
 		4CBCF6AF1B524F7500EE2195 /* SOUICommons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOUICommons.m; sourceTree = "<group>"; };
 		4CBCF6B11B52510F00EE2195 /* SOBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOBaseViewController.h; sourceTree = "<group>"; };
@@ -545,6 +545,8 @@
 				4CBCF6B21B52510F00EE2195 /* SOBaseViewController.m */,
 				4CBCF6BB1B5257A500EE2195 /* SOTableViewController.h */,
 				4CBCF6BC1B5257A500EE2195 /* SOTableViewController.m */,
+				4CBB8EAF1B93BF360032D8EC /* SOTabBarController.h */,
+				4CBB8EB01B93BF360032D8EC /* SOTabBarController.m */,
 				4CA1CB7A1B5B40BD00B21EEF /* SOAlert.h */,
 				4CA1CB7B1B5B40BD00B21EEF /* SOAlert.m */,
 				4CA1CB771B5AC4C900B21EEF /* SOImageViewController.h */,
@@ -818,8 +820,6 @@
 		8A5800371B522F000032EC1C = {
 			isa = PBXGroup;
 			children = (
-				4CBB8EAC1B93BE830032D8EC /* SOTabBarController.h */,
-				4CBB8EAD1B93BE830032D8EC /* SOTabBarController.m */,
 				8A22DB281B52F8790032AB1E /* Resource */,
 				8A5800421B522F010032EC1C /* SO */,
 				8A58005F1B522F010032EC1C /* SOTests */,
@@ -1215,7 +1215,7 @@
 				4CF7E9E11B8734A7009C181C /* SOPlaygroundFeedComposeImageView.m in Sources */,
 				8A8303DC1B58B92100FB22A5 /* SOPeopleTableViewController.m in Sources */,
 				4CBCF6C01B5257D100EE2195 /* SOPlaygroundMainController.m in Sources */,
-				4CBB8EAE1B93BE830032D8EC /* SOTabBarController.m in Sources */,
+				4CBB8EB11B93BF360032D8EC /* SOTabBarController.m in Sources */,
 				8A14F6791B659702001AE83D /* PersonalInfoSettingTableViewCell.m in Sources */,
 				4CA673B81B54166400D5FDFA /* AFSecurityPolicy.m in Sources */,
 				4CA673D51B541D9C00D5FDFA /* UIRefreshControl+AFNetworking.m in Sources */,
