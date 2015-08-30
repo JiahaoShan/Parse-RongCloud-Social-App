@@ -267,6 +267,7 @@ const NSInteger displayDistanceMeters = 5000;
     }
     
     [[RCIMClient sharedRCIMClient] sendMessage:ConversationType_CHATROOM targetId:@"id" content:content pushContent:@"extraInfo"success:^(long messageId){
+        if (!self.chatRecordTableView.attributeLabelDelegate) self.chatRecordTableView.attributeLabelDelegate = self;
         [self.chatRecordTableView insertMessage:content withUserInfo:content.senderUserInfo];
         NSLog(@"send successfully");
     } error:^(RCErrorCode nErrorCode, long messageId) {
@@ -446,6 +447,11 @@ const NSInteger displayDistanceMeters = 5000;
         
         NSURLRequest *imageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:userInfo.portraitUri] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60];
         [loadingView setImageWithURLRequest:imageRequest placeholderImage:nil success:^void(NSURLRequest * request, NSHTTPURLResponse * response, UIImage * image) {
+            // TODO: Temporary self defense codes
+            if (image == nil) {
+                NSLog(@"!!!!!!!!!!!!!!!!!Image is nil again!!!!!!!!!!!");
+                return;
+            }
             NSMutableDictionary* annotaionInfo = [self.userMessageDict objectForKey:userInfo.userId];
             [annotaionInfo setObject:image forKey:@"image"];
             [self.userMessageDict setObject:annotaionInfo forKey:userInfo.userId];

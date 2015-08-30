@@ -12,6 +12,10 @@
 
 - (void)awakeFromNib {
     // Initialization code
+//    UIImage *normal;
+//    normal = [UIImage imageNamed:@"chatfrom_bg_normal"];
+//    normal = [normal resizableImageWithCapInsets:UIEdgeInsetsMake(35, 22, 10, 10)];
+//    self.backgroundView = [[UIImageView alloc] initWithImage:normal];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

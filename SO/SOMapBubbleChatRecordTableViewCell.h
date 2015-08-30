@@ -10,6 +10,7 @@
 #import "TTTAttributedLabel.h"
 
 @interface SOMapBubbleChatRecordTableViewCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet TTTAttributedLabel *textLabel;
+
+@property (weak, nonatomic) IBOutlet TTTAttributedLabel *attributeLabel;
 
 @end

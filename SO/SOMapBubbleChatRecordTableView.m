@@ -59,22 +59,29 @@ static NSString * const MapChatCellIdentifier = @"MapBubbleChatRecordCell";
 }
 
 - (CGFloat)calculateHeightForConfiguredSizingCell:(UITableViewCell *)sizingCell {
-    [sizingCell.textLabel setNeedsLayout];
-    [sizingCell.textLabel layoutIfNeeded];
-//    CGSize size = [sizingCell.textLabel systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-//    return size.height;
-    return sizingCell.frame.size.height;
+    //    [sizingCell setNeedsLayout];
+    //    [sizingCell layoutIfNeeded];
+    if (![sizingCell isKindOfClass:[SOMapBubbleChatRecordTableViewCell class]]) {
+        return 16.0f;
+    }
+    SOMapBubbleChatRecordTableViewCell* attributeSizingCell = (SOMapBubbleChatRecordTableViewCell*) sizingCell;
+        attributeSizingCell.attributeLabel.preferredMaxLayoutWidth = self.frame.size.width - 16;
+        [attributeSizingCell setNeedsLayout];
+        [attributeSizingCell layoutIfNeeded];
+    CGSize size = [attributeSizingCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    
+    //    return size.height;
+    return size.height + 5;
 }
 
 - (SOMapBubbleChatRecordTableViewCell*)configureCell:(SOMapBubbleChatRecordTableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
-    
-    cell.textLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink; // Automatically detect links when the label text is subsequently changed
-    cell.textLabel.delegate = self.attributeLabelDelegate; // Delegate methods are called when the user taps on a link (see `TTTAttributedLabelDelegate` protocol)
+    cell.attributeLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink; // Automatically detect links when the label text is subsequently changed
+    cell.attributeLabel.delegate = self.attributeLabelDelegate; // Delegate methods are called when the user taps on a link (see `TTTAttributedLabelDelegate` protocol)
     SOMapBubbleChatRecord* record = [self.messages objectAtIndex:self.messageCount - indexPath.row - 1];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@: %@", record.userName, record.message];
+    cell.attributeLabel.text = [NSString stringWithFormat:@"%@: %@", record.userName, record.message];
     
-    NSRange range = [cell.textLabel.text rangeOfString: record.userName];
-    [cell.textLabel addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",record.userId]] withRange:range]; // Embedding a custom link in a substring
+    NSRange range = [cell.attributeLabel.text rangeOfString: record.userName];
+    [cell.attributeLabel addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",record.userId]] withRange:range]; // Embedding a custom link in a substring
     return cell;
 }
 
