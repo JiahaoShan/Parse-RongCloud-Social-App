@@ -1457,7 +1457,8 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
 
 - (CGSize)intrinsicContentSize {
     // There's an implicit width from the original UILabel implementation
-    return [self sizeThatFits:[super intrinsicContentSize]];
+    CGSize s = [self sizeThatFits:[super intrinsicContentSize]];
+    return CGSizeMake(s.width, s.height+1);
 }
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
