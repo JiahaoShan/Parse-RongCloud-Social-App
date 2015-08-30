@@ -11,6 +11,9 @@
 #import "PlaygroundFeed.h"
 #import "User.h"
 
+@interface SOPlaygroundFeedCommentPreviewViewCell : UITableViewCell
+@end
+
 @interface SOPlaygroundFeedCommentPreviewView : UITableView
 @property (nonatomic,assign) id<SOPlaygroundFeedInteractionDelegate> soDelegate;
 /*

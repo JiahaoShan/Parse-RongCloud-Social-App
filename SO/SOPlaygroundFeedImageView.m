@@ -7,10 +7,10 @@
 //
 
 #import "SOPlaygroundFeedImageView.h"
+#import "SOUICommons.h"
 #import <ParseUI/ParseUI.h>
 #import <Parse/Parse.h>
 @interface SOPlaygroundFeedImageView()
-@property (nonatomic) BOOL visible;
 @property (nonatomic) NSArray* images; //an array of PFFiles
 @property (nonatomic) NSMutableArray* imageViews;
 @property (nonatomic) UITapGestureRecognizer* tapGesture;
@@ -60,22 +60,36 @@
     }
 }
 
--(CGFloat)setImagesWithThumbNails:(NSArray*)thumbnails files:(NSArray*)files{
-    if (files.count == 0) {
-        [self setVisible:NO];
-        return 0;
+-(CGSize)intrinsicContentSize{
+    //return CGSizeZero;
+    CGSize size = CGSizeMake([SOUICommons screenWidth], 0);
+    if (self.images.count==1) {
+        size.height= kPlaygroundSingleImageHeight;
+    }else if(self.images.count>0){
+        int numRow = (int)ceil(self.images.count/3.0);
+        size.height= numRow * kPlaygroundMultipleImageSize + (numRow-1)*kPlaygroundImagePadding;
+    }else{
+        size.height=0;
     }
-    if (!_tapGesture) {
-        [self addGestureRecognizer:self.tapGesture];
-    }
-    
-    [self setVisible:true];
+    //size.height=80;
+    return size;
+}
+
+-(void)setImagesWithThumbNails:(NSArray*)thumbnails files:(NSArray*)files{
+    _images = files;
     [self.imageViews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [obj removeFromSuperview];
     }];
     [self.imageViews removeAllObjects];
     
-    _images = files;
+    if (files.count == 0) {
+        return;
+    }
+    
+    if (!_tapGesture) {
+        [self addGestureRecognizer:self.tapGesture];
+    }
+    
     if (files.count==1) {
         PFFile* f = thumbnails[0];
         if (![f isDataAvailable]) {
@@ -117,14 +131,6 @@
             [self.imageViews addObject:iv];
         }
     }
-    
-    if (files.count==1) {
-        return kPlaygroundSingleImageHeight;
-    }else if(files.count>0){
-        int numRow = (int)ceil(files.count/3.0);
-        return numRow * kPlaygroundMultipleImageSize + (numRow-1)*kPlaygroundImagePadding;
-    }
-    return 0;
 }
 
 //different from setHidden
@@ -132,20 +138,6 @@
 //but a not visible view will have a height of 0
 //if self is set to visible, then caller is still responsible for
 //setting the height of the view
--(void)setVisible:(BOOL)visible{
-    if (self.visible == visible) {
-        return;
-    }
-    if(visible){
-        self.hidden = false;
-    }else{
-        CGRect frame = self.frame;
-        frame.size.height = 0;
-        self.frame = frame;
-        self.hidden = true;
-    }
-    _visible = visible;
-}
 
 - (NSMutableArray*) getImageViews {
     return self.imageViews;

@@ -17,7 +17,6 @@
 @end
 
 @interface SOPlaygroundFeedImageView : UIView
-+(CGFloat)estimatedHeightForImages:(NSArray*)files;
 
 @property (nonatomic,assign) id<SOPlaygroundFeedImageViewDelegate> delegate;
 
@@ -25,6 +24,6 @@
 //if passed more than 1 url, the view shows a few thubmnail images
 //however, thumbnail messages should still be provided
 //expected an array of SOImageURL object
--(CGFloat)setImagesWithThumbNails:(NSArray*)thumbnails files:(NSArray*)files; //returns height
+-(void)setImagesWithThumbNails:(NSArray*)thumbnails files:(NSArray*)files; //returns height
 -(NSMutableArray*) getImageViews;
 @end

@@ -15,21 +15,18 @@
 #import "SOUICommons.h"
 #import <ParseUI/ParseUI.h>
 #import "User.h"
+#import "TTTAttributedLabel.h"
 #import "PlaygroundComment.h"
 
 @interface SOPlaygroundFeedCell()<SOPlaygroundFeedImageViewDelegate>
 @property (weak, nonatomic) IBOutlet SOPlaygroundFeedGenderView *feedGenderView;
 @property (weak, nonatomic) IBOutlet UILabel *feedPosterNameView;
 @property (weak, nonatomic) IBOutlet UILabel *feedPostedTimeLabel;
+@property (weak, nonatomic) IBOutlet TTTAttributedLabel *feedTextView;
+@property (weak, nonatomic) IBOutlet UILabel *recentLikeView;
 @property (weak, nonatomic) IBOutlet PFImageView* feedPosterAvatartView;
 @property (weak, nonatomic) IBOutlet SOPlaygroundFeedActionGroupView *actionGroupView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *feedTextViewHeightConstraint;
-@property (weak, nonatomic) IBOutlet UITextView *feedTextView;
-@property (weak, nonatomic) IBOutlet SOPlaygroundFeedRecentLikeView *recentLikeView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *recentLikeViewHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *commentPreviewViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet SOPlaygroundFeedCommentPreviewView *commentPreviewView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *feedImageViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 @property (weak, nonatomic) IBOutlet SOPlaygroundFeedImageView *feedImageView;
 @property (nonatomic) PlaygroundFeed* feed;
@@ -47,10 +44,6 @@
     User* user = data.poster;
     [user fetchIfNeeded];
     
-    CGFloat h1 = [self.feedImageView setImagesWithThumbNails:data.thumbnails files:data.images];
-    self.feedImageView.delegate = self;
-    [self.feedImageViewHeightConstraint setConstant:h1];
-    
     if ([user male]) {
         [self.feedGenderView setGender:kSOGenderMale];
     }else{
@@ -61,10 +54,10 @@
     [self.feedPosterAvatartView setFile:user.portraitThumbnail];
     [self.feedPosterAvatartView loadInBackground];
     
-    //main text view
+    [self.feedTextView setNumberOfLines:0];
+    [self.feedTextView setPreferredMaxLayoutWidth:[SOUICommons screenWidth]-36];//36 is the final width of the the textfield
     [self.feedTextView setText:data.text];
-    CGSize size = [self.feedTextView sizeThatFits:CGSizeMake([SOUICommons screenWidth]-32, CGFLOAT_MAX)];//-32 might depend on screen scale
-    [self.feedTextViewHeightConstraint setConstant:size.height+1];//ios bug
+    [self.feedTextView layoutIfNeeded];
     
     //time label
     [self.feedPostedTimeLabel setText:[SOUICommons descriptionForDate:data.createdAt]];
@@ -75,13 +68,42 @@
     [self.actionGroupView setDelegate:self.mainController];
     
     //recent like view
-    [self.recentLikeView setHeightConstraint:self.recentLikeViewHeightConstraint];
-    [self.recentLikeView setLikes:[data recentLikeUsers] totalCount:[[data likeCount] intValue] feed:data width:[SOUICommons screenWidth]-16];
-    [self.recentLikeView setSoDelegate:self.mainController];
+    if (data.recentLikeUsers.count>0 || [data.likeCount integerValue]>0) {
+        [self.recentLikeView setNumberOfLines:0];
+        NSMutableString* likeString = [[NSMutableString alloc] init];
+        NSMutableArray* likeNameRanges = [NSMutableArray array];
+        for (int i=0; i<data.recentLikeUsers.count; i++) {
+            User* liker = data.recentLikeUsers[i];
+            [liker fetchIfNeeded];
+            if (i!=data.recentLikeUsers.count-1) {
+                [likeNameRanges addObject:[NSValue valueWithRange:NSMakeRange(likeString.length, liker.username.length)]];
+                [likeString appendFormat:@"%@, ",liker.username];
+            }
+            else{
+                [likeNameRanges addObject:[NSValue valueWithRange:NSMakeRange(likeString.length, liker.username.length)]];
+                [likeString appendFormat:@"%@ ",liker.username];
+            }
+        }
+        if ([data.likeCount integerValue] > data.recentLikeUsers.count) {
+            [likeString appendFormat:@"等%ld个人",(long)[data.likeCount integerValue]];
+        }
+        [likeString appendFormat:@"觉得这个好厉害的"];
+        [self.recentLikeView setText:likeString];
+        [self.recentLikeView setPreferredMaxLayoutWidth:[SOUICommons screenWidth]-36];
+    }
+    else{
+        [self.recentLikeView setText:@""];
+    }
     
     //commentPreviewView
-    CGFloat h3 = [self.commentPreviewView setComments:data.recentComments totalCount:[data.commentCount intValue] feed:data width:[SOUICommons screenWidth]-16 soDelegate:self.mainController];
-    self.commentPreviewViewHeightConstraint.constant = h3;
+    [self.commentPreviewView setComments:data.recentComments totalCount:[data.commentCount intValue] feed:data width:[SOUICommons screenWidth] soDelegate:self.mainController];
+    [self.commentPreviewView invalidateIntrinsicContentSize];
+    
+    //feed image view
+        [self.feedImageView setImagesWithThumbNails:data.thumbnails files:data.images];
+        self.feedImageView.clipsToBounds=true;
+        self.feedImageView.delegate = self;
+    [self.feedImageView invalidateIntrinsicContentSize];
     
     //feed delete button
     if ([[PFUser currentUser].objectId isEqualToString:user.objectId]) {
@@ -92,6 +114,7 @@
         [self.deleteButton removeTarget:self action:@selector(feedDeleteButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     }
 }
+
 -(void)feedDeleteButtonTapped:(UIButton*)b{
     [self.mainController didTapDeleteFeed:self.feed];
 }

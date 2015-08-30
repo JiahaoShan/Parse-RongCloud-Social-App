@@ -86,6 +86,7 @@
     [super viewDidLoad];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"SOPlaygroundFeedCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"feedCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"SOPlaygroundFeedCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"sizingCell"];
     NSError* e;
     if([PFUser currentUser]){
     NSString* response = [PFCloud callFunction:@"PlaygroundGetLikeHistory" withParameters:@{@"userId":[[PFUser currentUser] objectId]} error:&e];
@@ -131,15 +132,36 @@
     cell.mainController = self;
     [object setLiked:[self likedForFeed:object]];
     [cell configureWithFeed:object];
+    //[cell.contentView layoutIfNeeded];
+    [cell.contentView setNeedsLayout];
+    
+    //[cell setTranslatesAutoresizingMaskIntoConstraints:false];
+    //[cell.contentView setTranslatesAutoresizingMaskIntoConstraints:false];
+    for (UIView* v in cell.contentView.subviews) {
+        [v setTranslatesAutoresizingMaskIntoConstraints:false];
+    }
     return cell;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static dispatch_once_t token;
+    static SOPlaygroundFeedCell* cell;
+    dispatch_once(&token, ^{
+        cell=[tableView dequeueReusableCellWithIdentifier:@"sizingCell"];
+    });
     if (indexPath.row == self.objects.count && self.paginationEnabled) {
         return 44;
     }
-    UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-    CGSize size = [cell.contentView systemLayoutSizeFittingSize: UILayoutFittingCompressedSize];
+
+    [cell configureWithFeed:self.objects[indexPath.row]];
+    [cell.contentView layoutIfNeeded];
+    CGSize size = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+//    [cell.contentView setNeedsLayout];
+//    [cell.contentView layoutIfNeeded];
+//    [cell.contentView setNeedsUpdateConstraints];
+//    [cell.contentView updateConstraintsIfNeeded];
+    //return cell.frame.size.height;
+    //CGSize size = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize withHorizontalFittingPriority:UILayoutPriorityDefaultHigh verticalFittingPriority:UILayoutPriorityDefaultLow];
     return size.height;
 }
 
@@ -175,22 +197,24 @@
     if (![feed.recentLikeUsers isKindOfClass:[NSMutableArray class]]) {
         feed.recentLikeUsers = [NSMutableArray arrayWithArray:feed.recentLikeUsers];
     }
+    NSUInteger previousLikeIndex;
     if (like) {
         [(NSMutableArray*)feed.recentLikeUsers insertObject:[PFUser currentUser] atIndex:0];
         int count = feed.likeCount.intValue;
         feed.likeCount = @(++count);
     }else{
-        [(NSMutableArray*)feed.recentLikeUsers removeObject:[PFUser currentUser]];
+        previousLikeIndex = [feed.recentLikeUsers indexOfObject:[PFUser currentUser]];
+        [(NSMutableArray*)feed.recentLikeUsers removeObjectAtIndex:previousLikeIndex];
         int count = feed.likeCount.intValue;
         feed.likeCount = @(--count);
     }
     [action addFailHandler:^{
         if (like) {
-            [(NSMutableArray*)feed.recentLikeUsers removeObjectAtIndex:0];
+            [(NSMutableArray*)feed.recentLikeUsers removeObject:[PFUser currentUser]];
             int count = feed.likeCount.intValue;
             feed.likeCount = @(--count);
         }else{
-            [(NSMutableArray*)feed.recentLikeUsers insertObject:[PFUser currentUser] atIndex:0];
+            [(NSMutableArray*)feed.recentLikeUsers insertObject:[PFUser currentUser] atIndex:previousLikeIndex];
             int count = feed.likeCount.intValue;
             feed.likeCount = @(++count);
         }
@@ -422,6 +446,27 @@
     }
 }
 -(BOOL)likedForFeed:(PlaygroundFeed*)feed{
+    //return false;
     return [self.likeHistory containsObject:[feed objectId]];
 }
+
+
+#pragma mark debug
+//-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+//    static dispatch_once_t token;
+//    static NSMutableDictionary* cells;
+//    dispatch_once(&token, ^{
+//        cells=[[NSMutableDictionary alloc] init];
+//    });
+//    for (NSValue* value in [cells allKeys]) {
+//        const void* pointer = [value pointerValue];
+//        if (cell==pointer) {
+//            [cell.contentView setBackgroundColor:[cells objectForKey:value]];
+//            return;
+//        }
+//    }
+//    UIColor* rdColor = [SOUICommons randomColor];
+//    [cells setObject:rdColor forKey:[NSValue valueWithPointer:(__bridge const void *)(cell)]];
+//    [cell.contentView setBackgroundColor:rdColor];
+//}
 @end
