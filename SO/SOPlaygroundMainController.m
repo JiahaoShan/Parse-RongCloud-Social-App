@@ -25,30 +25,58 @@
 @interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate, imageViewDelegate,SOQuickCommentViewDelegate,SOPlaygroundFeedComposeControllerDelegate>
 @property (nonatomic) BOOL initialized;
 @property (nonatomic) NSMutableArray* likeHistory;
-@property (nonatomic) UIBarButtonItem* composeItem;
 @property (nonatomic,weak) PlaygroundFeed* currentCommentingFeed;
 @property (nonatomic) UITextView* dummyComment;
 @property (nonatomic) SOQuickCommentView* commentAccessory;
-
 @property (nonatomic) SOImageProvider* p;
+
+
+@property (nonatomic) UIBarButtonItem* composeItem; //compose button
 @end
 
 @implementation SOPlaygroundMainController
 
+#pragma mark - Life Cycle
 - (instancetype)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
     if (self) {
-        [self initialize];
+        [self initializeQueryMeta];
     }
     return self;
 }
 
 -(void)awakeFromNib{
     [super awakeFromNib];
-    [self initialize];
+    [self initializeQueryMeta];
 }
 
--(void)initialize{
+-(NSString*)title{
+    return @"操场";
+}
+-(id)rightBarButtonItem{
+    if (!self.composeItem) {
+        self.composeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(didTapComposeFeed:)];
+    }
+    return self.composeItem;
+}
+
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"SOPlaygroundFeedCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"feedCell"];
+    NSError* e;
+    if([PFUser currentUser]){
+        NSString* response = [PFCloud callFunction:@"PlaygroundGetLikeHistory" withParameters:@{@"userId":[[PFUser currentUser] objectId]} error:&e];
+        if (response) {
+            self.likeHistory = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
+        }
+    }
+}
+
+
+#pragma mark - Data & Cache
+
+-(void)initializeQueryMeta{
     if (!_initialized) {
         _initialized = true;
         self.parseClassName = @"PlaygroundFeed";
@@ -73,33 +101,50 @@
     return query;
 }
 
--(void)viewWillAppear:(BOOL)animated{
-    self.tabBarController.navigationItem.title = @"操场";
-    if (!self.composeItem) {
-        self.composeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(didTapComposeFeed:)];
+-(void)cacheFeed:(PlaygroundFeed*)feed liked:(BOOL)liked{
+    if (liked) {
+        if (![self likedForFeed:feed]) {
+            [self.likeHistory addObject:feed.objectId];
+        }
+    }else{
+        [self.likeHistory removeObject:feed.objectId];
     }
-    self.tabBarController.navigationItem.rightBarButtonItem=self.composeItem;
+}
+-(BOOL)likedForFeed:(PlaygroundFeed*)feed{
+    //return false;
+    return [self.likeHistory containsObject:[feed objectId]];
 }
 
 
--(void)viewDidLoad{
-    [super viewDidLoad];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:@"SOPlaygroundFeedCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"feedCell"];
-    [self.tableView registerNib:[UINib nibWithNibName:@"SOPlaygroundFeedCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"sizingCell"];
-    NSError* e;
-    if([PFUser currentUser]){
-    NSString* response = [PFCloud callFunction:@"PlaygroundGetLikeHistory" withParameters:@{@"userId":[[PFUser currentUser] objectId]} error:&e];
-    if (response) {
-        self.likeHistory = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-    }
-    }
-}
+#pragma mark - Feed Composing
+
 
 - (void)didTapComposeFeed:(UIBarButtonItem *)sender{
     SOPlaygroundFeedComposeController* composer = [self.storyboard instantiateViewControllerWithIdentifier:@"feedCompose"];
     [composer setDelegate:self];
-    [self presentViewController:composer animated:true completion:nil];
+    [self presentViewController:composer animated:true completion:NULL];
+}
+
+-(void)userDidTapCancel{
+    NSLog(@"user cancelled composing feed");
+}
+
+-(void)userDidFinishComposingFeed:(PlaygroundFeed *)feed{
+    NSLog(@"user finished composing feed");
+    [(NSMutableArray*)self.objects insertObject:feed atIndex:0];
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.objects indexOfObject:self.currentCommentingFeed] inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    [feed saveInBackgroundWithBlock:^(BOOL success, NSError *error){
+        MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
+        if (error) {
+            [overlay postImmediateMessage:[error localizedDescription] duration:2];
+            NSUInteger index = [self.objects indexOfObject:feed];
+            [(NSMutableArray*)self.objects removeObjectAtIndex:index];
+            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        }
+        else{
+            [overlay postImmediateMessage:@"post comment success" duration:2];
+        }
+    }];
 }
 
 #pragma mark - UITableViewDelegate
@@ -147,7 +192,7 @@
     static dispatch_once_t token;
     static SOPlaygroundFeedCell* cell;
     dispatch_once(&token, ^{
-        cell=[tableView dequeueReusableCellWithIdentifier:@"sizingCell"];
+        cell=[tableView dequeueReusableCellWithIdentifier:@"feedCell"];
     });
     if (indexPath.row == self.objects.count && self.paginationEnabled) {
         return 44;
@@ -156,12 +201,6 @@
     [cell configureWithFeed:self.objects[indexPath.row]];
     [cell.contentView layoutIfNeeded];
     CGSize size = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-//    [cell.contentView setNeedsLayout];
-//    [cell.contentView layoutIfNeeded];
-//    [cell.contentView setNeedsUpdateConstraints];
-//    [cell.contentView updateConstraintsIfNeeded];
-    //return cell.frame.size.height;
-    //CGSize size = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize withHorizontalFittingPriority:UILayoutPriorityDefaultHigh verticalFittingPriority:UILayoutPriorityDefaultLow];
     return size.height;
 }
 
@@ -190,7 +229,7 @@
     imageView = nil;
 }
 
-#pragma mark SOPlaygroundFeedInteractionDelegate
+#pragma mark - SOPlaygroundFeedInteractionDelegate
 -(void)feed:(PlaygroundFeed *)feed didChangeLikeStatusTo:(BOOL)like action:(SOFailableAction *)action{
     [feed setLiked:like];
     [self cacheFeed:feed liked:like];
@@ -406,52 +445,7 @@
     }];
 }
 
-#pragma mark - feed compose controller delegate
--(void)userDidTapCancel{
-    NSLog(@"user cancelled composing feed");
-}
--(void)userDidFinishComposingFeed:(PlaygroundFeed *)feed{
-    NSLog(@"user finished composing feed");
-    [(NSMutableArray*)self.objects insertObject:feed atIndex:0];
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.objects indexOfObject:self.currentCommentingFeed] inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-    [feed saveInBackgroundWithBlock:^(BOOL success, NSError *error){
-        MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
-        if (error) {
-            [overlay postImmediateMessage:[error localizedDescription] duration:2];
-            NSUInteger index = [self.objects indexOfObject:feed];
-            [(NSMutableArray*)self.objects removeObjectAtIndex:index];
-            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-        }
-        else{
-            [overlay postImmediateMessage:@"post comment success" duration:2];
-        }
-    }];
-}
-
-#pragma mark - Segue
-//- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-//    if ([[segue identifier] isEqualToString:@""])
-//    {
-//    }
-//}
-
-#pragma mark - Caching
--(void)cacheFeed:(PlaygroundFeed*)feed liked:(BOOL)liked{
-    if (liked) {
-        if (![self likedForFeed:feed]) {
-            [self.likeHistory addObject:feed.objectId];
-        }
-    }else{
-        [self.likeHistory removeObject:feed.objectId];
-    }
-}
--(BOOL)likedForFeed:(PlaygroundFeed*)feed{
-    //return false;
-    return [self.likeHistory containsObject:[feed objectId]];
-}
-
-
-#pragma mark debug
+//#pragma mark debug
 //-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
 //    static dispatch_once_t token;
 //    static NSMutableDictionary* cells;

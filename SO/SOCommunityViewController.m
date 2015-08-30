@@ -38,6 +38,7 @@ static CGPoint centerRectUpperLeftPoint(CGSize contentSize, CGSize visibleSize){
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"Community";
     [self.contentView setDelegate:self];
     [self startQueryFriendsOfUser:[self currentUser] batch:0 completion:^(int batchIndex, NSArray *users) {
         self.userArray = users;

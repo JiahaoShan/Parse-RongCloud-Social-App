@@ -78,13 +78,13 @@
 {
     [super viewWillAppear:animated];
     
-    UILabel *titleView = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 44)];
-    titleView.backgroundColor = [UIColor clearColor];
-    titleView.font = [UIFont boldSystemFontOfSize:19];
-    titleView.textColor = [UIColor whiteColor];
-    titleView.textAlignment = NSTextAlignmentCenter;
-    titleView.text = @"会话";
-    self.tabBarController.navigationItem.titleView = titleView;
+//    UILabel *titleView = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 44)];
+//    titleView.backgroundColor = [UIColor clearColor];
+//    titleView.font = [UIFont boldSystemFontOfSize:19];
+//    titleView.textColor = [UIColor whiteColor];
+//    titleView.textAlignment = NSTextAlignmentCenter;
+//    titleView.text = @"会话";
+//    self.tabBarController.navigationItem.titleView = titleView;
     
 //    //自定义rightBarButtonItem
 //    UIButton *rightBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 17, 17)];
