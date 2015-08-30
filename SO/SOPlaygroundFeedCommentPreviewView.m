@@ -153,7 +153,7 @@
     [comment fetchIfNeeded];
     [[comment commentOwner] fetchIfNeeded];
     TTTAttributedLabel* label = [cell.contentView viewWithTag:1];
-    [label setPreferredMaxLayoutWidth:[SOUICommons screenWidth]-32];
+    [label setPreferredMaxLayoutWidth:[SOUICommons screenWidth]-16];
     NSString* text = [NSString stringWithFormat:@"%@: %@",[[comment commentOwner] username],[comment message]];
     [label setText:text];
     

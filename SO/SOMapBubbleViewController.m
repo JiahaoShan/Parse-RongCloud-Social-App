@@ -402,11 +402,77 @@ const NSInteger displayDistanceMeters = 5000;
     }];
 }
 
+//- (void) danmu:(RCTextMessage*)message withUserInfo:(RCUserInfo*)userInfo {
+//    dispatch_async(dispatch_get_main_queue(), ^(void) {
+////        TTTAttributedLabel* label = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
+////        label.delegate = self; // Delegate methods are called when the user taps on a link
+////        label.font = [UIFont systemFontOfSize:14];
+////        label.textColor = [UIColor darkGrayColor];
+////        label.lineBreakMode = NSLineBreakByWordWrapping;
+////        label.numberOfLines = 0;
+////        //label.text = [NSString stringWithFormat:@"%@: %@", userInfo.name, message.content];
+////        
+////        
+////        NSString *text = [NSString stringWithFormat:@"%@: %@", userInfo.name, message.content] ;
+////        [label setText:text afterInheritingLabelAttributesAndConfiguringWithBlock:^ NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+////            NSRange boldRange = [[mutableAttributedString string] rangeOfString:userInfo.name options:NSCaseInsensitiveSearch];
+////            
+////            // Core Text APIs use C functions without a direct bridge to UIFont. See Apple's "Core Text Programming Guide" to learn how to configure string attributes.
+////            UIFont *boldSystemFont = [UIFont boldSystemFontOfSize:14];
+////            CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)boldSystemFont.fontName, boldSystemFont.pointSize, NULL);
+////            if (font) {
+////                [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:boldRange];
+////                CFRelease(font);
+////            }
+////            
+////            return mutableAttributedString;
+////        }];
+////        
+////        
+////        CGRect frame = label.frame;
+////        frame.origin = CGPointMake(0, 200);
+////        label.frame = frame;
+////        
+////        label.backgroundColor = [UIColor clearColor];
+////        [self.view addSubview:label];
+//
+////        CSGrowingTextView* textView = [[CSGrowingTextView alloc] initWithFrame:CGRectMake(0, 300, messageFrameWidth, 15 + messageTextPaddingWidth + messageTextPaddingWidth)];
+////        textView.maximumNumberOfLines = 3;
+////        textView.minimumNumberOfLines = 1;
+////        textView.growDirection = CSGrowDirectionUp;
+////        textView.backgroundColor = [UIColor colorWithRed:245.0f/255.0f green:124.0f/255.0f blue:0.0f/255.0f alpha:0.8f]; // Orange
+////        textView.layer.cornerRadius = 6.0f;
+////        textView.clipsToBounds = YES;
+////        textView.delegate = self;
+////        textView.internalTextView.text = [NSString stringWithFormat:@"%@: %@", userInfo.name, message.content];
+//        
+//        UILabel* textView = [[UILabel alloc] initWithFrame:CGRectMake(0, 300, self.view.frame.size.width, 50)];
+//        textView.text= [NSString stringWithFormat:@"%@: %@", userInfo.name, message.content];
+//        textView.backgroundColor = [UIColor colorWithRed:245.0f/255.0f green:124.0f/255.0f blue:0.0f/255.0f alpha:0.8f];
+//        textView.layer.cornerRadius = 6.0f;
+//        textView.clipsToBounds = YES;
+//        [textView sizeToFit];
+//        [self.view addSubview:textView];
+//        
+//        [UIView animateWithDuration:5
+//                              delay:0.0
+//                            options:(UIViewAnimationCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction)
+//                         animations:^{
+//                             textView.center = CGPointMake(self.view.frame.size.width / 2 * 3, 300);
+//                         }
+//                         completion:^(BOOL finished){
+//                             [textView removeFromSuperview];
+//                             NSLog(@"Done!");
+//                         }];
+//
+//    });
+//}
+
 -(void)updateannotationList:(SOMapBubbleAnnotation*)annotation{
     //TODO: TEST THE FOLLOWING CODES
     
     //exist, update the location
-    if ([_userMessageDict objectForKey:annotation.subtitle]) {
+    if ([self.userMessageDict objectForKey:annotation.subtitle]) {
         for (int i = 0; i < [self.annotationList count]; i++) {
             SOMapBubbleAnnotation* anno = [self.annotationList objectAtIndex:i];
             if ([anno.subtitle isEqualToString:annotation.subtitle]) {
@@ -423,8 +489,8 @@ const NSInteger displayDistanceMeters = 5000;
             SOMapBubbleAnnotation* removedAnnotation = [self.annotationList objectAtIndex:numberOfannotationList - 1];
             [self.annotationList removeLastObject];
             dispatch_async(dispatch_get_main_queue(), ^(void) {
-                [_mapView removeAnnotation:removedAnnotation];
-                [_userMessageDict removeObjectForKey:removedAnnotation.subtitle];
+                [self.mapView removeAnnotation:removedAnnotation];
+                [self.userMessageDict removeObjectForKey:removedAnnotation.subtitle];
             });
         }
         [self.annotationList insertObject:annotation atIndex:0];
@@ -448,10 +514,6 @@ const NSInteger displayDistanceMeters = 5000;
         NSURLRequest *imageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:userInfo.portraitUri] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60];
         [loadingView setImageWithURLRequest:imageRequest placeholderImage:nil success:^void(NSURLRequest * request, NSHTTPURLResponse * response, UIImage * image) {
             // TODO: Temporary self defense codes
-            if (image == nil) {
-                NSLog(@"!!!!!!!!!!!!!!!!!Image is nil again!!!!!!!!!!!");
-                return;
-            }
             NSMutableDictionary* annotaionInfo = [self.userMessageDict objectForKey:userInfo.userId];
             [annotaionInfo setObject:image forKey:@"image"];
             [self.userMessageDict setObject:annotaionInfo forKey:userInfo.userId];
@@ -556,10 +618,23 @@ const NSInteger displayDistanceMeters = 5000;
     _mapView.scrollEnabled = YES;
     _mapView.zoomEnabled = YES;
     _mapView.showsUserLocation = YES;
-    [_textView removeFromSuperview];
-    [_inputMessageView removeFromSuperview];
-    _textView = nil;
-    _inputMessageView = nil;
+    
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+        [UIView animateWithDuration:0.5
+                              delay:0.0
+                            options:(UIViewAnimationCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction)
+                         animations:^{
+                             _textView.center = CGPointMake(_textView.center.x, 0 - _inputMessageView.frame.size.height);
+                             _inputMessageView.alpha = 0.0;
+                         }
+                         completion:^(BOOL finished){
+                             [_textView removeFromSuperview];
+                             [_inputMessageView removeFromSuperview];
+                             _textView = nil;
+                             _inputMessageView = nil;
+                         }];
+        
+    });
 }
 
 - (void) addTextField{

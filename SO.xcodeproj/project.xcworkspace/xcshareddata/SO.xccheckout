@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>9EFE4A08-9F54-4095-9995-26E3E85BA36E</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>SO</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>86DE7DF32563A781C50BF4F68931FEEE14400EC1</key>
 		<string>https://bitbucket.org/woshizhu/so.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>SO.xcodeproj/project.xcworkspace</string>
+	<string>SO.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>86DE7DF32563A781C50BF4F68931FEEE14400EC1</key>
