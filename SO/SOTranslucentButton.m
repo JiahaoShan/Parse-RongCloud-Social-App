@@ -10,7 +10,7 @@
 
 @implementation SOTranslucentButton
 -(UIView*)hitTest:(CGPoint)point withEvent:(UIEvent *)event{
-    if (CGRectContainsPoint(self.frame, point)) {
+    if (CGRectContainsPoint(self.bounds, point)) {
         [self sendActionsForControlEvents:UIControlEventTouchUpInside];
     }
     return nil;

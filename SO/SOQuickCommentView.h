@@ -14,4 +14,5 @@
 
 @interface SOQuickCommentView : UIView<CSGrowingTextViewDelegate>
 @property (assign,nonatomic) id<SOQuickCommentViewDelegate> delegate;
+-(void)clearText;
 @end

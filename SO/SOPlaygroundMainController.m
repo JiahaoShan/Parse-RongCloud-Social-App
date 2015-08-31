@@ -309,8 +309,8 @@
         [self.commentAccessory setDelegate:self];
     }
     if (!self.commentDismissButton) {
-        self.commentDismissButton = [[SOTranslucentButton alloc] initWithFrame:self.view.bounds];
-        [self.commentDismissButton addTarget:self action:@selector(dismissCommentComposeView) forControlEvents:UIControlEventTouchUpInside];
+        self.commentDismissButton = [[SOTranslucentButton alloc] initWithFrame:CGRectMake(0, 0, CGFLOAT_MAX, CGFLOAT_MAX)];
+        [self.commentDismissButton addTarget:self action:@selector(commentViewDidCancel) forControlEvents:UIControlEventTouchUpInside];
     }
     [self.view addSubview:self.commentDismissButton];
     
@@ -438,7 +438,6 @@
 #pragma mark - SOQuickCommentView
 -(void)commentViewDidReturnWithText:(NSString *)text{
     [self dismissCommentComposeView];
-    
     PlaygroundComment* comment = (PlaygroundComment*)[PFObject objectWithClassName:@"PlaygroundComment"];
     comment.playgroundFeedId = self.currentCommentingFeed.objectId;
     comment.commentOwner = (User*)[PFUser currentUser];
@@ -459,6 +458,11 @@
             [overlay postImmediateMessage:@"post comment success" duration:2];
         }
     }];
+}
+
+-(void)commentViewDidCancel{
+    [self dismissCommentComposeView];
+    [self.commentAccessory clearText];
 }
 
 -(void)dismissCommentComposeView{

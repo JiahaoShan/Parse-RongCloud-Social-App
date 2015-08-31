@@ -11,7 +11,6 @@
 #import "SOPlaygroundFeedGenderView.h"
 #import "SOPlaygroundFeedCommentPreviewView.h"
 #import "SOPlaygroundFeedActionGroupView.h"
-#import "SOPlaygroundFeedRecentLikeView.h"
 #import "SOUICommons.h"
 #import <ParseUI/ParseUI.h>
 #import "User.h"

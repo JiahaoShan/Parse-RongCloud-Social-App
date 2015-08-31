@@ -62,6 +62,10 @@
     }];
 }
 
+-(void)clearText{
+    [self.tv.internalTextView setText:@""];
+}
+
 -(CGSize)intrinsicContentSize{
     return CGSizeMake(UIViewNoIntrinsicMetric, self.textViewHeight+12);
 }
