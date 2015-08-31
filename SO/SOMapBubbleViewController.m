@@ -31,7 +31,7 @@
 @property (nonatomic) BOOL waitForAppealingSendingMessage;
 @property (nonatomic, strong) CSGrowingTextView* textView;
 @property (nonatomic, strong) UIView* inputMessageView;
-@property (strong, nonatomic) NSMutableDictionary *userMessageDict;
+@property (strong, atomic) NSMutableDictionary *userMessageDict;
 @property (nonatomic, strong) UIImageView* userPotraitImageView;
 @property (nonatomic, strong) UIImage* userPotraitImage;
 @property (nonatomic, strong) NSTimer* preventSendingMessageTimer;
@@ -56,13 +56,13 @@ const NSInteger displayDistanceMeters = 5000;
     return _annotationList;
 }
 
-- (NSMutableDictionary*) userMessageDict
-{
-    if (!_userMessageDict){
-        _userMessageDict = [[NSMutableDictionary alloc] init];
-    }
-    return _userMessageDict;
-}
+//- (NSMutableDictionary*) userMessageDict
+//{
+//    if (!_userMessageDict){
+//        _userMessageDict = [[NSMutableDictionary alloc] init];
+//    }
+//    return _userMessageDict;
+//}
 
 - (UIImageView*) userPotraitImageView
 {
@@ -79,6 +79,7 @@ const NSInteger displayDistanceMeters = 5000;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"地图群聊";
+    _userMessageDict = [[NSMutableDictionary alloc] init];
     _mapView.delegate = self;
     _mapView.showsUserLocation = YES;
     _mapView.mapType = MKMapTypeStandard;
@@ -114,7 +115,7 @@ const NSInteger displayDistanceMeters = 5000;
                                              if (status == INTULocationStatusSuccess) {
                                                  //NSLog([NSString stringWithFormat:@"Success, %ld",(long)achievedAccuracy]);
                                                  locationTryCounter = 0;
-                                                 if (achievedAccuracy >= INTULocationAccuracyNeighborhood) {
+                                                 if (achievedAccuracy >= INTULocationAccuracyCity) {
                                                      _ifLocatedUser = YES;
                                                      if (_waitForLocation) {
                                                          _waitForLocation = NO;
@@ -190,7 +191,6 @@ const NSInteger displayDistanceMeters = 5000;
     _preventSendingMessage = NO;
     _waitForAppealingSendingMessage = NO;
     [self joinChatRoom];
-
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -389,9 +389,9 @@ const NSInteger displayDistanceMeters = 5000;
     myAnnotation.title = content;
     myAnnotation.subtitle = textMessage.senderUserInfo.userId;
     
-    [self updateannotationList:myAnnotation];
     
     [[SODataManager sharedInstance] getUserInfoWithUserId:textMessage.senderUserInfo.userId completion:^(RCUserInfo *userInfo) {
+        [self updateannotationList:myAnnotation];
         [self setMessageView:userInfo withAnnotation:myAnnotation];
         if (!self.chatRecordTableView.attributeLabelDelegate) self.chatRecordTableView.attributeLabelDelegate = self;
         [self.chatRecordTableView insertMessage:textMessage withUserInfo:userInfo];
@@ -494,7 +494,7 @@ const NSInteger displayDistanceMeters = 5000;
 }
 
 - (void) setMessageView: (RCUserInfo*)userInfo withAnnotation:(SOMapBubbleAnnotation*)annotation{
-    if ([_userMessageDict objectForKey:userInfo.userId]) {
+    if ([self.userMessageDict objectForKey:userInfo.userId]) {
         NSMutableDictionary* existedAnnotaionInfo = [_userMessageDict objectForKey:userInfo.userId];
         id existedAnnotation = [existedAnnotaionInfo objectForKey:@"annotation"];
         dispatch_async(dispatch_get_main_queue(), ^(void) {
@@ -509,7 +509,6 @@ const NSInteger displayDistanceMeters = 5000;
         
         NSURLRequest *imageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:userInfo.portraitUri] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60];
         [loadingView setImageWithURLRequest:imageRequest placeholderImage:nil success:^void(NSURLRequest * request, NSHTTPURLResponse * response, UIImage * image) {
-            // TODO: Temporary self defense codes
             NSMutableDictionary* annotaionInfo = [self.userMessageDict objectForKey:userInfo.userId];
             [annotaionInfo setObject:image forKey:@"image"];
             [self.userMessageDict setObject:annotaionInfo forKey:userInfo.userId];
