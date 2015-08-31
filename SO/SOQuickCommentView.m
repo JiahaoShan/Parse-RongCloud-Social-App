@@ -70,4 +70,8 @@
     return [self.tv becomeFirstResponder];
 }
 
+-(BOOL)resignFirstResponder{
+    return [self.tv resignFirstResponder];
+}
+
 @end

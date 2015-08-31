@@ -19,7 +19,7 @@
 #import "PlaygroundComment.h"
 #import "SOQuickCommentView.h"
 #import "SOPlaygroundFeedComposeController.h"
-
+#import "SOTranslucentButton.h"
 #import "SOImageProvider.h"
 
 @interface SOPlaygroundMainController()<UITableViewDataSource,UITableViewDelegate, imageViewDelegate,SOQuickCommentViewDelegate,SOPlaygroundFeedComposeControllerDelegate>
@@ -27,7 +27,11 @@
 @property (nonatomic) NSMutableArray* likeHistory;
 @property (nonatomic,weak) PlaygroundFeed* currentCommentingFeed;
 @property (nonatomic) UITextView* dummyComment;
+
+@property (nonatomic) SOTranslucentButton* commentDismissButton;
 @property (nonatomic) SOQuickCommentView* commentAccessory;
+
+
 @property (nonatomic) SOImageProvider* p;
 
 
@@ -304,10 +308,18 @@
                                   owner:self options:nil][0];
         [self.commentAccessory setDelegate:self];
     }
+    if (!self.commentDismissButton) {
+        self.commentDismissButton = [[SOTranslucentButton alloc] initWithFrame:self.view.bounds];
+        [self.commentDismissButton addTarget:self action:@selector(dismissCommentComposeView) forControlEvents:UIControlEventTouchUpInside];
+    }
+    [self.view addSubview:self.commentDismissButton];
+    
     [self.dummyComment setInputAccessoryView:self.commentAccessory];
     [self.dummyComment becomeFirstResponder];
     [self.commentAccessory becomeFirstResponder];
     self.currentCommentingFeed = feed;
+    NSIndexPath* path = [NSIndexPath indexPathForRow:[self.objects indexOfObject:feed] inSection:0];
+    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionBottom animated:true];
 }
 
 -(void)userDidTapDeleteComment:(PlaygroundComment *)comment{
@@ -425,7 +437,8 @@
 
 #pragma mark - SOQuickCommentView
 -(void)commentViewDidReturnWithText:(NSString *)text{
-    [self.dummyComment resignFirstResponder];
+    [self dismissCommentComposeView];
+    
     PlaygroundComment* comment = (PlaygroundComment*)[PFObject objectWithClassName:@"PlaygroundComment"];
     comment.playgroundFeedId = self.currentCommentingFeed.objectId;
     comment.commentOwner = (User*)[PFUser currentUser];
@@ -446,6 +459,13 @@
             [overlay postImmediateMessage:@"post comment success" duration:2];
         }
     }];
+}
+
+-(void)dismissCommentComposeView{
+    //order is important
+    [self.commentAccessory resignFirstResponder];
+    [self.dummyComment resignFirstResponder];
+    [self.commentDismissButton removeFromSuperview];
 }
 
 //#pragma mark debug
