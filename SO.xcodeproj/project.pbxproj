@@ -36,6 +36,8 @@
 		4CB3B64A1B726905009CE032 /* SOPlaygroundFeedRecentLikeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB3B6491B726905009CE032 /* SOPlaygroundFeedRecentLikeView.m */; };
 		4CBB8EAB1B9376330032D8EC /* SOPlaygroundFeedCommentPreviewViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CBB8EAA1B9376330032D8EC /* SOPlaygroundFeedCommentPreviewViewCell.xib */; };
 		4CBB8EB11B93BF360032D8EC /* SOTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBB8EB01B93BF360032D8EC /* SOTabBarController.m */; };
+		4CBB8EB51B93FB3B0032D8EC /* SOQuickCommentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CBB8EB41B93FB3B0032D8EC /* SOQuickCommentView.xib */; };
+		4CBB8EB81B94070D0032D8EC /* UIView+Sizing.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBB8EB71B94070D0032D8EC /* UIView+Sizing.m */; };
 		4CBCF6B01B524F7500EE2195 /* SOUICommons.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6AF1B524F7500EE2195 /* SOUICommons.m */; };
 		4CBCF6B31B52510F00EE2195 /* SOBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6B21B52510F00EE2195 /* SOBaseViewController.m */; };
 		4CBCF6B61B52517D00EE2195 /* SONavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBCF6B51B52517D00EE2195 /* SONavigationController.m */; };
@@ -227,6 +229,9 @@
 		4CBB8EAA1B9376330032D8EC /* SOPlaygroundFeedCommentPreviewViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SOPlaygroundFeedCommentPreviewViewCell.xib; sourceTree = "<group>"; };
 		4CBB8EAF1B93BF360032D8EC /* SOTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOTabBarController.h; sourceTree = "<group>"; };
 		4CBB8EB01B93BF360032D8EC /* SOTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOTabBarController.m; sourceTree = "<group>"; };
+		4CBB8EB41B93FB3B0032D8EC /* SOQuickCommentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SOQuickCommentView.xib; sourceTree = SOURCE_ROOT; };
+		4CBB8EB61B94070D0032D8EC /* UIView+Sizing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Sizing.h"; sourceTree = "<group>"; };
+		4CBB8EB71B94070D0032D8EC /* UIView+Sizing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Sizing.m"; sourceTree = "<group>"; };
 		4CBCF6AE1B524F7500EE2195 /* SOUICommons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOUICommons.h; sourceTree = "<group>"; };
 		4CBCF6AF1B524F7500EE2195 /* SOUICommons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOUICommons.m; sourceTree = "<group>"; };
 		4CBCF6B11B52510F00EE2195 /* SOBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOBaseViewController.h; sourceTree = "<group>"; };
@@ -534,6 +539,8 @@
 			children = (
 				4CF7E9DD1B8729E7009C181C /* ELCImagePicker */,
 				4CBCF6AE1B524F7500EE2195 /* SOUICommons.h */,
+				4CBB8EB61B94070D0032D8EC /* UIView+Sizing.h */,
+				4CBB8EB71B94070D0032D8EC /* UIView+Sizing.m */,
 				4CBCF6AF1B524F7500EE2195 /* SOUICommons.m */,
 				8A638F771B91692300F16576 /* TTTAttributedLabel.h */,
 				8A638F781B91692300F16576 /* TTTAttributedLabel.m */,
@@ -580,6 +587,7 @@
 				4CBCF6BF1B5257D100EE2195 /* SOPlaygroundMainController.m */,
 				4CFC3E6D1B838A9F00E5A9BC /* SOQuickCommentView.h */,
 				4CFC3E6E1B838A9F00E5A9BC /* SOQuickCommentView.m */,
+				4CBB8EB41B93FB3B0032D8EC /* SOQuickCommentView.xib */,
 				4CF7E9DE1B87342A009C181C /* FeedCompose */,
 				4CBCF6D01B525C7900EE2195 /* SOPlaygroundFeedCell */,
 			);
@@ -1133,6 +1141,7 @@
 				8AB4BCCC1B82FA500058D8DA /* pinMask2.png in Resources */,
 				8A4DE1B01B938B6300B9BD18 /* chatto_bg_normal.png in Resources */,
 				4CBB8EAB1B9376330032D8EC /* SOPlaygroundFeedCommentPreviewViewCell.xib in Resources */,
+				4CBB8EB51B93FB3B0032D8EC /* SOQuickCommentView.xib in Resources */,
 				8A1138B71B6E8EE70033B994 /* sampleImage2.png in Resources */,
 				8A4DE1AF1B938B6300B9BD18 /* chatfrom_bg_normal.png in Resources */,
 			);
@@ -1154,6 +1163,7 @@
 			files = (
 				8A0E3E7F1B77C08A007E5E65 /* CSGrowingTextView.m in Sources */,
 				4CB3B6471B6E5FD2009CE032 /* MTStatusBarOverlay.m in Sources */,
+				4CBB8EB81B94070D0032D8EC /* UIView+Sizing.m in Sources */,
 				4CA673951B52615C00D5FDFA /* SOPlaygroundFeedImageView.m in Sources */,
 				8AA7BC891B5DF98300ABB812 /* PlaygroundImage.m in Sources */,
 				8A14F6671B657D7C001AE83D /* SOSettingViewController.m in Sources */,

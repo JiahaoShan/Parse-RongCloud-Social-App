@@ -20,6 +20,7 @@
     static UIColor* primaryTint = nil;
     dispatch_once(&onceToken,^{
         primaryTint = [UIColor colorWithRed:149.0/255 green:165.0/255 blue:165.0/255 alpha:1];
+        //primaryTint = [UIColor blackColor];
     });
     return primaryTint;
 }

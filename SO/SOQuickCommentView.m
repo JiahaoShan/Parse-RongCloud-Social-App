@@ -7,26 +7,43 @@
 //
 
 #import "SOQuickCommentView.h"
+#import "SOUICommons.h"
+#import "UIView+Sizing.h"
 @interface SOQuickCommentView()
 @property (nonatomic) CSGrowingTextView* tv;
+@property (nonatomic) CGFloat textViewHeight;
 @end
 
 @implementation SOQuickCommentView
 
--(instancetype)initWithFrame:(CGRect)frame{
-    if (self=[super initWithFrame:frame]) {
-        [self setBackgroundColor:[UIColor lightGrayColor]];
-        self.tv = [[CSGrowingTextView alloc] init];
-        [self.tv.layer setCornerRadius:3];
-        [self.tv.internalTextView setTextColor:[UIColor blackColor]];
-        [self.tv.layer setBorderWidth:1];
-        [self.tv setDelegate:self];
-        [self.tv setBackgroundColor:[UIColor whiteColor]];
-        CGSize f = self.frame.size;
-        [self.tv setFrame:CGRectMake(8, 8, f.width-16, f.height-16)];
-        [self addSubview:self.tv];
-    }
-    return self;
+//-(instancetype)initWithFrame:(CGRect)frame{
+//    if (self=[super initWithFrame:frame]) {
+//        [self setBackgroundColor:[SOUICommons lightBackgroundGray]];
+//        self.tv = [[CSGrowingTextView alloc] init];
+//        [self.tv.layer setCornerRadius:3];
+//        [self.tv.internalTextView setTextColor:[UIColor blackColor]];
+//        [self.tv.layer setBorderWidth:1];
+//        [self.tv.layer setBorderColor:[SOUICommons descriptiveTextColor].CGColor];
+//        [self.tv setDelegate:self];
+//        [self.tv setBackgroundColor:[UIColor whiteColor]];
+//        [self addSubview:self.tv];
+//        
+//        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-6-[v]-6-|" options:NSLayoutFormatAlignAllLeft metrics:nil views:@{@"v":self.tv}]];
+//        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-6-[v]-6-|" options:NSLayoutFormatAlignAllTop metrics:nil views:@{@"v":self.tv}]];
+//    }
+//    return self;
+//}
+
+-(void)awakeFromNib{
+    [super awakeFromNib];
+    [self setBackgroundColor:[SOUICommons lightBackgroundGray]];
+    self.tv = [self viewWithTag:1];
+            [self.tv.layer setCornerRadius:3];
+            [self.tv.internalTextView setTextColor:[UIColor blackColor]];
+            [self.tv.layer setBorderWidth:1];
+            [self.tv.layer setBorderColor:[SOUICommons descriptiveTextColor].CGColor];
+            [self.tv setDelegate:self];
+            [self.tv setBackgroundColor:[UIColor whiteColor]];
 }
 
 -(BOOL)growingTextViewShouldReturn:(CSGrowingTextView *)textView{
@@ -37,14 +54,16 @@
     return true;
 }
 
--(void)growingTextView:(CSGrowingTextView *)growingTextView didChangeHeight:(CGFloat)height{
-    //CGSize s = growingTextView.frame.size;
-    CGRect f = self.frame;
-    CGFloat max = CGRectGetMaxY(f);
-    f.origin.y = max-height-16;
-    f.size.height = height+16;
-    [self setFrame:f];
-    [self.tv setFrame:CGRectMake(8, 8, f.size.width-16, height)];
+-(void)growingTextView:(CSGrowingTextView *)growingTextView willChangeHeight:(CGFloat)height{
+    self.textViewHeight=height;
+    [UIView animateWithDuration:0.1 animations:^{
+        [self invalidateIntrinsicContentSize];
+        [self.superview layoutIfNeeded];
+    }];
+}
+
+-(CGSize)intrinsicContentSize{
+    return CGSizeMake(UIViewNoIntrinsicMetric, self.textViewHeight+12);
 }
 
 -(BOOL)becomeFirstResponder{

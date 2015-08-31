@@ -298,7 +298,10 @@
         [self.view addSubview:self.dummyComment];
     }
     if (!self.commentAccessory) {
-        self.commentAccessory = [[SOQuickCommentView alloc] initWithFrame:CGRectMake(0, 0, [SOUICommons screenWidth], 44)];
+        
+        self.commentAccessory = [[NSBundle mainBundle]
+                         loadNibNamed:@"SOQuickCommentView"
+                                  owner:self options:nil][0];
         [self.commentAccessory setDelegate:self];
     }
     [self.dummyComment setInputAccessoryView:self.commentAccessory];
