@@ -136,7 +136,7 @@
 -(void)userDidFinishComposingFeed:(PlaygroundFeed *)feed{
     NSLog(@"user finished composing feed");
     [(NSMutableArray*)self.objects insertObject:feed atIndex:0];
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.objects indexOfObject:self.currentCommentingFeed] inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     [feed saveInBackgroundWithBlock:^(BOOL success, NSError *error){
         MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
         if (error) {
@@ -312,6 +312,7 @@
         self.commentDismissButton = [[SOTranslucentButton alloc] initWithFrame:CGRectMake(0, 0, CGFLOAT_MAX, CGFLOAT_MAX)];
         [self.commentDismissButton addTarget:self action:@selector(commentViewDidCancel) forControlEvents:UIControlEventTouchUpInside];
     }
+    [self.commentDismissButton setFrame:CGRectMake(0, 0, CGFLOAT_MAX, CGFLOAT_MAX)];
     [self.view addSubview:self.commentDismissButton];
     
     [self.dummyComment setInputAccessoryView:self.commentAccessory];
