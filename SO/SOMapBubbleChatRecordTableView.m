@@ -30,7 +30,8 @@ static NSString * const MapChatCellIdentifier = @"MapBubbleChatRecordCell";
     self.messageCount++;
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     dispatch_async(dispatch_get_main_queue(), ^(void) {
-        [self insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        [self setContentOffset:CGPointZero animated:YES];
     });
 }
 
@@ -79,7 +80,6 @@ static NSString * const MapChatCellIdentifier = @"MapBubbleChatRecordCell";
     cell.attributeLabel.delegate = self.attributeLabelDelegate; // Delegate methods are called when the user taps on a link (see `TTTAttributedLabelDelegate` protocol)
     SOMapBubbleChatRecord* record = [self.messages objectAtIndex:self.messageCount - indexPath.row - 1];
     cell.attributeLabel.text = [NSString stringWithFormat:@"%@: %@", record.userName, record.message];
-    
     NSRange range = [cell.attributeLabel.text rangeOfString: record.userName];
     [cell.attributeLabel addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",record.userId]] withRange:range]; // Embedding a custom link in a substring
     return cell;

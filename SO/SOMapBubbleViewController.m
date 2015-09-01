@@ -35,6 +35,7 @@
 @property (nonatomic, strong) UIImageView* userPotraitImageView;
 @property (nonatomic, strong) UIImage* userPotraitImage;
 @property (nonatomic, strong) NSTimer* preventSendingMessageTimer;
+@property (nonatomic, strong) NSMutableArray* availableColor;
 @end
 
 
@@ -54,6 +55,14 @@ const NSInteger displayDistanceMeters = 5000;
         _annotationList = [[NSMutableArray alloc] init];
     }
     return _annotationList;
+}
+
+- (NSMutableArray*) availableColor
+{
+    if (!_availableColor){
+        _availableColor = [[NSMutableArray alloc] initWithObjects:@NO,@NO,@NO,@NO,@NO,@NO,@NO,@NO,@NO,@NO, nil];
+    }
+    return _availableColor;
 }
 
 //- (NSMutableDictionary*) userMessageDict
@@ -325,7 +334,8 @@ const NSInteger displayDistanceMeters = 5000;
         messageLabel.font = font;
         messageLabel.numberOfLines = 0;
         messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        messageLabel.backgroundColor = [UIColor colorWithRed:245.0f/255.0f green:124.0f/255.0f blue:0.0f/255.0f alpha:0.8f]; // Orange
+        messageLabel.backgroundColor = [self getTintColorForUser:mapAnnotation.subtitle alpha:0.6f];
+        // messageLabel.backgroundColor = [UIColor colorWithRed:245.0f/255.0f green:124.0f/255.0f blue:0.0f/255.0f alpha:0.8f]; // Orange
         messageLabel.layer.cornerRadius = 6.0f;
         messageLabel.clipsToBounds = YES;
         messageLabel.textAlignment = NSTextAlignmentCenter;
@@ -486,6 +496,7 @@ const NSInteger displayDistanceMeters = 5000;
             [self.annotationList removeLastObject];
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 [self.mapView removeAnnotation:removedAnnotation];
+                [self markColorAsAvailable:removedAnnotation.subtitle];
                 [self.userMessageDict removeObjectForKey:removedAnnotation.subtitle];
             });
         }
@@ -691,6 +702,12 @@ const NSInteger displayDistanceMeters = 5000;
     return newLength <= 25;
 }
 
+- (void)growingTextViewDidChange:(CSGrowingTextView *)textView {
+    if (textView.internalTextView.text.length > 26) {
+        textView.internalTextView.text = [textView.internalTextView.text substringToIndex:26];
+    }
+}
+
 - (void) runSpinAnimationOnView:(UIView*)view duration:(CGFloat)duration rotations:(CGFloat)rotations repeat:(float)repeat;
 {
     CABasicAnimation* rotationAnimation;
@@ -761,5 +778,82 @@ const NSInteger displayDistanceMeters = 5000;
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
     UIViewController* c = [self.storyboard instantiateViewControllerWithIdentifier:@"userDetail"];
     [self.navigationController pushViewController:c animated:YES];
+}
+
+- (UIColor*) getTintColorForUser:(NSString*)userId alpha:(CGFloat)alpha{
+    NSMutableDictionary* annotaionInfo = [self.userMessageDict objectForKey:userId];
+    NSNumber* userColorIndex = [annotaionInfo objectForKey:@"color"];
+    if (userColorIndex) {
+        return [self getColorForIndex:userColorIndex alpha:alpha];
+    }
+    
+    int colorIndex = arc4random() % 10;
+    int count = 0;
+    while ([self.availableColor[colorIndex] isEqualToNumber:@YES] && count < 11) {
+        colorIndex = (colorIndex + 1) % 10;
+        count++;
+    }
+
+    self.availableColor[colorIndex] = @YES;
+    userColorIndex = [[NSNumber alloc] initWithInt:colorIndex];
+    [annotaionInfo setObject:userColorIndex forKey:@"color"];
+    UIColor* color = [self getColorForIndex:userColorIndex alpha:alpha];
+    
+    if (!annotaionInfo) return color;
+    
+    [self.userMessageDict setObject:annotaionInfo forKey:userId];
+    
+    return color;
+};
+
+- (UIColor*) getColorForIndex:(NSNumber*)index alpha:(CGFloat)alpha{
+    UIColor* color = nil;
+    int colorIndex = [index intValue];
+    switch (colorIndex) {
+        case 0:
+            color = [UIColor colorWithRed:0.804 green:0.863 blue:0.224 alpha:alpha]; // LIME
+            break;
+        case 1:
+            color = [UIColor colorWithRed:0.247 green:0.318 blue:0.71 alpha:alpha];
+            break;
+        case 2:
+            color = [UIColor colorWithRed:1 green:0.322 blue:0.322 alpha:alpha]; // red
+            break;
+        case 3:
+            color = [UIColor colorWithRed:0.878 green:0.251 blue:0.984 alpha:alpha]; // purple
+            break;
+        case 4:
+            color = [UIColor colorWithRed:0.325 green:0.427 blue:0.996 alpha:alpha]; // INDIGO
+            break;
+        case 5:
+            color = [UIColor colorWithRed:0 green:0.737 blue:0.831 alpha:alpha]; // CYAN
+            break;
+        case 6:
+            color = [UIColor colorWithRed:0 green:0.588 blue:0.533 alpha:alpha]; // TEAL
+            break;
+        case 7:
+            color = [UIColor colorWithRed:0.545 green:0.765 blue:0.29 alpha:alpha]; // LightGreen
+            break;
+        case 8:
+            color = [UIColor colorWithRed:1 green:0.757 blue:0.027 alpha:alpha]; // AMBER
+            break;
+        case 9:
+            color = [UIColor colorWithRed:1 green:0.8 blue:0.737 alpha:alpha]; // LIGHT ORANGE
+            break;
+        default:
+            color = [UIColor colorWithRed:0.475 green:0.333 blue:0.282 alpha:alpha]; // GREY
+            break;
+    }
+    return color;
+}
+
+- (void) markColorAsAvailable:(NSString*)userId{
+    NSMutableDictionary* annotaionInfo = [self.userMessageDict objectForKey:userId];
+    NSNumber* userColor = [self.userMessageDict objectForKey:@"color"];
+    int colorIndex = [userColor intValue];
+    if (colorIndex >=0 && colorIndex <= 9) {
+        self.availableColor[colorIndex] = @NO;
+    }
+    [self.userMessageDict setObject:annotaionInfo forKey:userId];
 }
 @end

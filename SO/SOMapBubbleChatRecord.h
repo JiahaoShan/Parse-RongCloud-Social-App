@@ -7,11 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface SOMapBubbleChatRecord : NSObject
 
 @property (nonatomic, strong) NSString* message;
 @property (nonatomic, strong) NSString* userId;
 @property (nonatomic, strong) NSString* userName;
+@property (nonatomic, strong) UIColor* color;
 
 @end
