@@ -31,7 +31,6 @@
 @property (nonatomic) SOTranslucentButton* commentDismissButton;
 @property (nonatomic) SOQuickCommentView* commentAccessory;
 
-
 @property (nonatomic) SOImageProvider* p;
 
 
@@ -137,6 +136,12 @@
     NSLog(@"user finished composing feed");
     [(NSMutableArray*)self.objects insertObject:feed atIndex:0];
     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    NSUInteger bytes = 0;
+    for (PFFile* f in feed.images) {
+        bytes += [[f getData] length];
+    }
+    MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
+    [overlay postImmediateMessage:[NSString stringWithFormat:@"Total File Size %d bytes", bytes] duration:2];
     [feed saveInBackgroundWithBlock:^(BOOL success, NSError *error){
         MTStatusBarOverlay *overlay = [MTStatusBarOverlay sharedInstance];
         if (error) {

@@ -73,9 +73,9 @@ Parse.Cloud.beforeSave("PlaygroundFeed", function(request, response) {
                     //response.success();
                 }, function(error) {
                     count++;
-                    console.log("Done!");
+                    console.log("Done2!");
                     request.object.set("thumbnails", convertedImages);
-                    response.error();
+                    response.error(error);
                     // status.error("Error running Job");
                     //response.error(error);
                 })

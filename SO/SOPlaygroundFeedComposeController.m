@@ -55,7 +55,7 @@
     NSMutableArray* files = [NSMutableArray array];
     for (UIImage* img in [self.addImageView images]) {
         //compress image
-        NSData* data = UIImageJPEGRepresentation(img, 0.8);//UIImagePNGRepresentation(img);
+        NSData* data = UIImageJPEGRepresentation(img, 0.1);//UIImagePNGRepresentation(img);
         if ([data length]>PFFILE_IMAGE_SUITABLE_SIZE) {
             data = UIImageJPEGRepresentation(img, 0.6);
             if ([data length]>PFFILE_IMAGE_SUITABLE_SIZE) {

@@ -20,7 +20,7 @@
     if (!_photoPicker) {
         _photoPicker = [[ELCImagePickerController alloc] initImagePicker];
         _photoPicker.maximumImagesCount = 9; //Set the maximum number of images to select to 100
-        _photoPicker.returnsOriginalImage = YES; //Only return the fullScreenImage, not the fullResolutionImage
+        _photoPicker.returnsOriginalImage = NO; //Only return the fullScreenImage, not the fullResolutionImage
         _photoPicker.returnsImage = YES; //Return UIimage if YES. If NO, only return asset location information
         _photoPicker.onOrder = YES; //For multiple image selection, display and return order of selected images
         _photoPicker.mediaTypes = @[(NSString *)kUTTypeImage]; //Supports image and movie types
@@ -30,11 +30,11 @@
 }
 -(UIImagePickerController*)cameraPicker{
     if (!_cameraPicker) {
-        self.cameraPicker = [[UIImagePickerController alloc] init];
-        [self.cameraPicker setDelegate:self];
-        [self.cameraPicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+        _cameraPicker = [[UIImagePickerController alloc] init];
+        [_cameraPicker setDelegate:self];
+        [_cameraPicker setSourceType:UIImagePickerControllerSourceTypeCamera];
     }
-    return self.cameraPicker;
+    return _cameraPicker;
 }
 -(instancetype)initWithViewController:(UIViewController*)vc{
     if (self = [super init]) {
@@ -73,7 +73,7 @@
 }
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
-    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+    UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
     [picker dismissViewControllerAnimated:YES completion:NULL];
     [self.delegate providerDidGetPhotos:@[chosenImage]];
 }
