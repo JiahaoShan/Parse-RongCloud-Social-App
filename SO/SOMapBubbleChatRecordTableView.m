@@ -12,6 +12,7 @@
 @interface SOMapBubbleChatRecordTableView() <UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) NSMutableArray* messages;
 @property (nonatomic) int messageCount;//total count
+@property (nonatomic, strong) NSString* currentUserId;
 @end
 
 static NSString * const MapChatCellIdentifier = @"MapBubbleChatRecordCell";
@@ -25,12 +26,21 @@ static NSString * const MapChatCellIdentifier = @"MapBubbleChatRecordCell";
     record.message = message.content;
     record.userId = userInfo.userId;
     record.userName = userInfo.name;
-    
+
+    BOOL isSelf = NO;
+    if ([self.currentUserId isEqualToString:userInfo.userId]) {
+        isSelf = YES;
+    }
     [self.messages addObject:record];
     self.messageCount++;
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     dispatch_async(dispatch_get_main_queue(), ^(void) {
-        [self insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        if (isSelf) {
+            [self insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationRight];
+        }
+        else {
+            [self insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        }
         [self setContentOffset:CGPointZero animated:YES];
     });
 }
@@ -42,6 +52,7 @@ static NSString * const MapChatCellIdentifier = @"MapBubbleChatRecordCell";
     self.delegate = self;
     self.dataSource = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.currentUserId = [RCIMClient sharedRCIMClient].currentUserInfo.userId;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
