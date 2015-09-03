@@ -74,7 +74,7 @@
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Il-LS-A1F" userLabel="actionGroup" customClass="SOPlaygroundFeedActionGroupView">
+                    <view contentMode="scaleToFill" placeholderIntrinsicWidth="60" placeholderIntrinsicHeight="36" translatesAutoresizingMaskIntoConstraints="NO" id="7Il-LS-A1F" userLabel="actionGroup" customClass="SOPlaygroundFeedActionGroupView">
                         <rect key="frame" x="429" y="166" width="60" height="36"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="24" id="U33-YN-Isz"/>
@@ -84,6 +84,8 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="U33-YN-Isz"/>
+                                <exclude reference="xgq-D7-cwG"/>
+                                <exclude reference="y1y-uA-uWj"/>
                             </mask>
                         </variation>
                     </view>

@@ -23,7 +23,7 @@
     [self.grayView setImage:[UIImage imageNamed:@"like_gray"]];
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleLike:)];
     [self addGestureRecognizer:self.tap];
-    self.comment = [[UIButton alloc] initWithFrame:CGRectMake(32, 4, 24, 24)];
+    self.comment = [[UIButton alloc] initWithFrame:CGRectMake(132, 4, 24, 24)];
     [self.comment setBackgroundImage:[UIImage imageNamed:@"comment"] forState:UIControlStateNormal];
     [self.comment addTarget:self action:@selector(commentTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.comment];
@@ -92,6 +92,10 @@
     if ([(NSObject*)self.delegate respondsToSelector:@selector(userDidWishComment:)]) {
         [self.delegate userDidWishComment:self.feed];
     }
+}
+
+-(CGSize)intrinsicContentSize{
+    return CGSizeMake(160, 32);
 }
 
 @end

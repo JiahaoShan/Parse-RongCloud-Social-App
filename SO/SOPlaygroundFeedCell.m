@@ -22,7 +22,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *feedPosterNameView;
 @property (weak, nonatomic) IBOutlet UILabel *feedPostedTimeLabel;
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *feedTextView;
-@property (weak, nonatomic) IBOutlet UILabel *recentLikeView;
+@property (weak, nonatomic) IBOutlet TTTAttributedLabel *recentLikeView;
 @property (weak, nonatomic) IBOutlet PFImageView* feedPosterAvatartView;
 @property (weak, nonatomic) IBOutlet SOPlaygroundFeedActionGroupView *actionGroupView;
 @property (weak, nonatomic) IBOutlet SOPlaygroundFeedCommentPreviewView *commentPreviewView;
@@ -69,7 +69,11 @@
     //recent like view
     if (data.recentLikeUsers.count>0 || [data.likeCount integerValue]>0) {
         [self.recentLikeView setNumberOfLines:0];
-        NSMutableString* likeString = [[NSMutableString alloc] init];
+        UIImageView* iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"like"]];
+        CGFloat lineHeight = [self.recentLikeView.font lineHeight];
+        [iv setFrame:CGRectMake(2, 2, lineHeight-4, lineHeight-4)];
+        [self.recentLikeView addSubview:iv];
+        NSMutableString* likeString = [[NSMutableString alloc] initWithString:@"     "];
         NSMutableArray* likeNameRanges = [NSMutableArray array];
         for (int i=0; i<data.recentLikeUsers.count; i++) {
             User* liker = data.recentLikeUsers[i];
