@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "SOFailableAction.h"
+
 @class PlaygroundFeed;
 @class User;
 @class PlaygroundComment;
 @class SOPlaygroundFeedCell;
+
 @protocol SOPlaygroundFeedInteractionDelegate <NSObject>
 
 -(void)userDidTapViewAllCommentForFeed:(PlaygroundFeed*)feed;

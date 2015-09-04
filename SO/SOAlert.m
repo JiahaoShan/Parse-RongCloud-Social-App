@@ -32,7 +32,7 @@
         self.dismissAction = [dismissAction copy];
         self.alertBody = [[UIView alloc] initWithFrame:CGRectZero];
         [self addSubview:self.alertBody];
-        [self.alertBody setBackgroundColor:[SOUICommons translucentWhite]];
+        [self.alertBody setBackgroundColor:[SOUICommons lightBackgroundGray]];
         [self.alertBody setClipsToBounds:true];
         
         if (self.type==SOAlertTypeActionSheet) {
@@ -42,18 +42,18 @@
         }
         
         if (title) {
-            UITextView* titleL = [[UITextView alloc] initWithFrame:CGRectMake(self.alertWidth/4, self.alertHeight, 0, 0)];
+            UITextView* titleL = [[UITextView alloc] initWithFrame:CGRectMake(self.alertWidth/4, self.alertHeight+15, 0, 0)];
             [titleL setShowsHorizontalScrollIndicator:false];
             [titleL setShowsVerticalScrollIndicator:false];
             [titleL setTextAlignment:NSTextAlignmentCenter];
             [titleL setText:title];
-            [titleL setFont:[UIFont systemFontOfSize:17]];
+            [titleL setFont:[UIFont systemFontOfSize:14]];
             [titleL sizeToFit];
             [titleL setBackgroundColor:[UIColor clearColor]];
             [titleL setUserInteractionEnabled:false];
             [titleL setCenter:CGPointMake(self.alertWidth/2, titleL.center.y)];
-            [titleL setTextColor:[SOUICommons primaryTintColor]];
-            self.alertHeight+=CGRectGetHeight(titleL.frame);
+            [titleL setTextColor:[UIColor blackColor]];
+            self.alertHeight+=CGRectGetHeight(titleL.frame) + 30;
             [[self alertBody] addSubview:titleL];
             
             if (!message) {
@@ -69,14 +69,14 @@
             [messageL setShowsHorizontalScrollIndicator:false];
             [messageL setShowsVerticalScrollIndicator:false];
             [messageL setText:message];
-            [messageL setFont:[UIFont systemFontOfSize:14]];
-            [messageL setTextColor:[SOUICommons primaryTintColor]];
+            [messageL setFont:[UIFont systemFontOfSize:13]];
+            [messageL setTextColor:[UIColor blackColor]];
             [messageL setBackgroundColor:[UIColor clearColor]];
             [messageL setUserInteractionEnabled:false];
             CGSize maxSize = CGSizeMake(self.alertWidth*2/3, CGFLOAT_MAX);
             CGSize requiredSize = [messageL sizeThatFits:maxSize];
-            messageL.frame = CGRectMake(self.alertWidth/6, self.alertHeight, requiredSize.width, requiredSize.height);
-            self.alertHeight+=requiredSize.height;
+            messageL.frame = CGRectMake(self.alertWidth/6, self.alertHeight, requiredSize.width, requiredSize.height+20);
+            self.alertHeight+=requiredSize.height+20;
             [[self alertBody] addSubview:messageL];
             
             UIView* sep = [[UIView alloc] initWithFrame:CGRectMake(0, self.alertHeight, self.alertWidth, 1)];
@@ -151,7 +151,7 @@
             }else{
                 [self.handlers addObject:[NSNull null]];
             }
-            UIButton* button = [self buttonWithType:dic[@"type"] frame:CGRectMake(curX, self.alertHeight, perWidth, 44) title:dic[@"title"] tag:i];
+            UIButton* button = [self buttonWithType:dic[@"type"] frame:CGRectMake(curX, self.alertHeight, perWidth, 60) title:dic[@"title"] tag:i];
             [self.alertBody addSubview:button];
             curX+=perWidth;
             
@@ -169,6 +169,7 @@
 -(UIButton*)buttonWithType:(id)type frame:(CGRect)frame title:(NSString*)title tag:(NSInteger)tag{
     UIButton* button = [[UIButton alloc] initWithFrame:frame];
     [button setTitle:title forState:UIControlStateNormal];
+    [button setBackgroundColor:[SOUICommons translucentWhite]];
     if (type==[SOAlert SOActionTypeDestructive]) {
         [button setTitleColor:[SOUICommons destructiveButtonColor] forState:UIControlStateNormal];
         [[button titleLabel] setFont:[UIFont systemFontOfSize:17]];

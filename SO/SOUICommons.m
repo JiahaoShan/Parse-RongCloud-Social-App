@@ -130,7 +130,7 @@
 }
 +(void)configureNavigationBarLabel:(UILabel*)label{
     label.font = [UIFont boldSystemFontOfSize:19];
-    label.textColor = [UIColor redColor];
+    label.textColor = [self textColor];
     label.textAlignment = NSTextAlignmentCenter;
 }
 @end
