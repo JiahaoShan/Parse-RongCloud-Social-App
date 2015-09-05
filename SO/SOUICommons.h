@@ -19,10 +19,18 @@
 +(UIColor*)unavailableMask;//translucent black
 +(UIColor*)backgroundGray;//general background
 +(UIColor*)lightBackgroundGray;
+
++(UIImage*)likeRedImage;
++(UIImage*)likeGrayImage;
++(UIImage*)feedCommentImage;
+
 +(CGFloat)screenHeight;
 +(CGFloat)screenWidth;
+
+
 +(NSString*)descriptionForDate:(NSDate*)date;
 +(UIColor*)randomColor;
 +(UIImage*)opaqueImageOfColor:(UIColor*)color size:(CGSize)size;
 +(void)configureNavigationBarLabel:(UILabel*)label;
+
 @end

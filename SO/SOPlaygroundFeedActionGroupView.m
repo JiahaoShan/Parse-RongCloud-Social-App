@@ -7,85 +7,118 @@
 //
 
 #import "SOPlaygroundFeedActionGroupView.h"
+#import "SOUICommons.h"
+
 @interface SOPlaygroundFeedActionGroupView()
-@property (nonatomic,strong) UIImageView* redView; //red heart
-@property (nonatomic,strong) UIImageView* grayView; //gray heart
+@property (nonatomic,strong) UIButton* likedButton;
+@property (nonatomic,strong) UIButton* notLikedButton;
+@property (nonatomic,strong) UIButton* commentButton;
+
 @property (nonatomic,strong) UITapGestureRecognizer* tap;
-@property (nonatomic,strong) UIButton* comment;
 @end
 
 @implementation SOPlaygroundFeedActionGroupView
 
 -(void)awakeFromNib{
-    self.redView = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, 24, 24)];
-    [self.redView setImage:[UIImage imageNamed:@"like"]];
-    self.grayView = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, 24, 24)];
-    [self.grayView setImage:[UIImage imageNamed:@"like_gray"]];
-    self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleLike:)];
-    [self addGestureRecognizer:self.tap];
-    self.comment = [[UIButton alloc] initWithFrame:CGRectMake(132, 4, 24, 24)];
-    [self.comment setBackgroundImage:[UIImage imageNamed:@"comment"] forState:UIControlStateNormal];
-    [self.comment addTarget:self action:@selector(commentTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.comment];
+    self.likedButton = [[UIButton alloc] initWithFrame:CGRectMake(4, 4, 76, 16)];
+    [self.likedButton setImage:[SOUICommons likeRedImage] forState:UIControlStateNormal];
+    [self.likedButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    [self.likedButton setTitle:@"  喜欢  " forState:UIControlStateNormal];
+    [[self.likedButton titleLabel] setFont:[UIFont systemFontOfSize:12]];
+    [self.likedButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    self.notLikedButton = [[UIButton alloc] initWithFrame:CGRectMake(4, 4, 76, 16)];
+    [self.notLikedButton setImage:[SOUICommons likeGrayImage] forState:UIControlStateNormal];
+    [self.notLikedButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    [self.notLikedButton setTitle:@"  取消  " forState:UIControlStateNormal];
+    [[self.notLikedButton titleLabel] setFont:[UIFont systemFontOfSize:12]];
+    [self.notLikedButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
+    [self.likedButton addTarget:self action:@selector(toggleLike:) forControlEvents:UIControlEventTouchUpInside];
+    [self.notLikedButton addTarget:self action:@selector(toggleLike:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.commentButton = [[UIButton alloc] initWithFrame:CGRectMake(80, 4,76, 16)];
+    [self.commentButton setImage:[SOUICommons feedCommentImage] forState:UIControlStateNormal];
+    [self.commentButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    [self.commentButton addTarget:self action:@selector(commentTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.commentButton setTitle:@"  评论  " forState:UIControlStateNormal];
+    [[self.commentButton titleLabel] setFont:[UIFont systemFontOfSize:12]];
+    [self.commentButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self addSubview:self.commentButton];
+    
+    self.backgroundColor = [SOUICommons lightBackgroundGray];
+    self.layer.cornerRadius = 4;
 }
 
 -(void)setLiked:(BOOL)liked{
-    [self setLiked:liked animated:NO];
+    [self setLiked:liked animated:NO completion:NULL];
 }
 -(void)setLiked:(BOOL)liked animated:(BOOL)animated{
+    [self setLiked:liked animated:animated completion:NULL];
+}
+
+-(void)setLiked:(BOOL)liked animated:(BOOL)animated completion:(SOplaygroundFeedActionGroupCompletion)completion{
     _liked = liked;
     if (animated) {
         [self.tap setEnabled:false];
         if (self.liked) {
-            self.redView.alpha = 0;
+            self.likedButton.alpha = 0;
             [UIView animateWithDuration:0.2 animations:^{
-                [self addSubview:self.redView];
-                self.grayView.frame = CGRectInset(self.grayView.frame, -12, -12);
-                self.grayView.alpha = 0;
-                self.redView.alpha = 1;
+                [self addSubview:self.likedButton];
+                [self.notLikedButton setTransform:CGAffineTransformScale(self.notLikedButton.transform, 2, 2)];
+                self.notLikedButton.alpha = 0;
+                self.likedButton.alpha = 1;
             } completion:^(BOOL finished) {
-                self.grayView.frame = CGRectMake(4, 4, 24, 24);
-                [self.grayView removeFromSuperview];
+                [self.notLikedButton setTransform:CGAffineTransformIdentity];
+                [self.notLikedButton removeFromSuperview];
                 [self.tap setEnabled:true];
+                if (completion) {
+                    completion();
+                }
             }];
         }
         else{
-            
-            self.grayView.alpha = 0;
+            self.notLikedButton.alpha = 0;
             [UIView animateWithDuration:0.2 animations:^{
-                [self addSubview:self.grayView];
-                self.redView.frame = CGRectInset(self.redView.frame, -12, -12);
-                self.redView.alpha = 0;
-                self.grayView.alpha = 1;
+                [self addSubview:self.notLikedButton];
+                [self.likedButton setTransform:CGAffineTransformScale(self.notLikedButton.transform, 2, 2)];
+                self.likedButton.alpha = 0;
+                self.notLikedButton.alpha = 1;
             } completion:^(BOOL finished) {
-                self.redView.frame = CGRectMake(4, 4, 24, 24);
-                [self.redView removeFromSuperview];
+                [self.likedButton setTransform:CGAffineTransformIdentity];
+                [self.likedButton removeFromSuperview];
                 [self.tap setEnabled:true];
+                if (completion) {
+                    completion();
+                }
             }];
         }
     }else{
         if (liked) {
-            self.redView.alpha = 1;
-            [self addSubview:self.redView];
-            [self.grayView removeFromSuperview];
+            self.likedButton.alpha = 1;
+            [self addSubview:self.likedButton];
+            [self.notLikedButton removeFromSuperview];
         }else{
-            self.grayView.alpha = 1;
-            [self addSubview:self.grayView];
-            [self.redView removeFromSuperview];
+            self.notLikedButton.alpha = 1;
+            [self addSubview:self.notLikedButton];
+            [self.likedButton removeFromSuperview];
+        }
+        if (completion) {
+            completion();
         }
     }
 }
 
--(void)toggleLike:(UIGestureRecognizer*)tap{
+-(void)toggleLike:(UIButton*)tap{
     BOOL oldValue = self.liked;
-    [self setLiked:!oldValue animated:true];
-    
     SOFailableAction* action = [[SOFailableAction alloc] initWithSucceed:NULL failed:^{
         [self setLiked:oldValue animated:false];
     }];
-    if ([(NSObject*)self.delegate respondsToSelector:@selector(feed:didChangeLikeStatusTo:action:)]) {
-        [self.delegate feed:self.feed didChangeLikeStatusTo:self.liked action:action];
-    }
+    __weak typeof(self) wSelf = self;
+    [self setLiked:!oldValue animated:true completion:^{
+        if ([(NSObject*)wSelf.delegate respondsToSelector:@selector(feed:didChangeLikeStatusTo:action:)]) {
+            [wSelf.delegate feed:wSelf.feed didChangeLikeStatusTo:wSelf.liked action:action];
+        }
+    }];
 }
 
 -(void)commentTapped:(UIButton*)b{
@@ -95,7 +128,7 @@
 }
 
 -(CGSize)intrinsicContentSize{
-    return CGSizeMake(160, 32);
+    return CGSizeMake(160, 24);
 }
 
 @end

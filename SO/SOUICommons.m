@@ -8,93 +8,52 @@
 
 #import "SOUICommons.h"
 #import <CoreGraphics/CoreGraphics.h>
+#define SINGLETON_CGFLOAT_IMPLEMENTATION(Name,Expression) \
++(CGFloat)Name{\
+static dispatch_once_t onceToken;\
+static CGFloat Name = 0.0f; \
+dispatch_once(&onceToken,^{\
+Name = Expression;\
+});\
+return Name;\
+}
+#define SINGLETON_OBJECT_IMPLEMENTATION(Type,Name,Expression) \
+    +(Type)Name{\
+        static dispatch_once_t onceToken;\
+        static Type Name = nil; \
+    dispatch_once(&onceToken,^{\
+        Name = Expression;\
+    });\
+    return Name;\
+}
+#define SINGLETON_OBJECT_IMPLEMENTATION_FAST(Name,Expression) SINGLETON_OBJECT_IMPLEMENTATION(SOUICOMMONS_DECLARATION_TYPE,Name,Expression)
 
 @interface SOUICommons(){
 }
 @end
 
 @implementation SOUICommons
+#define SOUICOMMONS_DECLARATION_TYPE UIColor*
+SINGLETON_OBJECT_IMPLEMENTATION_FAST(primaryTintColor, [UIColor colorWithRed:149.0/255 green:165.0/255 blue:165.0/255 alpha:1]);
+SINGLETON_OBJECT_IMPLEMENTATION_FAST(textColor, [UIColor whiteColor])
+SINGLETON_OBJECT_IMPLEMENTATION_FAST(activeButtonColor, [UIColor blueColor])
+SINGLETON_OBJECT_IMPLEMENTATION_FAST(destructiveButtonColor, [UIColor redColor])
+SINGLETON_OBJECT_IMPLEMENTATION_FAST(translucentWhite, [UIColor colorWithWhite:1 alpha:1])
+SINGLETON_OBJECT_IMPLEMENTATION_FAST(descriptiveTextColor, [UIColor grayColor])
+SINGLETON_OBJECT_IMPLEMENTATION_FAST(unavailableMask, [UIColor colorWithWhite:0.1 alpha:0.9])
+SINGLETON_OBJECT_IMPLEMENTATION_FAST(backgroundGray, [UIColor grayColor])
+SINGLETON_OBJECT_IMPLEMENTATION_FAST(lightBackgroundGray, [UIColor colorWithWhite:0.8 alpha:1])
+#undef SOUICOMMONS_DECLARATION_TYPE
 
-+(UIColor*)primaryTintColor{
-    static dispatch_once_t onceToken;
-    static UIColor* primaryTint = nil;
-    dispatch_once(&onceToken,^{
-        primaryTint = [UIColor colorWithRed:149.0/255 green:165.0/255 blue:165.0/255 alpha:1];
-        //primaryTint = [UIColor blackColor];
-    });
-    return primaryTint;
-}
+#define SOUICOMMONS_DECLARATION_TYPE UIImage*
+SINGLETON_OBJECT_IMPLEMENTATION_FAST(likeRedImage, [UIImage imageNamed:@"like"])
+SINGLETON_OBJECT_IMPLEMENTATION_FAST(likeGrayImage, [UIImage imageNamed:@"like_gray"])
+SINGLETON_OBJECT_IMPLEMENTATION_FAST(feedCommentImage, [UIImage imageNamed:@"comment"])
+#undef SOUICOMMONS_DECLARATION_TYPE
 
-+(UIColor*)textColor{
-    static dispatch_once_t onceToken;
-    static UIColor* primaryTint = nil;
-    dispatch_once(&onceToken,^{
-        primaryTint = [UIColor whiteColor];
-    });
-    return primaryTint;
-}
-+(UIColor*)activeButtonColor{
-    static dispatch_once_t onceToken;
-    static UIColor* activeButtonColor = nil;
-    dispatch_once(&onceToken,^{
-        activeButtonColor = [UIColor blueColor];
-    });
-    return activeButtonColor;
-}
-+(UIColor*)destructiveButtonColor{
-    static dispatch_once_t onceToken;
-    static UIColor* destructiveButtonColor = nil;
-    dispatch_once(&onceToken,^{
-        destructiveButtonColor = [UIColor redColor];
-    });
-    return destructiveButtonColor;
-}
-+(UIColor*)descriptiveTextColor{
-    static dispatch_once_t onceToken;
-    static UIColor* descriptiveTextColor = nil;
-    dispatch_once(&onceToken,^{
-        descriptiveTextColor = [UIColor grayColor];
-    });
-    return descriptiveTextColor;
-}
-+(UIColor*)translucentWhite{
-    static dispatch_once_t onceToken;
-    static UIColor* translucentWhite = nil;
-    dispatch_once(&onceToken,^{
-        translucentWhite = [UIColor colorWithWhite:1 alpha:1];
-    });
-    return translucentWhite;
-}
-+(UIColor*)unavailableMask{
-    static dispatch_once_t onceToken;
-    static UIColor* unavailableMask = nil;
-    dispatch_once(&onceToken,^{
-        unavailableMask = [UIColor colorWithWhite:0.1 alpha:0.9];
-    });
-    return unavailableMask;
-}
-+(UIColor*)backgroundGray{
-    static dispatch_once_t onceToken;
-    static UIColor* backgroundGray = nil;
-    dispatch_once(&onceToken,^{
-        backgroundGray = [UIColor grayColor];
-    });
-    return backgroundGray;
-}
-+(UIColor*)lightBackgroundGray{
-    static dispatch_once_t onceToken;
-    static UIColor* backgroundGray = nil;
-    dispatch_once(&onceToken,^{
-        backgroundGray = [UIColor colorWithWhite:0.8 alpha:1];
-    });
-    return backgroundGray;
-}
-+(CGFloat)screenHeight{
-    return [[UIScreen mainScreen] bounds].size.height;
-}
-+(CGFloat)screenWidth{
-    return [[UIScreen mainScreen] bounds].size.width;
-}
+SINGLETON_CGFLOAT_IMPLEMENTATION(screenHeight, [[UIScreen mainScreen] bounds].size.height);
+SINGLETON_CGFLOAT_IMPLEMENTATION(screenWidth, [[UIScreen mainScreen] bounds].size.width);
+
 +(NSString*)descriptionForDate:(NSDate*)date{
     NSDate* now = [[NSDate alloc] init];
     NSCalendar* calendar = [NSCalendar currentCalendar];

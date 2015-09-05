@@ -376,8 +376,6 @@
 }
 
 -(void)cell:(SOPlaygroundFeedCell *)cell didTapImageAtIndex:(NSUInteger)index{
-    //    PlaygroundFeed * feed = [PlaygroundFeed object];
-    //    feed.message = @"Hahahahah";
     NSIndexPath* cellIndex = [self.tableView indexPathForCell:cell];
     NSArray* images = self.objects[cellIndex.row][@"images"];
     NSMutableArray* feedImageView = cell.getFeedImageViews;

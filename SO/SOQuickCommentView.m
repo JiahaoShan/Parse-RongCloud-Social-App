@@ -8,7 +8,6 @@
 
 #import "SOQuickCommentView.h"
 #import "SOUICommons.h"
-#import "UIView+Sizing.h"
 @interface SOQuickCommentView()
 @property (nonatomic) CSGrowingTextView* tv;
 @property (nonatomic) CGFloat textViewHeight;
